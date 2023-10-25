@@ -1,0 +1,17 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "build",
+    "allowJs": true,
+    "isolatedModules": true,
+    "rootDirs": ["./", "./modules", "./experiments"]
+  },
+
+  "include": ["*.ts", "./modules/*.ts", "./modules/**/*.ts", "./experiments/**/*.ts"],
+  "esModuleInterop": true,
+  //    "allowSyntheticDefaultImports": true
+}
