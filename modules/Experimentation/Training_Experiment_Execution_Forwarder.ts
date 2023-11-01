@@ -70,8 +70,8 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
             AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,
             text_line(
                 "You cancelled this training session.\n\n " +
-                "Press [E] if you want to start with the experiment:\n\n" +
-                "Press [Enter] if you want to rerun the training session."));
+                "Press [E] (capital E!) if you want to start with the experiment:\n\n" +
+                "Press [Enter] if you want to start with another training session."));
     }
 
     set_active() {

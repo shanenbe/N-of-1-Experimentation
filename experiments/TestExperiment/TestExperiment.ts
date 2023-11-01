@@ -5,6 +5,7 @@ import {new_random_integer, Random, SET_SEED} from "../../modules/Experimentatio
 document['experiment_definition'] = create_browser_server_text_experiment;
 document['new_random_integer'] = new_random_integer;
 document['set_seed'] = SET_SEED;
+document['nouns'] = new Nouns();
 
 // create_browser_server_text_experiment({
 //     experiment_name         :"TestExperiment",
