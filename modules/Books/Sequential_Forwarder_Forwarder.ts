@@ -1,10 +1,10 @@
-import {Automata_Forwarder} from "../Automata/Automata_Forwarder";
-import {create_automata} from "../Automata/Automata_Configurator";
-import {from} from "../Automata/Transitions";
-import {create_book} from "./Book";
-import {guarantee_test} from "../Utils";
-import {text_line, text_pages} from "./IO_Object";
-import {AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS, Simplified_IO} from "./Automata_IO";
+import {Automata_Forwarder} from "../Automata/Automata_Forwarder.js";
+import {create_automata} from "../Automata/Automata_Configurator.js";
+import {from} from "../Automata/Transitions.js";
+import {create_book} from "./Book.js";
+import {guarantee_test} from "../Utils.js";
+import {text_line, text_pages} from "./IO_Object.js";
+import {AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS, Simplified_IO} from "./Automata_IO.js";
 
 export class Sequential_Forwarder_Forwarder extends Automata_Forwarder{
 

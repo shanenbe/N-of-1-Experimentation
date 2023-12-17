@@ -1,4 +1,4 @@
-import {contains} from "../Utils";
+import {contains} from "../Utils.js";
 
 export function init(){}
 abstract class Transition_Acceptor {

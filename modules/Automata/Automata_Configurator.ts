@@ -1,5 +1,5 @@
-import {Transition} from "./Transitions";
-import {Automata} from "./Automata";
+import {Transition} from "./Transitions.js";
+import {Automata} from "./Automata.js";
 export function init(){}
 export class Automata_Configurator {
     states: number[];

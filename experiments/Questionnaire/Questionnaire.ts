@@ -1,5 +1,5 @@
-import {create_browser_questionnaire} from "../../modules/Experimentation/Browser_Questionnaire";
 import {alternatives, free_text} from "../../modules/Books/IO_Object";
+import {create_browser_questionnaire} from "../../modules/Experimentation/functions/Browser_Questionnaire";
 
 create_browser_questionnaire("Simple questionnaire",
                         [

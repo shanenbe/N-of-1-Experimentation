@@ -1,6 +1,5 @@
-import { for_all } from "./Loops";
-import {Experiment_Definition} from "./Experimentation/Experiment_Definition";
-import {Task} from "./Experimentation/Task";
+import {Experiment_Definition} from "./Experimentation/Experiment_Definition.js";
+import {Task} from "./Experimentation/Task.js";
 export function init(){}
 
 export type Function_P1<T> = (p1: T) => void;
@@ -13,6 +12,7 @@ export type Function_P3_R<T, U, V, R> = (p1: T, p2: U, p3: V) => R;
 export function contains(collection:any[], element:any): boolean {
     return collection.indexOf(element) != -1;
 }
+
 
 export function guarantee_test(f:()=>boolean) {
     let result: boolean = f();

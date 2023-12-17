@@ -1,9 +1,9 @@
-import {from} from "../Automata/Transitions";
-import {guarantee_true} from "../Utils";
-import {create_automata} from "../Automata/Automata_Configurator";
-import {Automata_With_Output_Forwarder} from "./Automata_With_Output_Forwarder";
-import {Input_Object, IO_Object, text_line, text_pages} from "./IO_Object";
-import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS, Simplified_IO} from "./Automata_IO";
+import {from} from "../Automata/Transitions.js";
+import {guarantee_true} from "../Utils.js";
+import {create_automata} from "../Automata/Automata_Configurator.js";
+import {Automata_With_Output_Forwarder} from "./Automata_With_Output_Forwarder.js";
+import {Input_Object, IO_Object, text_line, text_pages} from "./IO_Object.js";
+import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS, Simplified_IO} from "./Automata_IO.js";
 
 export function init(){}
 

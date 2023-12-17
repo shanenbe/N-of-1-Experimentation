@@ -1,12 +1,15 @@
-import {Variable} from "./Variable";
-import {Treatment} from "./Treatment";
-import {Task} from "./Task";
-import * as Experimentation from "./Experimentation";
-import {SET_SEED} from "./Experimentation";
+import {Variable} from "./Variable.js";
+import {Treatment} from "./Treatment.js";
+import {Task} from "./Task.js";
+import * as Experimentation from "./Experimentation.js";
+import {SET_SEED} from "./Experimentation.js";
 export function init(){}
 export abstract class Experiment_Definition<TaskType extends Task> {
     experiment_name: string;
+
     variables: Variable[];
+    questionnaire_responses: Treatment[] = [];
+
     tasks: TaskType[] = [];
     repetitions: number = 1;
     task_creator: (Task: TaskType) => void
@@ -75,11 +78,17 @@ export abstract class Experiment_Definition<TaskType extends Task> {
 
     generate_csv_data():string[] {
         let result:string[] = [];
+        for(let variable of this.questionnaire_responses) {
+            result.push(variable.variable.name + ";");
+        }
         for(let variable of this.variables) {
             result.push(variable.name + ";");
         }
         result.push("expected_answer;given_answer;is_correct;time_in_milliseconds;\n");
         for(let task of this.tasks) {
+            for(let variable of this.questionnaire_responses) {
+                result.push(variable.value + ";");
+            }
             for(let treatment_combination of task.treatment_combination) {
                 result.push(treatment_combination.value + ";")
             }

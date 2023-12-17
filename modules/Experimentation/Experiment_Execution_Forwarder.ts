@@ -1,11 +1,11 @@
-import {Code_Task, Task} from "./Task";
-import {create_automata} from "../Automata/Automata_Configurator";
-import {from} from "../Automata/Transitions";
-import {Experiment_Definition} from "./Experiment_Definition";
-import {IO_Object, text_line} from "../Books/IO_Object";
-import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO";
-import { Automata_With_Output_Forwarder } from "../Books/Automata_With_Output_Forwarder";
-import {SET_SEED} from "./Experimentation";
+import {Code_Task, Task} from "./Task.js";
+import {create_automata} from "../Automata/Automata_Configurator.js";
+import {from} from "../Automata/Transitions.js";
+import {Experiment_Definition} from "./Experiment_Definition.js";
+import {IO_Object, text_line} from "../Books/IO_Object.js";
+import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO.js";
+import { Automata_With_Output_Forwarder } from "../Books/Automata_With_Output_Forwarder.js";
+import {SET_SEED} from "./Experimentation.js";
 
 
 export class Experiment_Execution_Forwarder<TaskType extends Task> extends  Automata_With_Output_Forwarder{
@@ -34,7 +34,7 @@ export class Experiment_Execution_Forwarder<TaskType extends Task> extends  Auto
 
         this.experiment_definition = experiment_definition;
 
-        this.seed = seed;
+        SET_SEED(this.seed);
         this.create_and_init_automata();
         this.set_active();
 
@@ -43,7 +43,6 @@ export class Experiment_Execution_Forwarder<TaskType extends Task> extends  Auto
     set_active() {
         this.current_task_index = 0;
         super.set_active();
-        SET_SEED(this.seed);
         this.output_writer.write(
             AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE,
             AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,

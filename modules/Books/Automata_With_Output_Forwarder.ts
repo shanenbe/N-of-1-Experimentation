@@ -1,7 +1,6 @@
-import {Automata} from "../Automata/Automata";
-import {IO_Object, text_line} from "./IO_Object";
-import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "./Automata_IO";
-import {Automata_Forwarder} from "../Automata/Automata_Forwarder";
+import {IO_Object, text_line} from "./IO_Object.js";
+import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "./Automata_IO.js";
+import {Automata_Forwarder} from "../Automata/Automata_Forwarder.js";
 export function init(){}
 
 /*

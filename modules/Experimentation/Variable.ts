@@ -1,5 +1,4 @@
-import {VARIABLE_TYPE} from "./Experimentation";
-import {Treatment} from "./Treatment";
+import {Treatment} from "./Treatment.js";
 export function init(){}
 export class Variable {
     name: string;

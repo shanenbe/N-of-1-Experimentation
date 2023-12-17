@@ -1,8 +1,8 @@
-import {create_browser_server_text_experiment} from "../../modules/Experimentation/Browser_Server_Code_Experiment";
-import {Code_Task} from "../../modules/Experimentation/Task";
-import {new_random_integer} from "../../modules/Experimentation/Experimentation";
-
-document['experiment_definition'] = create_browser_server_text_experiment;
+// import {create_browser_server_text_experiment} from "../../modules/Experimentation/Browser_Server_Code_Experiment";
+// import {Code_Task} from "../../modules/Experimentation/Task";
+// import {new_random_integer} from "../../modules/Experimentation/Experimentation";
+//
+// document['experiment_definition'] = create_browser_server_text_experiment;
 
 // create_browser_server_text_experiment({
 //     experiment_name         :"TestExperiment",

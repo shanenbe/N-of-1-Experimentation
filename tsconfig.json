@@ -1,17 +1,24 @@
 {
   "compileOnSave": true,
+
   "compilerOptions": {
-    "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",
-    "sourceMap": true,
-    "outDir": "build",
+//    "outDir": "build",
     "allowJs": true,
-    "isolatedModules": true,
-    "rootDirs": ["./", "./modules", "./experiments"]
+    "sourceMap": true,
+
+    "noImplicitAny": false,
+//    "isolatedModules": true,
+    "rootDirs": ["./", "./modules", "./experiments"],
+
   },
 
-  "include": ["*.ts", "./modules/*.ts", "./modules/**/*.ts", "./experiments/**/*.ts"],
+  "include": ["*.ts", "./modules/*.ts", "./modules/Words/*.ts", "./modules/**/*.ts", "./experiments/**/*.ts"],
+
+  "exclude": [
+    "node_modules"
+  ],
   "esModuleInterop": true,
   //    "allowSyntheticDefaultImports": true
 }

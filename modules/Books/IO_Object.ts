@@ -1,5 +1,5 @@
-import * as Utils from "../Utils";
-import {AUTOMATA_OUTPUT_OBJECT_FORMAT} from "./Automata_IO";
+import * as Utils from "../Utils.js";
+import {AUTOMATA_OUTPUT_OBJECT_FORMAT} from "./Automata_IO.js";
 
 export class IO_Object {
     to_write: {text:string, format:AUTOMATA_OUTPUT_OBJECT_FORMAT}[];
@@ -68,6 +68,28 @@ export abstract class Input_Object extends IO_Object {
         return !this.answer_required || (this.has_valid_input());
     }
 }
+
+export class Information extends Input_Object {
+
+
+    constructor(to_write: { text: string; format: AUTOMATA_OUTPUT_OBJECT_FORMAT }[]) {
+        super("null", to_write, true);
+        let parser:DOMParser = new DOMParser();
+        //this.input  = parser.parseFromString("<input type='text'/>", "text/html").body.lastElementChild as HTMLInputElement;
+    }
+
+    print_to_html_element(html_element: HTMLElement) {
+        super.print_to_html_element(html_element);
+        //html_element.appendChild(this.input);
+    }
+
+    has_valid_input() {
+        return true;
+    }
+
+    do_action() {}
+}
+
 export class Text_Input extends Input_Object {
 
 
@@ -123,8 +145,12 @@ export class Alternatives extends Input_Object {
 
 }
 
-export function free_text(variable_name: string,  text:string, answer_required: boolean) {
+export function free_text(variable_name: string,  text:string, answer_required: boolean = true) {
     return new Text_Input( variable_name,[{text: text, format: AUTOMATA_OUTPUT_OBJECT_FORMAT.TEXT}], answer_required);
+}
+
+export function information(text:string) {
+    return new Information( [{text: text, format: AUTOMATA_OUTPUT_OBJECT_FORMAT.TEXT}]);
 }
 
 export function alternatives(variable_name: string, text:string, options:string[], answer_required: boolean) {

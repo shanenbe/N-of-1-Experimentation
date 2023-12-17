@@ -1,4 +1,4 @@
-class Verbs {
+export class Verbs {
     words = [
         "drip",                 "touch",                "trouble",              "start",                "communicate",
         "jog",                  "order",                "strip",                "coach",                "relax",

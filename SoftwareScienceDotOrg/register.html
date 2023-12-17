@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SOFTWARE_SCIENCE_VARIABLE_TITLE</title>
+    <title>Software-Science.org - The place where software experiment live.</title>
 
     <style>
 
@@ -35,6 +35,16 @@
             font-size: 80%;
         }
 
+        content {
+            padding-left: 10%;
+            display: inline-block;
+        }
+
+        contentAligned {
+            padding-left: 15%;
+            display: inline-block;
+        }
+
         simplecode {
             font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
         }
@@ -65,16 +75,30 @@
 
 
 </head>
-<body>
+    <body>
+        <main>
+            <h1><simplecode>software-science.org</simplecode></h1>
+            <h2><simplecode>The place where software experiments live</simplecode></h2>
+        </main>
 
-<main>
-    <h1><simplecode>software-science.org</simplecode></h1>
-    <h2><simplecode>The place where software experiments live</simplecode></h2>
-    <p><STATE id="STATE"></STATE></p>
-    <p><TASK id="TASK"></TASK></p>
-</main>
-<MENU>[Impressum]</MENU>
-<STAGE id="STAGE"></STAGE><p></p>
-<script src="./SOFTWARE_SCIENCE_VARIABLE_TITLE/code.js"></script>
-</body>
+        <h1>Registration</h1>
+        <form>
+            <div>
+                <label for="email">Email</label>
+                <input type="text" id="email"></input>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password"></input>
+            </div>
+            <div>
+                <label for="password_repeated">Repeat Password</label>
+                <input type="password" id="password_repeated"></input>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+
+        <a href="./login">Login</a>
+
+    </body>
 </html>

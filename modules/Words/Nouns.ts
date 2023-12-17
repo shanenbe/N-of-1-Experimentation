@@ -1,4 +1,4 @@
-class Nouns {
+export class Nouns {
     words = [
         "account",              "achiever",             "acoustics",            "act",                  "action",
         "activity",             "actor",                "addition",             "adjustment",           "advertisement",

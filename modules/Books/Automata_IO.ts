@@ -1,4 +1,4 @@
-import {IO_Object} from "./IO_Object";
+import {IO_Object} from "./IO_Object.js";
 
 export enum AUTOMATA_OUTPUT_OBJECT_FORMAT {
     TEXT, CODE, HTML, CODE_IN_HTML

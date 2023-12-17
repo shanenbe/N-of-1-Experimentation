@@ -1,11 +1,11 @@
-import {Task} from "./Task";
-import {create_automata} from "../Automata/Automata_Configurator";
-import {from} from "../Automata/Transitions";
-import {Experiment_Definition} from "./Experiment_Definition";
-import {IO_Object, text_line} from "../Books/IO_Object";
-import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO";
-import { Automata_With_Output_Forwarder } from "../Books/Automata_With_Output_Forwarder";
-import {new_random_integer} from "./Experimentation";
+import {Task} from "./Task.js";
+import {create_automata} from "../Automata/Automata_Configurator.js";
+import {from} from "../Automata/Transitions.js";
+import {Experiment_Definition} from "./Experiment_Definition.js";
+import {IO_Object, text_line} from "../Books/IO_Object.js";
+import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO.js";
+import { Automata_With_Output_Forwarder } from "../Books/Automata_With_Output_Forwarder.js";
+import {new_random_integer} from "./Experimentation.js";
 
 
 export class Training_Experiment_Execution_Forwarder<TaskType extends Task> extends  Automata_With_Output_Forwarder{
@@ -70,7 +70,7 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
             AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,
             text_line(
                 "You cancelled this training session.\n\n " +
-                "Press [E] (capital E!) if you want to start with the experiment:\n\n" +
+                "Press [E] (capital E!) if you want to start with the experiment.\n\n" +
                 "Press [Enter] if you want to start with another training session."));
     }
 

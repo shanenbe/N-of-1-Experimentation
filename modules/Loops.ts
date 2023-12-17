@@ -1,4 +1,4 @@
-import { Function_P1, Function_P2 } from "./Utils";
+import { Function_P1, Function_P2 } from "./Utils.js";
 export function init(){}
 
 export function for_all<T, S extends T>(collection: T[], f: Function_P1<S>) {

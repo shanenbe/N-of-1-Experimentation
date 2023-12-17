@@ -1,79 +1,100 @@
-import {Treatment} from "./Treatment";
-import {Code_Task} from "./Task";
-import {Experiment_Definition} from "./Experiment_Definition";
-import {Book} from "../Books/Book";
-import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder";
-import {Sequential_Forwarder_Forwarder} from "../Books/Sequential_Forwarder_Forwarder";
-import {Variable} from "./Variable";
-import {IO_Object, text_line} from "../Books/IO_Object";
-import {Training_Experiment_Execution_Forwarder} from "./Training_Experiment_Execution_Forwarder";
+import {Treatment} from "./Treatment.js";
+import {Code_Task} from "./Task.js";
+import {Experiment_Definition} from "./Experiment_Definition.js";
+import {Book} from "../Books/Book.js";
+import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder.js";
+import {Sequential_Forwarder_Forwarder} from "../Books/Sequential_Forwarder_Forwarder.js";
+import {Variable} from "./Variable.js";
+import {Input_Object, IO_Object, text_line} from "../Books/IO_Object.js";
+import {Training_Experiment_Execution_Forwarder} from "./Training_Experiment_Execution_Forwarder.js";
 import {
     Automata_IO,
     AUTOMATA_OUTPUT_WRITER_ACTION,
     AUTOMATA_OUTPUT_WRITER_TAGS
-} from "../Books/Automata_IO";
-import {new_random_integer, SET_SEED} from "./Experimentation";
+} from "../Books/Automata_IO.js";
+import {new_random_integer, SET_SEED} from "./Experimentation.js";
+import {create_browser_questionnaire} from "./functions/Browser_Questionnaire";
+import {Questionnaire} from "../Books/Questionnaire.js";
 
 export function init(){}
 export class Code_Experiment_Definition extends Experiment_Definition<Code_Task> {
 
 
-
-    create_code_experiment_execution(
-                                        introduction_texts:IO_Object[],
-                                        seed: string,
-                                        pre_run_instructions: IO_Object,
-                                        finish_texts: IO_Object[],
-                                        output_writer: Automata_IO,
-                                        accepted_experiment_responses: string[],
-                                        finish_function: (experiment:Experiment_Definition<Code_Task>) => void)
-    :Sequential_Forwarder_Forwarder
+    create_code_experiment_execution( cfg: {
+                                                seed: string,
+                                                introduction_texts:IO_Object[],
+                                                questionnaire?: Input_Object[],
+                                                pre_run_instructions: IO_Object,
+                                                finish_texts: IO_Object[],
+                                                output_writer: Automata_IO,
+                                                accepted_experiment_responses: string[],
+                                                finish_function: (experiment:Experiment_Definition<Code_Task>) => void
+                                            }
+    ) : Sequential_Forwarder_Forwarder
     {
-        let introduction_book = new Book("introduction", introduction_texts, output_writer);
+        let introduction_book = new Book("introduction", cfg.introduction_texts, cfg.output_writer);
 
         introduction_book.add_activation_function(()=> {
-            output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
-            output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
+            cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
+            cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
         });
 
-        let ending_book = new Book("finish", finish_texts, output_writer);
+        let ending_book = new Book("finish", cfg.finish_texts, cfg.output_writer);
+
 
         ending_book.add_activation_function(()=>{
-            output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
-            output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
+            cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
+            cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
         });
-
-        ending_book.automata.add_finish_action(()=>finish_function(experiment_execution_forwarder.experiment_definition));
-
-        let training = new Training_Experiment_Execution_Forwarder<Code_Task>(
-                                                     "Training",
-                                                                            pre_run_instructions,
-                                                                            this.clone(),
-                                                                            output_writer,
-                                                                            accepted_experiment_responses
-                                                                        );
-
 
 
         let experiment_execution_forwarder = new Experiment_Execution_Forwarder<Code_Task>(
-                                                                    "Experiment",
-                                                                                           seed,
-                                                                                           pre_run_instructions,
-                                                                                           this,
-                                                                                           output_writer,
-                                                                                           accepted_experiment_responses
-                                                                                          );
+            "Experiment",
+            cfg.seed,
+            cfg.pre_run_instructions,
+            this,
+            cfg.output_writer,
+            cfg.accepted_experiment_responses
+        );
 
-        let forwarder = new Sequential_Forwarder_Forwarder(
-                                                    [
-                                                                introduction_book,
-                                                                training,
-                                                                experiment_execution_forwarder,
-                                                                ending_book
-                                                              ]
-                                                        );
+        ending_book.automata.add_finish_action(()=>cfg.finish_function(experiment_execution_forwarder.experiment_definition));
 
+        let training = new Training_Experiment_Execution_Forwarder<Code_Task>(
+                                                     "Training",
+                                                                            cfg.pre_run_instructions,
+                                                                            this.clone(),
+                                                                            cfg.output_writer,
+                                                                            cfg. accepted_experiment_responses
+                                                                        );
+        let forwarder = undefined;
 
+        if (cfg.questionnaire!=undefined) {
+            let questionnaire_book = new Questionnaire("questionnaire", cfg.questionnaire, cfg.output_writer);
+            questionnaire_book.add_activation_function(()=>{
+                cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
+                cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
+            });
+
+            forwarder = new Sequential_Forwarder_Forwarder(
+                [
+                    introduction_book,
+                    training,
+                    questionnaire_book,
+                    experiment_execution_forwarder,
+                    ending_book
+                ]
+            );
+        } else {
+            forwarder = new Sequential_Forwarder_Forwarder(
+                [
+                    introduction_book,
+                    training,
+                    experiment_execution_forwarder,
+                    ending_book
+                ]
+            );
+
+        }
         return forwarder;
 
     }
@@ -108,6 +129,7 @@ export function create_code_experiment_execution(cfg:
                                                         experiment_name     :string,
                                                         seed                :string,
                                                         introduction_pages  :IO_Object[],
+                                                        questionnaire?: Input_Object[],
                                                         pre_run_instructions: IO_Object,
                                                         finish_pages        :IO_Object[],
                                                         layout              :{
@@ -128,6 +150,12 @@ export function create_code_experiment_execution(cfg:
         variables.push(new Variable(aVar.variable, aVar.treatments))
     }
 
+    // if (cfg.questionnaire != undefined) {
+    //     for(let aVar of cfg.questionnaire) {
+    //         variables.push(new Variable(aVar.))
+    //     }
+    // }
+    //
     let experiment_definition = new Code_Experiment_Definition(
                                                                     cfg.experiment_name,
                                                                     cfg.seed,
@@ -137,13 +165,16 @@ export function create_code_experiment_execution(cfg:
                                                               );
 
     let experiment_execution = experiment_definition.create_code_experiment_execution(
-                                                                                        cfg.introduction_pages,
-                                                                                        cfg.seed,
-                                                                                        cfg.pre_run_instructions,
-                                                                                        cfg.finish_pages,
-                                                                                        cfg.output_object,
-                                                                                        cfg.accepted_responses,
-                                                                                        cfg.finish_function
+                                                                                    {
+                                                                                            seed: cfg.seed,
+                                                                                            introduction_texts: cfg.introduction_pages,
+                                                                                            questionnaire: cfg.questionnaire,
+                                                                                            pre_run_instructions: cfg.pre_run_instructions,
+                                                                                            finish_texts: cfg.finish_pages,
+                                                                                            output_writer: cfg.output_object,
+                                                                                            accepted_experiment_responses: cfg.accepted_responses,
+                                                                                            finish_function: cfg.finish_function
+                                                                                        }
                                                                                      );
 
     return experiment_execution;

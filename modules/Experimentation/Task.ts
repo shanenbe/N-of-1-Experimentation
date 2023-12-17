@@ -1,8 +1,7 @@
-import * as Utils from "../Utils";
-import {Treatment} from "./Treatment";
-import {code_line, code_page, text_line} from "../Books/IO_Object";
-import {Experiment_Definition} from "./Experiment_Definition";
-import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO";
+import {Treatment} from "./Treatment.js";
+import {code_line, code_page, text_line} from "../Books/IO_Object.js";
+import {Experiment_Definition} from "./Experiment_Definition.js";
+import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO.js";
 export function init(){}
 export abstract class Task {
     treatment_combination: Treatment[];

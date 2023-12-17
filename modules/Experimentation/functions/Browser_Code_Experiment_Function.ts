@@ -1,17 +1,15 @@
-import {Code_Experiment_Definition, create_code_experiment_execution} from "./../Code_Experiment_Definition";
-import {VARIABLE_TYPE} from "./../Experimentation";
-import {Code_Task} from "./../Task";
-import {key_event_string, save_file_in_html} from "../../Utils";
-import {run_tests} from "../../app";
-import {Experiment_Definition} from "./../Experiment_Definition";
-import {IO_Object} from "../../Books/IO_Object";
-import {Browser_IO, AUTOMATA_OUTPUT_OBJECT_FORMAT} from "../../Books/Automata_IO";
+import {Code_Experiment_Definition, create_code_experiment_execution} from "./../Code_Experiment_Definition.js";
+import {Code_Task} from "./../Task.js";
+import {key_event_string, save_file_in_html} from "../../Utils.js";
+import {Input_Object, IO_Object} from "../../Books/IO_Object.js";
+import {Browser_IO, AUTOMATA_OUTPUT_OBJECT_FORMAT} from "../../Books/Automata_IO.js";
 
 export function create_browser_text_experiment(cfg:
                                                     {
                                                         experiment_name     :string,
                                                         seed                :string,
                                                         introduction_pages  :string[],
+                                                        questionnaire?: Input_Object[],
                                                         pre_run_instructions:string,
                                                         finish_pages        :string[],
                                                         layout              :{
@@ -28,8 +26,9 @@ export function create_browser_text_experiment(cfg:
         = create_code_experiment_execution(
             {
                     experiment_name: cfg.experiment_name,
-                    seed: "42",
+                    seed: cfg.seed,
                     introduction_pages: cfg.introduction_pages.map((t:string)=> new IO_Object([{text:t, format:AUTOMATA_OUTPUT_OBJECT_FORMAT.TEXT}])),
+                    questionnaire: cfg.questionnaire,
                     pre_run_instructions: new IO_Object([{text:cfg.pre_run_instructions, format:AUTOMATA_OUTPUT_OBJECT_FORMAT.TEXT}]),
                     finish_pages: cfg.finish_pages.map((t:string)=> new IO_Object([{text:t, format:AUTOMATA_OUTPUT_OBJECT_FORMAT.TEXT}])),
                     layout: cfg.layout,

@@ -1,4 +1,4 @@
-import {Automata} from "./Automata";
+import {Automata} from "./Automata.js";
 
 export class Automata_Forwarder {
 

@@ -1,23 +1,37 @@
-import * as random_generator from "seedrandom";
-import {guarantee_test, guarantee_true} from "../Utils";
-import {Code_Experiment_Definition, create_code_experiment_execution} from "./Code_Experiment_Definition";
-import {Code_Task} from "./Task";
-import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder";
-import {Book} from "../Books/Book";
-import {text_as_pages, text_line, text_pages} from "../Books/IO_Object";
-import {Simplified_IO} from "../Books/Automata_IO";
+import dummy from "../../modules_hard_import/seedrandom/seedrandom.js";
+import {guarantee_test, guarantee_true} from "../Utils.js";
+import {Code_Experiment_Definition, create_code_experiment_execution} from "./Code_Experiment_Definition.js";
+import {Code_Task} from "./Task.js";
+import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder.js";
+import {Book} from "../Books/Book.js";
+import {text_as_pages, text_line, text_pages} from "../Books/IO_Object.js";
+import {Simplified_IO} from "../Books/Automata_IO.js";
 export function init(){}
 export enum VARIABLE_TYPE { STRING = 1, NUMBER }
 
+dummy();
+
+// function random_generator(a:string) {
+//     return ()=>Math.random();
+// }
+
 class _Random {
-    generator = random_generator('1234567890');
+
+    constructor() {
+        // @ts-ignore
+        Math.seedrandom('1234567890');
+    }
+
+// @ts-ignore
+    generator = Math.random;
 
     new_random_integer(upper_limit: number): number {
         return Math.trunc(upper_limit * this.generator());
     }
 
     set_seed(seed: string) {
-        this.generator = random_generator(seed);
+        // @ts-ignore
+        Math.seedrandom(seed);
     }
 }
 

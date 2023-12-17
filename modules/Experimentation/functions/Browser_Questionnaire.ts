@@ -1,7 +1,7 @@
-import {key_event_string, save_file_in_html} from "../../Utils";
-import {Input_Object, IO_Object, Text_Input, text_line, text_pages} from "../../Books/IO_Object";
-import {Browser_IO, AUTOMATA_OUTPUT_OBJECT_FORMAT, AUTOMATA_INPUT_TYPE} from "../../Books/Automata_IO";
-import {Questionnaire} from "../../Books/Questionnaire";
+import {key_event_string, save_file_in_html} from "../../Utils.js";
+import {Input_Object, IO_Object, Text_Input, text_line, text_pages} from "../../Books/IO_Object.js";
+import {Browser_IO, AUTOMATA_OUTPUT_OBJECT_FORMAT, AUTOMATA_INPUT_TYPE} from "../../Books/Automata_IO.js";
+import {Questionnaire} from "../../Books/Questionnaire.js";
 
 export function create_browser_questionnaire(
                                                 name   :string,

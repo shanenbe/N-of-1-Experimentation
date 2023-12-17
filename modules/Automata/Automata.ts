@@ -1,6 +1,6 @@
-import {Transition, Transition_Acceptor_Function} from "./Transitions";
-import {contains} from "../Utils";
-import {Automata_Configurator} from "./Automata_Configurator"
+import {Transition, Transition_Acceptor_Function} from "./Transitions.js";
+import {contains} from "../Utils.js";
+import {Automata_Configurator} from "./Automata_Configurator.js";
 export function init(){}
 
 export class Automata {

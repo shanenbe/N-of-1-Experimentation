@@ -1,7 +1,7 @@
-import {from} from "../Automata/Transitions";
-import {html_line, Input_Object, IO_Object, text_line} from "./IO_Object";
-import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "./Automata_IO";
-import {Book} from "./Book";
+import {from} from "../Automata/Transitions.js";
+import {html_line, Input_Object, IO_Object, text_line} from "./IO_Object.js";
+import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "./Automata_IO.js";
+import {Book} from "./Book.js";
 
 export class Questionnaire extends Book {
 
