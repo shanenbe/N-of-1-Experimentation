@@ -50,7 +50,7 @@ where cfg is the experiment's configuration. A configuration is a hashmap with t
 
 - task_configuration: a function that receives a task object. This function is called by the framework when the experiment is built (the same code is used for the test phase).
 
-- ...
+- ... 
 - 
 ## The task object
 
