@@ -6,7 +6,7 @@ import {Browser_IO, AUTOMATA_OUTPUT_OBJECT_FORMAT} from "../../Books/Automata_IO
 
 let THIS_IS_THE_EXECUTION_IF_WHICH_IS_REPLACED_ON_LOAD =0;
 
-export function create_browser_server_text_experiment(cfg:
+export function create_browser_text_experiment(cfg:
                                                     {
                                                         experiment_name     :string,
                                                         seed                :string,

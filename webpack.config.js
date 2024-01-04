@@ -1,11 +1,16 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-    entry: 'C:/Users/Stefan/sciebo/Development/Webstorm/Experimentation/build/experiments/TestExperiment/index.js',
+    entry: './___BUILD_LIB_FILE_TestExperiment/index.js',
     output: {
-        path:'C:/Users/Stefan/sciebo/Development/Webstorm/Experimentation/build/experiments/TestExperiment/',
-        filename: 'lib.js',
+        // path:'./',
+        path: path.resolve(__dirname, './'),
+        filename: './___BUILD_LIB_FILE_TestExperiment/lib.js',
     },
+    resolve: {
+        fallback: { "crypto": false }
+    }
     // plugins: [
     //     new HtmlWebpackPlugin({
     //         title: 'TestExperiment',

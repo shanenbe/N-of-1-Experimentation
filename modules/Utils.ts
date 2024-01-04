@@ -1,5 +1,6 @@
 import {Experiment_Definition} from "./Experimentation/Experiment_Definition.js";
 import {Task} from "./Experimentation/Task.js";
+import {do_tests} from "./Utils_Test.js";
 export function init(){}
 
 export type Function_P1<T> = (p1: T) => void;
@@ -65,6 +66,11 @@ export function array_to_sequence_of_size_(sequence:any[]):number[] {
     return ret;
 }
 
+export function csv_encoding(a_string:String) {
+    let add_escapes = a_string.split("\"").join("\"\"");
+    return "\"" + add_escapes + "\"";
+}
+
 export function save_file_in_html(filename:string, data:string[]) {
     const blob = new Blob(data, {type: 'application/ssc'});
     const elem = window.document.createElement('a');
@@ -111,3 +117,5 @@ export function upload_experiment_to_server<TaskType extends Task>(experiment:Ex
     console.log(currentUrl);
 
 }
+
+do_tests();

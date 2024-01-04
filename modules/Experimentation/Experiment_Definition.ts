@@ -3,12 +3,15 @@ import {Treatment} from "./Treatment.js";
 import {Task} from "./Task.js";
 import * as Experimentation from "./Experimentation.js";
 import {SET_SEED} from "./Experimentation.js";
+import {csv_encoding} from "../Utils.js";
+import {Information, Input_Object} from "../Books/IO_Object";
 export function init(){}
 export abstract class Experiment_Definition<TaskType extends Task> {
     experiment_name: string;
 
     variables: Variable[];
     questionnaire_responses: Treatment[] = [];
+
 
     tasks: TaskType[] = [];
     repetitions: number = 1;
@@ -78,8 +81,9 @@ export abstract class Experiment_Definition<TaskType extends Task> {
 
     generate_csv_data():string[] {
         let result:string[] = [];
+        // let questionnaire_variables = this.questionnaire_responses = cfg.questionnaire.filter((e: Input_Object)=> !(e instanceof Information)).map((e: Input_Object)=>e.variable);
         for(let variable of this.questionnaire_responses) {
-            result.push(variable.variable.name + ";");
+            result.push("\"" + variable.variable.name + "\"" + ";");
         }
         for(let variable of this.variables) {
             result.push(variable.name + ";");
@@ -87,7 +91,7 @@ export abstract class Experiment_Definition<TaskType extends Task> {
         result.push("expected_answer;given_answer;is_correct;time_in_milliseconds;\n");
         for(let task of this.tasks) {
             for(let variable of this.questionnaire_responses) {
-                result.push(variable.value + ";");
+                result.push(csv_encoding(variable.value) + ";");
             }
             for(let treatment_combination of task.treatment_combination) {
                 result.push(treatment_combination.value + ";")

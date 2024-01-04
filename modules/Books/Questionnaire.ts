@@ -89,7 +89,9 @@ export class Questionnaire extends Book {
             from(2).to(3)
                 .on("Enter")
                 .if(() =>(this.current_page == this.pages.length - 1) && this.all_required_questions_answered())
-                .do(() => {}),
+                .do(
+                    () => {}
+                ),
 
         ];
     }

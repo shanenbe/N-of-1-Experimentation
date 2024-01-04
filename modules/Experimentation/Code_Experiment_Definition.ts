@@ -5,7 +5,7 @@ import {Book} from "../Books/Book.js";
 import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder.js";
 import {Sequential_Forwarder_Forwarder} from "../Books/Sequential_Forwarder_Forwarder.js";
 import {Variable} from "./Variable.js";
-import {Input_Object, IO_Object, text_line} from "../Books/IO_Object.js";
+import {Information, Input_Object, IO_Object, text_line} from "../Books/IO_Object.js";
 import {Training_Experiment_Execution_Forwarder} from "./Training_Experiment_Execution_Forwarder.js";
 import {
     Automata_IO,
@@ -70,6 +70,10 @@ export class Code_Experiment_Definition extends Experiment_Definition<Code_Task>
 
         if (cfg.questionnaire!=undefined) {
             let questionnaire_book = new Questionnaire("questionnaire", cfg.questionnaire, cfg.output_writer);
+
+            // add questionnaire to experiment.
+            this.questionnaire_responses = cfg.questionnaire.filter((e: Input_Object)=> !(e instanceof Information)).map((e: Input_Object)=>e.variable);
+
             questionnaire_book.add_activation_function(()=>{
                 cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
                 cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
@@ -150,12 +154,6 @@ export function create_code_experiment_execution(cfg:
         variables.push(new Variable(aVar.variable, aVar.treatments))
     }
 
-    // if (cfg.questionnaire != undefined) {
-    //     for(let aVar of cfg.questionnaire) {
-    //         variables.push(new Variable(aVar.))
-    //     }
-    // }
-    //
     let experiment_definition = new Code_Experiment_Definition(
                                                                     cfg.experiment_name,
                                                                     cfg.seed,

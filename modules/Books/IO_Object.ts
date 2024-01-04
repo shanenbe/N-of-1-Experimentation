@@ -1,5 +1,7 @@
 import * as Utils from "../Utils.js";
 import {AUTOMATA_OUTPUT_OBJECT_FORMAT} from "./Automata_IO.js";
+import {Treatment} from "../Experimentation/Treatment.js";
+import {Variable} from "../Experimentation/Variable.js";
 
 export class IO_Object {
     to_write: {text:string, format:AUTOMATA_OUTPUT_OBJECT_FORMAT}[];
@@ -26,9 +28,9 @@ export class IO_Object {
             } else if (element.format==AUTOMATA_OUTPUT_OBJECT_FORMAT.TEXT || element.format==AUTOMATA_OUTPUT_OBJECT_FORMAT.CODE) {
                 let html_string = "";
                 if (element.format==AUTOMATA_OUTPUT_OBJECT_FORMAT.TEXT) {
-                    html_string = "<ordinarytext>" + Utils.string_to_html(element.text) + "</ordinarytext>";
+                    html_string = "<div class='simple_text'>" + Utils.string_to_html(element.text) + "</div>";
                 } else if (element.format==AUTOMATA_OUTPUT_OBJECT_FORMAT.CODE) {
-                    html_string = "<simplecode>" + Utils.string_to_html(element.text) + "</simplecode>";
+                    html_string = "<div class='simple_code'>" + Utils.string_to_html(element.text) + "</div>";
                 }
                 let parser:DOMParser = new DOMParser();
                 let newDocument = parser.parseFromString(html_string, "text/html");
@@ -49,19 +51,19 @@ export class IO_Object {
 
 export abstract class Input_Object extends IO_Object {
         input:HTMLInputElement;
-        variable_name: string;
-        value: string;
+        variable: Treatment;
         answer_required: boolean;
 
     constructor(variable_name: string, to_write: { text: string; format: AUTOMATA_OUTPUT_OBJECT_FORMAT }[], answer_required: boolean) {
         super(to_write);
-        this.variable_name = variable_name;
+        this.variable = new Treatment(new Variable(variable_name, [variable_name]), null);
+        // this.variable_name = variable_name;
         this.answer_required = answer_required;
     }
 
     has_valid_input() {
         this.do_action();
-        return !((this.value == null) || this.value == undefined);
+        return !((this.variable.value == null) || this.variable.value == undefined);
     }
 
     can_be_left() {
@@ -105,11 +107,15 @@ export class Text_Input extends Input_Object {
     }
 
     has_valid_input() {
-        return super.has_valid_input() && this.value!="";
+        this.do_action();
+        if (!this.answer_required) return true;
+
+        return (this.variable.value != null) && (this.variable.value != undefined) && (this.variable.value!="");
     }
 
+
     do_action() {
-        this.value = this.input.value;
+        this.variable.value = this.input.value;
     }
 }
 
@@ -136,11 +142,11 @@ export class Alternatives extends Input_Object {
     }
 
     do_action() {
-        this.value = this.input.value;
+        this.variable.value = this.input.value;
     }
 
     has_valid_input() {
-        return super.has_valid_input() && this.value!="";
+        return super.has_valid_input() && this.variable.value!="";
     }
 
 }
