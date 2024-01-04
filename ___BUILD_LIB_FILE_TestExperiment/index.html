@@ -2,28 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Software-Science.org - Indentation</title>
+    <title>Software-Science.org</title>
 
     <style>
 
-        top_menu {
+        body {
+            padding: 0;
+            margin: 0
+        }
+
+        body .topmenu {
+            position: sticky;
+            top: 0;
+            margin: 0;
+            width: 100%;
+            /*right: 0;*/
             padding: 0px;
             background: lightblue;
             text-align: center;
+            /*z-index: 100;*/
         }
 
-        top_menu h1 {
+        body .topmenu h1 {
             margin:0;
+            padding: 0px;
         }
 
-        top_menu h2 {
+        body .topmenu h2 {
             font-weight: lighter;
             text-align: center;
             margin:0;
             font-size: 80%;
+            padding: 0px;
         }
 
-        menu {
+        body .topmenu .state {
+            font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+            position:fixed;
+            top:10px;
+            right: 10px;
+        }
+
+        body .topmenu .task {
+            font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+            position:fixed;
+            top:30px;
+            right: 10px;
+        }
+
+        body .bottommenu {
             background-color: lightblue;
             position: fixed;
             padding-left:0;
@@ -32,35 +59,20 @@
             margin: 0;
             left: 0;
             right: 0;
+        }
+
+        body .stage {
+            margin:10px;
+        }
+
+        .simple_text {
 
         }
 
-
-        simplecode {
+        .simple_code {
             font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
-        }
 
-        sc {
-            background-color:#EEEEEE;
-            font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
         }
-        justtest {}
-
-        TASK {
-            font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
-            position:fixed;
-            top:30px;
-            right: 10px;
-        }
-
-        STATE {
-            font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
-            position:fixed;
-            top:10px;
-            right: 10px;
-        }
-
-        STAGE {}
 
     </style>
 
@@ -68,59 +80,15 @@
 </head>
 <body>
 
-<top_menu>
-    <h1><simplecode>software-science.org</simplecode></h1>
-    <h2><simplecode>The place where software experiments live</simplecode></h2>
-    <p><STATE id="STATE"></STATE></p>
-    <p><TASK id="TASK"></TASK></p>
-</top_menu>
-<MENU>[Impressum]</MENU>
-<STAGE id="STAGE"></STAGE><p>
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-    adsf asfd asdf sadf sadf safd sadf adsfsadfsadfasdf asdf asfdösadf
-
-</p>
-<!--<script src="./lib.js"></script>-->
-<!--<script src="./code.js"></script>-->
+<div class="topmenu">
+    <h1>software-science.org</h1>
+    <h2>The place where software experiments live</h2>
+    <div class = "state" id="STATE">blblbl</div>
+    <div class = task id="TASK">asädfjsadfasdf</div>
+</div>
+<div class="stage" ID="STAGE"></div>
+<div class="bottommenu">[Impressum]</div>
+<script src="./lib.js"></script>
+<script src="./code.js"></script>
 </body>
 </html>
