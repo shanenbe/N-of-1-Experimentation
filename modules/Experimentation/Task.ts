@@ -27,26 +27,38 @@ export abstract class Task {
         return true;
     }
 
-    abstract print_task_on(output_object: Automata_IO);
+    print_task_on(writer: Automata_IO): void {
+        writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line("Task "+this.task_number_in_execution + " / " + this.experiment_definition.tasks.length));
+    }
+
     abstract print_between_tasks(output_object: Automata_IO);
 
 }
 
 export class Code_Task extends Task {
-    code: string = "";
-    after_task_string:()=>string = ()=>this.code;
-    constructor(tc: Treatment[], experiment_definition: Experiment_Definition<any>, text: string) { super(tc, experiment_definition); this.code = text; }
+
+    write_action: (writer: Automata_IO) => void;
+    after_task_write_action:() => (writer: Automata_IO) => void;
+    constructor(tc: Treatment[], experiment_definition: Experiment_Definition<any>, text: string) {
+        super(tc, experiment_definition);
+        this.code_string(text);
+    }
 
     print_task_on(writer: Automata_IO) {
-        writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, code_line(this.code));
-        writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line("Task "+this.task_number_in_execution + " / " + this.experiment_definition.tasks.length));
-        // writer.overwrite_on_stage(code_line(this.code));
-        // writer.overwrite_at_tag("task", text_line("Task "+this.task_number_in_execution + " / " + this.experiment_definition.tasks.length));
+        super.print_task_on(writer);
+        this.write_action(writer);
+    }
+
+    code_string(code_string: string) {
+        this.write_action = (writer: Automata_IO) => writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, code_line(code_string))
+    }
+
+    after_task_string_constructor(a_string_constructor: () => string) {
+        this.after_task_write_action = () => (writer: Automata_IO) =>writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(a_string_constructor()));
     }
 
     print_between_tasks(writer: Automata_IO) {
-        writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(this.after_task_string()));
-        // writer.append_on_stage(text_line(this.after_task_string()));
+        this.after_task_write_action()(writer);
     }
 
 }

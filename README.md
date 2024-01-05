@@ -56,10 +56,14 @@ where cfg is the experiment's configuration. A configuration is a hashmap with t
 
 - questionnaire: An optional parameter, which is a list of IO_Object (see below).
 
-## The task object
-The task object passed to the function that is passed to task_configuration has the fields
+## Configuring tasks
+The probably most important part in the experiment definition is the task configuration.
+Before the experiment is executed, the lambda function will be invoked with a task-object. However, the lambda method will be invoked
+in a different order than how it appears in the experiment (since ordering is later on -- right before the experiment -- ramdonized). 
+The consequence is, that some parts of the task object (such as the field task_number_in_execution) are not yet initialized. 
+The following methods/fields can be used to 
 
 - treatment_combination: Treatment[] --
 The treatment combination a task belongs to. You can access the variable name via treatment.variable.name, its value via treatment.value.
 
-
+- 

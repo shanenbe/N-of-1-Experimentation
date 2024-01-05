@@ -64,7 +64,7 @@ function Experimentation_Tests_02() {
             repetitions: 1,
             task_configuration: (t: Code_Task) => {
                 t.code = "Task " + t.treatment_combination[0].value;
-                t.after_task_string = () => { return "Done " + t.code };
+                t.after_task_string_constructor = () => { return "Done " + t.code };
             },
             output_object: string_output,
             accepted_responses: ["1", "2", "3"],
@@ -97,7 +97,7 @@ function Experimentation_Tests_01() {
                                                                                     repetitions: 1,
                                                                                     task_configuration: (t: Code_Task) => {
                                                                                         t.code = "Task " + t.treatment_combination[0].value;
-                                                                                        t.after_task_string = () => { return "Done " + t.code };
+                                                                                        t.after_task_string_constructor = () => { return "Done " + t.code };
                                                                                     },
                                                                                     output_object: string_output,
                                                                                     accepted_responses: ["1", "2", "3"],
@@ -109,19 +109,19 @@ function Experimentation_Tests_01() {
     let t: (n:number)=>Code_Task = (n:number)=>experiment_definition.tasks[n];
 
     let output_1:string = t(0).code;
-    let between_1:string = t(0).after_task_string();
+    let between_1:string = t(0).after_task_string_constructor();
 
     let output_2:string = t(1).code;
-    let between_2:string = t(1).after_task_string();
+    let between_2:string = t(1).after_task_string_constructor();
 
     let output_3:string = t(2).code;
-    let between_3:string = t(2).after_task_string();
+    let between_3:string = t(2).after_task_string_constructor();
 
     let output_4:string = t(3).code;
-    let between_3$:string = t(3).after_task_string();
+    let between_3$:string = t(3).after_task_string_constructor();
 
     let output_5:string = t(4).code;
-    let between_5:string = t(4).after_task_string();
+    let between_5:string = t(4).after_task_string_constructor();
 
 
     guarantee_true(string_output.output_string == "blabla");

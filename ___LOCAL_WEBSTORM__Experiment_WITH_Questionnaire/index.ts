@@ -22,17 +22,17 @@ create_browser_text_experiment({
     accepted_responses      :   ["1", "2", "3"],
     task_configuration      :
         (t: Code_Task) => {
-            t.code = "Task " + t.treatment_combination[0].value +
-                "\n    line 2" +
-                "\n        line 2";
+            t.code_string("Task " + t.treatment_combination[0].value +
+                                    "\n    line 2" +
+                                    "\n        line 2");
 
 
             t.expected_answer = "2";
 
-            t.after_task_string = () => { return "Done.\n" + "The correct answer was: " + t.expected_answer +
+            t.after_task_string_constructor (() => { return "Done.\n" + "The correct answer was: " + t.expected_answer +
                 "\nYour answer was: " + t.given_answer +
                 "\nNext random is" + new_random_integer(123456789);
                 "\nPress [Return] for next task"
-            };
+            });
         },
 });

@@ -1,5 +1,9 @@
+// @ts-ignore
+
+// @ts-ignore
 document.nof1.set_seed('42');
 
+// @ts-ignore
 document.nof1.experiment_definition(
     {
         experiment_name: "N_of_1 Template",
@@ -38,11 +42,14 @@ document.nof1.experiment_definition(
         repetitions: 2,                    // Anzahl der Wiederholungen pro Treatmentcombination
         accepted_responses: ["1", "0"],
 
+        // Note that t.task_number_in_execution is not yet set!
         task_configuration: (t) => {
-            t.code = "dummy";
+            t.code_string("dummy");
             t.expected_answer = "0";
+            t.after_task_string_constructor(() => "The correct answer was: " + t.expected_answer + "\n\n" +
+                                             "The given answer was" + t.given_answer + "\n\n" +
+                                             "press [ENTER] to start with the next task");
 
-            t.after_task_string = () => "The correct answer was: " + t.expected_answer + "\n\npress [ENTER] to start with the next task";
         }
     }
 );
