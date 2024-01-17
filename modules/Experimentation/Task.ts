@@ -1,5 +1,5 @@
 import {Treatment} from "./Treatment.js";
-import {code_line, code_page, text_line} from "../Books/IO_Object.js";
+import {code_line, code_page, html_line, text_line} from "../Books/IO_Object.js";
 import {Experiment_Definition} from "./Experiment_Definition.js";
 import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO.js";
 export function init(){}
@@ -53,8 +53,23 @@ export class Code_Task extends Task {
         this.write_action = (writer: Automata_IO) => writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, code_line(code_string))
     }
 
+    html_string(html_string: string) {
+        this.write_action = (writer: Automata_IO) => writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, html_line(html_string))
+    }
+
+    html_string_with_cmd(html_string: string, cmd: ()=>void) {
+        this.write_action = (writer: Automata_IO) => {
+            writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, html_line(html_string));
+            cmd();
+        }
+    }
+
     after_task_string_constructor(a_string_constructor: () => string) {
         this.after_task_write_action = () => (writer: Automata_IO) =>writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(a_string_constructor()));
+    }
+
+    after_task_html_string_constructor(a_string_constructor: () => string) {
+        this.after_task_write_action = () => (writer: Automata_IO) =>writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, html_line(a_string_constructor()));
     }
 
     print_between_tasks(writer: Automata_IO) {

@@ -1,4 +1,13 @@
+document.nof1.set_seed("42");
 // @ts-ignore
+let v = document.nof1.new_random_integer(10);
+
+for(let i = 0; i < 10; i++) {
+    document.nof1.set_seed("42");
+    let new_v = document.nof1.new_random_integer(10);
+    if(new_v != v)
+        throw "Random does not work!";
+}
 
 // @ts-ignore
 document.nof1.set_seed('42');

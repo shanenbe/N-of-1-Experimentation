@@ -23,7 +23,6 @@ export class IO_Object {
                 let parser:DOMParser = new DOMParser();
                 let newDocument = parser.parseFromString(element.text, "text/html");
                 html_element.appendChild(newDocument.body);
-                // html_element.textContent += element.text;
 
             } else if (element.format==AUTOMATA_OUTPUT_OBJECT_FORMAT.TEXT || element.format==AUTOMATA_OUTPUT_OBJECT_FORMAT.CODE) {
                 let html_string = "";

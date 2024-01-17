@@ -43,10 +43,15 @@ export class Browser_IO extends Automata_IO {
 
     write(action: AUTOMATA_OUTPUT_WRITER_ACTION, tag: AUTOMATA_OUTPUT_WRITER_TAGS, to_show: IO_Object) {
 
-        if (action == AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE)
-            document.getElementById(AUTOMATA_OUTPUT_WRITER_TAGS[tag]).textContent = "";
+        if(tag==null) {
+            to_show.print_to_html_element(document.body);
+        } else {
+            if (action == AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE)
+                document.getElementById(AUTOMATA_OUTPUT_WRITER_TAGS[tag]).textContent = "";
 
-        to_show.print_to_html_element(document.getElementById(AUTOMATA_OUTPUT_WRITER_TAGS[tag]));
+        // } else {
+            to_show.print_to_html_element(document.getElementById(AUTOMATA_OUTPUT_WRITER_TAGS[tag]));
+        }
     }
 
 }

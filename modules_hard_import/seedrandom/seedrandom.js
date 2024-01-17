@@ -35,7 +35,7 @@ var width = 256,        // each RC4 output is 0 <= x < 256
     significance = math.pow(2, digits),
     overflow = significance * 2,
     mask = width - 1,
-    nodecrypto;         // node.js crypto module, initialized at the bottom.
+    nodecrypto          // node.js crypto module, initialized at the bottom.
 
 //
 // seedrandom()
@@ -91,7 +91,10 @@ function seedrandom(seed, options, callback) {
 
         // If called as a method of Math (Math.seedrandom()), mutate
         // Math.random because that is how seedrandom.js has worked since v1.0.
-        if (is_math_call) { math[rngname] = prng; return seed; }
+        if (is_math_call) {
+          math[rngname] = prng;
+          return seed;
+        }
 
         // Otherwise, it is a newer calling convention, so return the
         // prng directly.
@@ -164,8 +167,18 @@ function copy(f, t) {
 function flatten(obj, depth) {
   var result = [], typ = (typeof obj), prop;
   if (depth && typ == 'object') {
+    console.log(obj);
     for (prop in obj) {
-      try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
+      console.log(prop);
+      try {
+        result.push(
+            flatten(
+                obj[
+                    prop
+                ],
+                depth - 1)
+        );
+      } catch (e) {}
     }
   }
   return (result.length ? result : typ == 'string' ? obj : obj + '\0');
@@ -192,7 +205,9 @@ function mixkey(seed, key) {
 //
 function autoseed() {
   try {
-    var out;
+
+    nodecrypto = require('crypto');
+    var out = crypto.randomByte
     if (nodecrypto && (out = nodecrypto.randomBytes)) {
       // The use of 'out' to remember randomBytes makes tight minified code.
       out = out(width);
@@ -253,4 +268,9 @@ if ((typeof module) == 'object' && module.exports) {
   Math    // math: package containing random, pow, and seedrandom
 );
 
-export default function dummy(){}
+export default function dummy(){
+  //
+  // for(let i = 0; i < 10; i++)
+  // let c = crypto;
+  // console.log("do things");
+}

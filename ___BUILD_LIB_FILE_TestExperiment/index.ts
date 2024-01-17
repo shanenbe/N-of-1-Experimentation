@@ -1,12 +1,17 @@
 import {create_browser_text_experiment} from "../modules/Experimentation/functions/Browser_Server_Code_Experiment.js";
-import {new_random_integer, Random, SET_SEED} from "../modules/Experimentation/Experimentation.js";
-import {Nouns} from "../modules/Words/Nouns";
-import {Verbs} from "../modules/Words/Verbs";
+import {new_random_integer, SET_SEED} from "../modules/Experimentation/Experimentation.js";
+import {Nouns} from "../modules/Words/Nouns.js";
+import {Verbs} from "../modules/Words/Verbs.js";
 import {Code_Task} from "../modules/Experimentation/Task.js";
+import dummy from "../modules_hard_import/seedrandom/seedrandom.js";
 import {information, alternatives, free_text} from "../modules/Books/IO_Object.js";
 
-document['nof1'] = {
+// let document = {};
 
+dummy();
+
+// @ts-ignore
+document.nof1 = {
     experiment_definition: create_browser_text_experiment,
     new_random_integer: new_random_integer,
     set_seed: SET_SEED,
@@ -14,9 +19,25 @@ document['nof1'] = {
     verbs: new Verbs(),
     alternatives: alternatives,
     information: information
-
 };
 
+// @ts-ignore
+document.nof1.set_seed("42");
+// @ts-ignore
+let v = document.nof1.new_random_integer(10);
+
+for(let i = 0; i < 10000; i++) {
+    // @ts-ignore
+    // @ts-ignore
+    document.nof1.set_seed("42");
+    // @ts-ignore
+    let new_v = document.nof1.new_random_integer(10);
+    if(new_v != v)
+        throw "Random does not work!";
+
+}
+
+console.log("Ok....seed seems to work");
 
 // create_browser_text_experiment({
 //     experiment_name         :   "TestExperiment",
@@ -34,17 +55,18 @@ document['nof1'] = {
 //     accepted_responses      :   ["1", "2", "3"],
 //     task_configuration      :
 //                                 (t: Code_Task) => {
-//                                     t.code = "Task " + t.treatment_combination[0].value +
-//                                              "\n    line 2" +
-//                                              "\n        line 2";
-//
+//                                     t.code_string(
+//                                            "Task " + t.treatment_combination[0].value +
+//                                                      "\n    line 2" +
+//                                                      "\n        line 2"
+//                                     );
 //
 //                                     t.expected_answer = "2";
 //
-//                                     t.after_task_string = () => { return "Done.\n" + "The correct answer was: " + t.expected_answer +
+//                                     t.after_task_string_constructor(() => { return "Done.\n" + "The correct answer was: " + t.expected_answer +
 //                                                                          "\nYour answer was: " + t.given_answer +
 //                                                                          "\nNext random is" + new_random_integer(123456789);
 //                                                                          "\nPress [Return] for next task"
-//                                                                 };
+//                                                                 });
 //                                 },
 // });
