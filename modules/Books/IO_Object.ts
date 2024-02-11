@@ -4,9 +4,9 @@ import {Treatment} from "../Experimentation/Treatment.js";
 import {Variable} from "../Experimentation/Variable.js";
 
 export class IO_Object {
-    to_write: {text:string, format:AUTOMATA_OUTPUT_OBJECT_FORMAT}[];
+    to_write: {text:any, format:AUTOMATA_OUTPUT_OBJECT_FORMAT}[];
 
-    constructor(to_write: { text: string; format: AUTOMATA_OUTPUT_OBJECT_FORMAT }[]) {
+    constructor(to_write: { text: any; format: AUTOMATA_OUTPUT_OBJECT_FORMAT }[]) {
         this.to_write = to_write;
     }
 
@@ -40,12 +40,18 @@ export class IO_Object {
                 let parser:DOMParser = new DOMParser();
                 let newDocument = parser.parseFromString(html_string, "text/html");
                 html_element.appendChild(newDocument.body);
+            } else if (element.format==AUTOMATA_OUTPUT_OBJECT_FORMAT.HTML_NODE) {
+                html_element.appendChild(this.to_write[0].text);
             }
         }
     }
 
     // this is just the dummy method to be overridden by subclasses.
     do_action() {}
+}
+
+export class HTML_Node_Writer extends IO_Object {
+
 }
 
 export abstract class Input_Object extends IO_Object {
@@ -168,6 +174,11 @@ export function text_line(line:string): IO_Object {
 export function html_line(line:string): IO_Object {
     return new IO_Object([{text: line, format: AUTOMATA_OUTPUT_OBJECT_FORMAT.HTML}]);
 }
+
+export function html_node(node): IO_Object {
+    return new IO_Object([{text: node, format: AUTOMATA_OUTPUT_OBJECT_FORMAT.HTML_NODE}]);
+}
+
 export function text_as_pages(line:string): IO_Object[] {
     return [text_line(line)];
 }

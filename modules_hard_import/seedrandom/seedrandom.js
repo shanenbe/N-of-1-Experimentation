@@ -167,9 +167,9 @@ function copy(f, t) {
 function flatten(obj, depth) {
   var result = [], typ = (typeof obj), prop;
   if (depth && typ == 'object') {
-    console.log(obj);
+    // console.log(obj);
     for (prop in obj) {
-      console.log(prop);
+      // console.log(prop);
       try {
         result.push(
             flatten(

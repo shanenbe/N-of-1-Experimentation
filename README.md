@@ -59,7 +59,7 @@ where cfg is the experiment's configuration. A configuration is a hashmap with t
 ## Configuring tasks
 The probably most important part in the experiment definition is the task configuration.
 Before the experiment is executed, the lambda function will be invoked with a task-object. However, the lambda method will be invoked
-in a different order than how it appears in the experiment (since ordering is later on -- right before the experiment -- ramdonized). 
+in a different order than how it appears in the experiment (since ordering is later on -- right before the experiment -- randomized). 
 The consequence is, that some parts of the task object (such as the field task_number_in_execution) are not yet initialized. 
 The following methods/fields can be used to 
 

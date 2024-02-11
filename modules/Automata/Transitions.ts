@@ -112,7 +112,8 @@ export function from(from: number)
                 on_any: (keys: string[])=> { return {
                     if: (check: ()=>boolean)=> { return {
                         do:(action:(i:string)=>void) => {
-                            return Simple_Transition(from, (input: string)=> {return contains(keys,input) && check()}, to, action)
+                            return Simple_Transition(from, (input: string)=> {
+                                return contains(keys,input) && check()}, to, action)
                         }
                     }},
                     do:(action:(i:string)=>void) => {

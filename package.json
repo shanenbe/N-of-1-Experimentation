@@ -2,6 +2,7 @@
   "name": "Experimentation",
   "version": "1.0.0",
   "main": "start_html.js",
+  "type": "module",
   "scripts": {
     "build TestExperiment": "webpack --config webpack.config.js",
     "build Questionnaire": "webpack --config ./experiments/Questionnaire/webpack.config.js",
@@ -12,12 +13,14 @@
     "@types/nodemailer": "^6.4.14",
     "@types/pg": "^8.10.2",
     "browser-resolve": "^2.0.0",
+    "collect.js": "^4.36.1",
     "crypto": "^1.0.1",
     "esbuild": "0.19.3",
     "express": "^4.18.2",
     "html-webpack-plugin": "^5.5.3",
     "http": "0.0.1-security",
     "http-server": "^14.1.1",
+    "mathjax-full": "^3.2.2",
     "node-fetch": "^2.7.0",
     "nodemailer": "^6.9.7",
     "pg": "^8.11.3",
@@ -31,5 +34,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
 }

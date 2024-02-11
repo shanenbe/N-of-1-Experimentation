@@ -1,8 +1,9 @@
 import {Code_Experiment_Definition, create_code_experiment_execution} from "../Code_Experiment_Definition.js";
-import {Code_Task} from "./../Task.js";
+import {Task} from "./../Task.js";
 import {add_upload_push_button, key_event_string, save_file_in_html, upload_experiment_to_server} from "../../Utils.js";
 import {Input_Object, IO_Object} from "../../Books/IO_Object.js";
 import {Browser_IO, AUTOMATA_OUTPUT_OBJECT_FORMAT} from "../../Books/Automata_IO.js";
+import {Measurement_Type} from "../Experimentation";
 
 let THIS_IS_THE_EXECUTION_IF_WHICH_IS_REPLACED_ON_LOAD =0;
 
@@ -18,9 +19,10 @@ export function create_browser_text_experiment(cfg:
                                                             variable: string,
                                                             treatments: string[]
                                                         }[],
+                                                        measurement: Measurement_Type,
                                                         repetitions         :number,
-                                                        accepted_responses  :string[],
-                                                        task_configuration  :(task:Code_Task) =>void
+                                                        // accepted_responses  :string[],
+                                                        task_configuration  :(task:Task) =>void
                                                     }
 ) {
 
@@ -36,7 +38,7 @@ export function create_browser_text_experiment(cfg:
         task_configuration: cfg.task_configuration,
         output_object: new Browser_IO(),
 
-        accepted_responses: cfg.accepted_responses,
+        measurement: cfg.measurement,
         finish_function:  (exp: Code_Experiment_Definition) => {
                                                                     let experiment_data = exp.generate_csv_data();
                                                                     save_file_in_html(cfg.experiment_name + "_results.csv", experiment_data);

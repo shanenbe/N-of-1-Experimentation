@@ -1,7 +1,7 @@
 import {IO_Object} from "./IO_Object.js";
 
 export enum AUTOMATA_OUTPUT_OBJECT_FORMAT {
-    TEXT, CODE, HTML, CODE_IN_HTML
+    TEXT, CODE, HTML, CODE_IN_HTML,HTML_NODE
 }
 
 export enum AUTOMATA_OUTPUT_WRITER_ACTION {
@@ -9,7 +9,7 @@ export enum AUTOMATA_OUTPUT_WRITER_ACTION {
 }
 
 export enum AUTOMATA_OUTPUT_WRITER_TAGS {
-    STATE, TASK, STAGE
+    STATE, TASK, STAGE, ERROR
 }
 
 export enum AUTOMATA_INPUT_TYPE {

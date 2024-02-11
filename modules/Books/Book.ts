@@ -4,6 +4,7 @@ import {create_automata} from "../Automata/Automata_Configurator.js";
 import {Automata_With_Output_Forwarder} from "./Automata_With_Output_Forwarder.js";
 import {Input_Object, IO_Object, text_line, text_pages} from "./IO_Object.js";
 import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS, Simplified_IO} from "./Automata_IO.js";
+import {Measurement_Type} from "../Experimentation/Experimentation";
 
 export function init(){}
 
@@ -18,26 +19,27 @@ export class Book extends Automata_With_Output_Forwarder {
     constructor(
         book_name: string,
         text: IO_Object[],
-        output_writer: Automata_IO,
+        measurement: Measurement_Type,
     ) {
-        super(book_name, output_writer, null, null);
+        super(book_name, measurement, null);
 
         this.pages = text;
         this.current_page = 0;
 
         this.print_current_page = () => {
-            this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, this.pages[this.current_page]);
-
-            if(this.current_page==0 && this.pages.length>1) {
-                this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,   text_line("Use right arrow [->] to go to the next question."));
-            } else if (this.current_page==this.pages.length-1 && this.pages.length>1) {
-                this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,   text_line("Use left arrow [<-] to go to the previous question."));
-            } else if (this.current_page>0 && this.current_page<this.pages.length-1) {
-                this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,   text_line("Use right arrow [->] to go to the next question."));
-                this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,   text_line("Use left arrow [<-] to go to the previous question."));
-            }
-
-            this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line("" + (this.current_page + 1) + "/" + this.pages.length));
+            this.output_writer().print_string_on_stage("CURRENT BOOK PAGE");
+            // this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, this.pages[this.current_page]);
+// TODO:
+//             if(this.current_page==0 && this.pages.length>1) {
+//                 this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,   text_line("Use right arrow [->] to go to the next question."));
+//             } else if (this.current_page==this.pages.length-1 && this.pages.length>1) {
+//                 this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,   text_line("Use left arrow [<-] to go to the previous question."));
+//             } else if (this.current_page>0 && this.current_page<this.pages.length-1) {
+//                 this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,   text_line("Use right arrow [->] to go to the next question."));
+//                 this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,   text_line("Use left arrow [<-] to go to the previous question."));
+//             }
+//
+//             this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line("" + (this.current_page + 1) + "/" + this.pages.length));
         }
         this.create_and_init_automata();
         this.set_active();
@@ -114,31 +116,8 @@ export class Book extends Automata_With_Output_Forwarder {
 export function create_book(
     book_name: string,
     text:IO_Object[],
-    output_writer: Automata_IO
+    measurement: Measurement_Type
 ) {
-    return new Book(book_name, text, output_writer);
+    return new Book(book_name, text, measurement);
 }
 
-
-export function Book_tests() {
-
-
-    let string_output = new Simplified_IO();
-
-    let book = create_book(
-                                "My book",
-                                text_pages(
-                                        [
-                                                "Book1_Page1",
-                                                "Book1_Page2",
-                                                "Book1_Page3"
-                                              ]
-                                ),
-                                string_output,
-                          );
-
-    guarantee_true(string_output.output_string=="Book1_Page1");
-    book.input("ArrowRight");
-    guarantee_true(string_output.output_string=="Book1_Page2");
-
-}

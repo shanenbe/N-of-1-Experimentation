@@ -5,39 +5,39 @@ import {Experiment_Definition} from "./Experiment_Definition.js";
 import {IO_Object, text_line} from "../Books/IO_Object.js";
 import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO.js";
 import { Automata_With_Output_Forwarder } from "../Books/Automata_With_Output_Forwarder.js";
-import {new_random_integer} from "./Experimentation.js";
+import {Measurement_Type, new_random_integer} from "./Experimentation.js";
 
 
-export class Training_Experiment_Execution_Forwarder<TaskType extends Task> extends  Automata_With_Output_Forwarder{
+export class Training_Experiment_Execution_Forwarder extends  Automata_With_Output_Forwarder{
 
     current_task_index = 0;
-    experiment_definition: Experiment_Definition<TaskType>;
+    experiment_definition: Experiment_Definition;
 
-    current_task():TaskType {
+    current_task():Task {
         return this.experiment_definition.tasks[this.current_task_index] ;
     };
 
     start_time = new Date().getTime().valueOf();
     end_time = new Date().getTime().valueOf();
-    show_task_function: (t:TaskType)=>void;
-    accepted_experiment_responses: string[];
+    show_task_function: (t:Task)=>void;
+
 
     constructor(
                 experiment_automata_name:string,
                 pre_run_instructions: IO_Object,
-                experiment_definition: Experiment_Definition<TaskType>,
-                output_writer: Automata_IO,
-                accepted_experiment_responses: string[]
+                experiment_definition: Experiment_Definition,
+                // output_writer: Automata_IO,
+                measurement: Measurement_Type
     ) {
 
-        super(experiment_automata_name, output_writer, accepted_experiment_responses, pre_run_instructions);
-        this.accepted_experiment_responses = accepted_experiment_responses;
+        super(experiment_automata_name, measurement, pre_run_instructions);
         this.experiment_definition = experiment_definition;
 
-        this.show_task_function = (t:TaskType) => {
+        this.show_task_function = (t:Task) => {
+            t.do_print_task();
             // output_writer.cls();
-            t.print_task_on(output_writer)
-            this.start_time = new Date().getTime().valueOf();
+            // t.print_task(output_writer)
+            // this.start_time = new Date().getTime().valueOf();
         }
 
         this.create_and_init_automata();
@@ -46,32 +46,25 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
     }
 
     private clean_task_in_output() {
-        this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE,
-            AUTOMATA_OUTPUT_WRITER_TAGS.TASK,
-            text_line("")
-        );
+        this.output_writer().clear_stage();
     }
 
     private print_finish_training_session_text() {
-        this.clean_task_in_output();
-        this.output_writer.write(
-            AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE,
-            AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,
-            text_line(
-                "You finished this training session.\n\n " +
-                "Press [E] (capital E!) if you want to start the experiment.\n\n" +
-                "Press [Enter] if you want to do another training session."));
+        this.output_writer().clear_stage();
+        this.output_writer().print_string_on_stage(
+                                                    "You finished this training session.\n\n " +
+                                                    "Press [E] (capital E!) if you want to start the experiment.\n\n" +
+                                                    "Press [Enter] if you want to do another training session."
+                                                  );
     }
 
     private print_cancel_text() {
-        this.clean_task_in_output();
-        this.output_writer.write(
-            AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE,
-            AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,
-            text_line(
-                "You cancelled this training session.\n\n " +
-                "Press [E] (capital E!) if you want to start with the experiment.\n\n" +
-                "Press [Enter] if you want to start with another training session."));
+        this.output_writer().clear_stage();
+        this.output_writer().print_string_on_stage(
+            "You cancelled this training session.\n\n " +
+            "Press [E] (capital E!) if you want to start with the experiment.\n\n" +
+            "Press [Enter] if you want to start with another training session."
+        );
     }
 
     set_active() {
@@ -81,13 +74,11 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
         this.current_task_index = 0;
         this.automata.initialize();
 
-        this.output_writer.write(    AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE,
-            AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,
-            text_line(
+        this.output_writer().clear_stage();
+        this.output_writer().print_string_on_stage(
                             "The training can be cancelled by pressing [Esc].\n\n" +
-                            "The training starts when you press [Return].")
-        );
-
+                                                    "The training starts when you press [Return]."
+                                                  );
     }
 
     create_and_init_automata() {
@@ -100,8 +91,9 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
                 from(0).to(1)
                     .on("Enter")
                     .do((i:string) => {
-                        this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE,
-                            AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,this.pre_run_instructions);
+                        // TODO: Print prerun instructions
+                        // this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE,
+                        //     AUTOMATA_OUTPUT_WRITER_TAGS.STAGE,this.pre_run_instructions);
                     }),
 
 
@@ -109,7 +101,7 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
                     .on("Enter")
                     .if(() => true)
                     .do((i:string) => {
-                        this.current_task().print_task_on(this.output_writer);
+                        this.current_task().do_print_task()
                     }),
 
                 from(1).to(5)
@@ -120,11 +112,19 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
                     }),
 
                 from(2).to(3)
-                    .on_any(this.accepted_experiment_responses)
-                    .if(() => this.current_task_index < this.experiment_definition.tasks.length-1)
+                    .on_any(this.measurement.accepted_responses())
+                    .if(() =>   this.current_task().accepts_answer() &&
+                                this.current_task_index < this.experiment_definition.tasks.length-1)
                     .do((i:string) => {
                         this.current_task().given_answer = i;
-                        this.current_task().print_between_tasks(this.output_writer);
+                        this.current_task().do_print_between_tasks();
+                    }),
+
+                from(2).to(2)
+                    .on_any(this.measurement.accepted_responses())
+                    .if(() =>   !this.current_task().accepts_answer() )
+                    .do((i:string) => {
+                        this.current_task().do_print_error_message();
                     }),
 
                 from(2).to(5)
@@ -139,7 +139,7 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
                     .if(() => this.current_task_index < this.experiment_definition.tasks.length-1)
                     .do((i:string) => {
                         this.current_task_index++;
-                        this.current_task().print_task_on(this.output_writer);
+                        this.current_task().do_print_task();
                     }),
 
                 from(3).to(5)
@@ -150,11 +150,12 @@ export class Training_Experiment_Execution_Forwarder<TaskType extends Task> exte
                     }),
 
                 from(2).to(4)
-                    .on_any(this.accepted_experiment_responses)
-                    .if(() => this.current_task_index == this.experiment_definition.tasks.length-1)
+                    .on_any(this.measurement.accepted_responses())
+                    .if(() => this.current_task().accepts_answer() &&
+                              this.current_task_index == this.experiment_definition.tasks.length-1)
                     .do((i:string) => {
                         this.current_task().given_answer = i;
-                        this.current_task().print_between_tasks(this.output_writer);
+                        this.current_task().do_print_between_tasks();
                     }),
 
                 from(4).to(6).on("Enter").do(() => {

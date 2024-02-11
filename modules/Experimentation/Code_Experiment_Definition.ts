@@ -1,5 +1,5 @@
 import {Treatment} from "./Treatment.js";
-import {Code_Task} from "./Task.js";
+import {Task} from "./Task.js";
 import {Experiment_Definition} from "./Experiment_Definition.js";
 import {Book} from "../Books/Book.js";
 import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder.js";
@@ -12,71 +12,74 @@ import {
     AUTOMATA_OUTPUT_WRITER_ACTION,
     AUTOMATA_OUTPUT_WRITER_TAGS
 } from "../Books/Automata_IO.js";
-import {new_random_integer, SET_SEED} from "./Experimentation.js";
-import {create_browser_questionnaire} from "./functions/Browser_Questionnaire";
+import {Measurement_Type, new_random_integer, SET_SEED} from "./Experimentation.js";
 import {Questionnaire} from "../Books/Questionnaire.js";
 
 export function init(){}
-export class Code_Experiment_Definition extends Experiment_Definition<Code_Task> {
+// TODO: Both classes should be one
+export class Code_Experiment_Definition extends Experiment_Definition {
 
 
-    create_code_experiment_execution( cfg: {
+    create_code_all_experiment_automatas(cfg: {
                                                 seed: string,
                                                 introduction_texts:IO_Object[],
                                                 questionnaire?: Input_Object[],
                                                 pre_run_instructions: IO_Object,
                                                 finish_texts: IO_Object[],
-                                                output_writer: Automata_IO,
-                                                accepted_experiment_responses: string[],
-                                                finish_function: (experiment:Experiment_Definition<Code_Task>) => void
+                                                measurement: Measurement_Type,
+                                                finish_function: (experiment:Experiment_Definition) => void
                                             }
     ) : Sequential_Forwarder_Forwarder
     {
-        let introduction_book = new Book("introduction", cfg.introduction_texts, cfg.output_writer);
+
+        let output_writer = cfg.measurement.output_writer();
+
+        let introduction_book = new Book("introduction", cfg.introduction_texts, cfg.measurement);
 
         introduction_book.add_activation_function(()=> {
-            cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
-            cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
+            // TODO: Clean screen
+            // cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
+            // cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
         });
 
-        let ending_book = new Book("finish", cfg.finish_texts, cfg.output_writer);
+        let ending_book = new Book("finish", cfg.finish_texts, cfg.measurement);
 
 
         ending_book.add_activation_function(()=>{
-            cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
-            cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
+            // TODO: Clean screen
+            // cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
+            // cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
         });
 
 
-        let experiment_execution_forwarder = new Experiment_Execution_Forwarder<Code_Task>(
+        let experiment_execution_forwarder = new Experiment_Execution_Forwarder(
             "Experiment",
             cfg.seed,
             cfg.pre_run_instructions,
             this,
-            cfg.output_writer,
-            cfg.accepted_experiment_responses
+            cfg.measurement
         );
 
         ending_book.automata.add_finish_action(()=>cfg.finish_function(experiment_execution_forwarder.experiment_definition));
 
-        let training = new Training_Experiment_Execution_Forwarder<Code_Task>(
+        let training = new Training_Experiment_Execution_Forwarder(
                                                      "Training",
                                                                             cfg.pre_run_instructions,
                                                                             this.clone(),
-                                                                            cfg.output_writer,
-                                                                            cfg. accepted_experiment_responses
+                                                                            cfg.measurement
                                                                         );
         let forwarder = undefined;
-
+        // let output_writer = cfg.measurement.output_writer();
         if (cfg.questionnaire!=undefined) {
-            let questionnaire_book = new Questionnaire("questionnaire", cfg.questionnaire, cfg.output_writer);
+            let questionnaire_book = new Questionnaire("questionnaire", cfg.questionnaire, cfg.measurement);
 
             // add questionnaire to experiment.
             this.questionnaire_responses = cfg.questionnaire.filter((e: Input_Object)=> !(e instanceof Information)).map((e: Input_Object)=>e.variable);
 
             questionnaire_book.add_activation_function(()=>{
-                cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.TASK, text_line(""));
-                cfg.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line(""));
+                output_writer.clear_stage();
+                output_writer.set_task();
+
             });
 
             forwarder = new Sequential_Forwarder_Forwarder(
@@ -111,6 +114,7 @@ export class Code_Experiment_Definition extends Experiment_Definition<Code_Task>
                                                 "" + new_random_integer(123456789),
                                                         this.template.variables,
                                                         this.template.repetitions,
+                                                        this.measurement,
                                                         this.template.task_creator
                                                     );
 
@@ -121,9 +125,9 @@ export class Code_Experiment_Definition extends Experiment_Definition<Code_Task>
     create_Task(
         treatment_combination: Treatment[]
     )
-        : Code_Task
+        : Task
     {
-        return new Code_Task(treatment_combination, this, "");
+        return new Task(treatment_combination, this, "");
     }
 
 }
@@ -141,10 +145,10 @@ export function create_code_experiment_execution(cfg:
                                                                                 treatments: string[]
                                                                              }[],
                                                         repetitions         :number,
-                                                        task_configuration  :(task:Code_Task) =>void,
-                                                        output_object       :Automata_IO
-                                                        accepted_responses  :string[]
-                                                        finish_function     :(experiment:Experiment_Definition<Code_Task>)=>void
+                                                        task_configuration  :(task:Task) =>void,
+                                                        output_object       :Automata_IO,
+                                                        measurement         :Measurement_Type,
+                                                        finish_function     :(experiment:Experiment_Definition)=>void
                                                     }
                                                  )
 :Sequential_Forwarder_Forwarder
@@ -159,18 +163,18 @@ export function create_code_experiment_execution(cfg:
                                                                     cfg.seed,
                                                                     variables,
                                                                     cfg.repetitions,
-                                                                    cfg.task_configuration
+                                                                    cfg.measurement,
+                                                                    cfg.task_configuration,
                                                               );
 
-    let experiment_execution = experiment_definition.create_code_experiment_execution(
+    let experiment_execution = experiment_definition.create_code_all_experiment_automatas(
                                                                                     {
                                                                                             seed: cfg.seed,
                                                                                             introduction_texts: cfg.introduction_pages,
                                                                                             questionnaire: cfg.questionnaire,
                                                                                             pre_run_instructions: cfg.pre_run_instructions,
                                                                                             finish_texts: cfg.finish_pages,
-                                                                                            output_writer: cfg.output_object,
-                                                                                            accepted_experiment_responses: cfg.accepted_responses,
+                                                                                            measurement: cfg.measurement,
                                                                                             finish_function: cfg.finish_function
                                                                                         }
                                                                                      );

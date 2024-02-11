@@ -2,14 +2,15 @@ import {from} from "../Automata/Transitions.js";
 import {html_line, Input_Object, IO_Object, text_line} from "./IO_Object.js";
 import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "./Automata_IO.js";
 import {Book} from "./Book.js";
+import {Measurement_Type} from "../Experimentation/Experimentation";
 
 export class Questionnaire extends Book {
 
 
     questions: Input_Object[];
 
-    constructor(book_name: string, questions: Input_Object[], output_writer: Automata_IO) {
-        super(book_name, questions, output_writer);
+    constructor(book_name: string, questions: Input_Object[], measurement: Measurement_Type) {
+        super(book_name, questions, measurement);
         this.questions = questions;
     }
 
@@ -68,14 +69,16 @@ export class Questionnaire extends Book {
                 .on_any(["Enter", "ArrowRight"])
                 .if(() =>(this.current_page == this.pages.length - 1))
                 .do(() => {
-                    this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line("Thank you for answering all questions. You can go on by pressing [Return]."))
+                    this.output_writer().clear_stage();
+                    this.output_writer().print_string_on_stage("Thank you for answering all questions. You can go on by pressing [Enter].");
                 }),
 
             from(1).to(2)
                 .on_any(["Enter", "ArrowRight"])
                 .if(() =>(this.current_page == this.pages.length - 1))
                 .do(() => {
-                    this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line("Thank you for answering all questions. You can go on by pressing [Return]."))
+                    this.output_writer().clear_stage();
+                    this.output_writer().print_string_on_stage("Thank you for answering all questions. You can go on by pressing [Enter].");
                 }),
 
 
@@ -83,7 +86,8 @@ export class Questionnaire extends Book {
                 .on_any(["ArrowRight", "Enter"])
                 .if(() =>(this.current_page == this.pages.length - 1) && this.all_required_questions_answered())
                 .do(() => {
-                    this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line("Thank you for answering all questions. You can go on by pressing [Enter]."))
+                    this.output_writer().clear_stage();
+                    this.output_writer().print_string_on_stage("Thank you for answering all questions. You can go on by pressing [Enter].");
                 }),
 
             from(2).to(3)
@@ -106,7 +110,7 @@ export class Questionnaire extends Book {
     }
 
     ask_to_answer_question() {
-        this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, html_line("<p style=\"color:red\">Please, answer the question.</p>"))
+        this.output_writer().print_error_on_stage("Please, answer the question.");
     }
 
 }

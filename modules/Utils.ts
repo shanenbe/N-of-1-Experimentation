@@ -14,6 +14,14 @@ export function contains(collection:any[], element:any): boolean {
     return collection.indexOf(element) != -1;
 }
 
+export function cartesian_product(arr1, arr2, f) {
+    for(let i = 0; i < arr1.length; i++) {
+        for(let j = 0; i < arr2.length; i++) {
+            f(arr1[i], arr2[j]);
+        }
+    }
+}
+
 
 export function guarantee_test(f:()=>boolean) {
     let result: boolean = f();
@@ -103,7 +111,7 @@ export function add_upload_push_button(url:string, button_test:string, data:stri
     document.body.appendChild(elem);
 }
 
-export function upload_experiment_to_server<TaskType extends Task>(experiment:Experiment_Definition<TaskType>) {
+export function upload_experiment_to_server<TaskType extends Task>(experiment:Experiment_Definition) {
     let csv = experiment.generate_csv_data();
     let currentUrl = window.location.href;
 

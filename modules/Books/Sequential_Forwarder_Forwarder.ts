@@ -57,33 +57,3 @@ export class Sequential_Forwarder_Forwarder extends Automata_Forwarder{
         this.current_forwarder().set_active();
     }
 }
-
-export function Books_tests() {
-
-    let string_output = new Simplified_IO();
-
-    let book_01 = create_book("MyBook1", text_pages(["Book1_Page1", "Book1_Page2", "Book1_Page3"]), string_output);
-    let book_02 = create_book("MyBook2", text_pages(["Book2_Page1", "Book2_Page2", "Book2_Page3"]), string_output);
-    let books = new Sequential_Forwarder_Forwarder([book_01, book_02]);
-
-    books.automata.add_finish_action(()=>string_output.write(AUTOMATA_OUTPUT_WRITER_ACTION.APPEND, AUTOMATA_OUTPUT_WRITER_TAGS.STAGE, text_line("DONE")));
-
-    guarantee_test(()=>this.string_output=="Book1_Page1");
-    books.input("ArrowRight");
-    guarantee_test(()=>this.string_output=="Book1_Page2");
-    books.input("ArrowLeft");
-    guarantee_test(()=>this.string_output=="Book1_Page1");
-    books.input("ArrowRight");
-    books.input("ArrowRight");
-    guarantee_test(()=>this.string_output=="Book1_Page3");
-    books.input("Enter");
-    guarantee_test(()=>this.string_output=="Book2_Page1");
-    books.input("ArrowLeft");
-    guarantee_test(()=>this.string_output=="Book2_Page1");
-    books.input("ArrowRight");
-    books.input("ArrowRight");
-    guarantee_test(()=>this.string_output=="Book2_Page3");
-    books.input("Enter");
-    guarantee_test(()=>this.string_output=="DONE");
-}
-

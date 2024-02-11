@@ -2,30 +2,33 @@ import {Variable} from "./Variable.js";
 import {Treatment} from "./Treatment.js";
 import {Task} from "./Task.js";
 import * as Experimentation from "./Experimentation.js";
-import {SET_SEED} from "./Experimentation.js";
+import {Measurement_Type, SET_SEED} from "./Experimentation.js";
 import {csv_encoding} from "../Utils.js";
 import {Information, Input_Object} from "../Books/IO_Object";
 export function init(){}
-export abstract class Experiment_Definition<TaskType extends Task> {
+export abstract class Experiment_Definition {
     experiment_name: string;
 
     variables: Variable[];
     questionnaire_responses: Treatment[] = [];
+    measurement:Measurement_Type;
 
 
-    tasks: TaskType[] = [];
+    tasks: Task[] = [];
     repetitions: number = 1;
-    task_creator: (Task: TaskType) => void
+    task_creator: (Task: Task) => void;
     constructor(experiment_name: string,
                 seed: string,
                 variables: Variable[],
                 repetitions: number,
-                task_creator: (task: TaskType) => void)
+                measurement:Measurement_Type,
+                task_creator: (task: Task) => void)
     {
         this.template = {experiment_name: experiment_name, variables: variables, repetitions: repetitions, task_creator: task_creator};
         this.experiment_name = experiment_name;
         this.variables = variables;
         this.repetitions = repetitions;
+        this.measurement = measurement;
         this.task_creator = task_creator;
         this.init_experiment(seed);
     }
@@ -33,7 +36,7 @@ export abstract class Experiment_Definition<TaskType extends Task> {
     template: {  experiment_name: string,
                  variables:  Variable[],
                  repetitions: number,
-                 task_creator: (task: TaskType) => void };
+                 task_creator: (task: Task) => void };
 
 
 
@@ -47,14 +50,14 @@ export abstract class Experiment_Definition<TaskType extends Task> {
         this.tasks = [];
         this.all_treatment_combinations_do(
             (treatment_combination: Treatment[]) => {
-                let task: TaskType = this.create_Task(treatment_combination);
+                let task: Task = this.create_Task(treatment_combination);
                 this.task_creator(task);
                 this.tasks.push(task);
             }
         );
     }
 
-    abstract create_Task(treatment_combination: Treatment[]): TaskType;
+    abstract create_Task(treatment_combination: Treatment[]): Task;
 
     all_treatment_combinations_do(
         f: (treatments: Treatment[]) => void
@@ -65,8 +68,8 @@ export abstract class Experiment_Definition<TaskType extends Task> {
     }
 
     private do_random_task_ordering() {
-        let new_tasks: TaskType[] = [];
-        let old_tasks: TaskType[] = this.tasks.slice();
+        let new_tasks: Task[] = [];
+        let old_tasks: Task[] = this.tasks.slice();
         let counter = 1;
         while(new_tasks.length < this.tasks.length) {
             let element_no = Experimentation.new_random_integer(old_tasks.length);
