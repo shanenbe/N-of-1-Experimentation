@@ -8,4 +8,4 @@ document.n_of_1['text_input'] = text_input;
 document.n_of_1['Time_to_finish'] = Time_to_finish;
 // @ts-ignore
 document.n_of_1['BROWSER_EXPERIMENT'] = BROWSER_EXPERIMENT;
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=API_PROVIDER_FOR_WEBPACK_LIB_GENERATION.js.map
