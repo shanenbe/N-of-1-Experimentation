@@ -4,7 +4,6 @@ import {Task} from "./Task.js";
 import * as Experimentation from "./Experimentation.js";
 import {Measurement_Type, SET_SEED} from "./Experimentation.js";
 import {csv_encoding} from "../Utils.js";
-import {Information, Input_Object} from "../Books/IO_Object";
 export function init(){}
 export abstract class Experiment_Definition {
     experiment_name: string;
@@ -102,7 +101,7 @@ export abstract class Experiment_Definition {
             result.push(task.expected_answer + ";");
             result.push(task.given_answer + ";");
             result.push("" + (task.given_answer==task.expected_answer) + ";");
-            result.push(task.required_miliseconds + ";");
+            result.push(task.required_milliseconds + ";");
             result.push("\n");
         }
         return result;

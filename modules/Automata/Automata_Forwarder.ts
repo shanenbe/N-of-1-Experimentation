@@ -17,14 +17,17 @@ export class Automata_Forwarder {
     set_active_function: ()=>void = ()=>{};
 
     set_active() {
-        this.set_active_function();
+        this.show_intro();
+        // this.set_active_function();
     }
 
     add_activation_function(to_add: ()=>void) {
-        let old_activation_function = this.set_active_function;
-        this.set_active_function = () => {
-            old_activation_function();
-            to_add();
-        }
+        // let old_activation_function = this.set_active_function;
+        // this.set_active_function = () => {
+        //     old_activation_function();
+        //     to_add();
+        // }
     }
+
+    show_intro() {}
 }

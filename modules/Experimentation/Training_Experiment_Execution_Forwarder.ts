@@ -2,10 +2,8 @@ import {Task} from "./Task.js";
 import {create_automata} from "../Automata/Automata_Configurator.js";
 import {from} from "../Automata/Transitions.js";
 import {Experiment_Definition} from "./Experiment_Definition.js";
-import {IO_Object, text_line} from "../Books/IO_Object.js";
-import {Automata_IO, AUTOMATA_OUTPUT_WRITER_ACTION, AUTOMATA_OUTPUT_WRITER_TAGS} from "../Books/Automata_IO.js";
 import { Automata_With_Output_Forwarder } from "../Books/Automata_With_Output_Forwarder.js";
-import {Measurement_Type, new_random_integer} from "./Experimentation.js";
+import {Measurement_Type, new_random_integer, Output_Command} from "./Experimentation.js";
 
 
 export class Training_Experiment_Execution_Forwarder extends  Automata_With_Output_Forwarder{
@@ -24,7 +22,7 @@ export class Training_Experiment_Execution_Forwarder extends  Automata_With_Outp
 
     constructor(
                 experiment_automata_name:string,
-                pre_run_instructions: IO_Object,
+                pre_run_instructions: Output_Command,
                 experiment_definition: Experiment_Definition,
                 // output_writer: Automata_IO,
                 measurement: Measurement_Type
@@ -40,7 +38,7 @@ export class Training_Experiment_Execution_Forwarder extends  Automata_With_Outp
             // this.start_time = new Date().getTime().valueOf();
         }
 
-        this.create_and_init_automata();
+        this.create_automata();
         this.set_active();
 
     }
@@ -81,7 +79,7 @@ export class Training_Experiment_Execution_Forwarder extends  Automata_With_Outp
                                                   );
     }
 
-    create_and_init_automata() {
+    create_automata() {
 
         this.automata = create_automata(
             [0, 1, 2, 3, 4, 5, 6],
@@ -113,18 +111,18 @@ export class Training_Experiment_Execution_Forwarder extends  Automata_With_Outp
 
                 from(2).to(3)
                     .on_any(this.measurement.accepted_responses())
-                    .if(() =>   this.current_task().accepts_answer() &&
+                    .if((i:string) =>   this.current_task().accepts_answer(i) &&
                                 this.current_task_index < this.experiment_definition.tasks.length-1)
                     .do((i:string) => {
                         this.current_task().given_answer = i;
-                        this.current_task().do_print_between_tasks();
+                        this.current_task().do_print_after_task_information();
                     }),
 
                 from(2).to(2)
                     .on_any(this.measurement.accepted_responses())
-                    .if(() =>   !this.current_task().accepts_answer() )
+                    .if((i:string) =>   !this.current_task().accepts_answer(i) )
                     .do((i:string) => {
-                        this.current_task().do_print_error_message();
+                        this.current_task().do_print_error_message(i);
                     }),
 
                 from(2).to(5)
@@ -151,11 +149,11 @@ export class Training_Experiment_Execution_Forwarder extends  Automata_With_Outp
 
                 from(2).to(4)
                     .on_any(this.measurement.accepted_responses())
-                    .if(() => this.current_task().accepts_answer() &&
+                    .if((i:string) => this.current_task().accepts_answer(i) &&
                               this.current_task_index == this.experiment_definition.tasks.length-1)
                     .do((i:string) => {
                         this.current_task().given_answer = i;
-                        this.current_task().do_print_between_tasks();
+                        this.current_task().do_print_after_task_information();
                     }),
 
                 from(4).to(6).on("Enter").do(() => {

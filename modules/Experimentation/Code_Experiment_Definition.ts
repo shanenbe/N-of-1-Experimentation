@@ -5,15 +5,14 @@ import {Book} from "../Books/Book.js";
 import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder.js";
 import {Sequential_Forwarder_Forwarder} from "../Books/Sequential_Forwarder_Forwarder.js";
 import {Variable} from "./Variable.js";
-import {Information, Input_Object, IO_Object, text_line} from "../Books/IO_Object.js";
+// import {Information, Input_Object, Output_Command, text_line} from "../Books/Output_Command.js";
 import {Training_Experiment_Execution_Forwarder} from "./Training_Experiment_Execution_Forwarder.js";
-import {
-    Automata_IO,
-    AUTOMATA_OUTPUT_WRITER_ACTION,
-    AUTOMATA_OUTPUT_WRITER_TAGS
-} from "../Books/Automata_IO.js";
-import {Measurement_Type, new_random_integer, SET_SEED} from "./Experimentation.js";
-import {Questionnaire} from "../Books/Questionnaire.js";
+// import {
+//     Automata_IO,
+//     AUTOMATA_OUTPUT_WRITER_ACTION,
+//     AUTOMATA_OUTPUT_WRITER_TAGS
+// } from "../Books/Automata_IO.js";
+import {Measurement_Type, new_random_integer, Output_Command, SET_SEED} from "./Experimentation.js";
 
 export function init(){}
 // TODO: Both classes should be one
@@ -22,10 +21,10 @@ export class Code_Experiment_Definition extends Experiment_Definition {
 
     create_code_all_experiment_automatas(cfg: {
                                                 seed: string,
-                                                introduction_texts:IO_Object[],
-                                                questionnaire?: Input_Object[],
-                                                pre_run_instructions: IO_Object,
-                                                finish_texts: IO_Object[],
+                                                introduction_texts:Output_Command[],
+                                                // questionnaire?: Input_Object[],
+                                                pre_run_instructions: Output_Command,
+                                                finish_texts: Output_Command[],
                                                 measurement: Measurement_Type,
                                                 finish_function: (experiment:Experiment_Definition) => void
                                             }
@@ -60,48 +59,48 @@ export class Code_Experiment_Definition extends Experiment_Definition {
             cfg.measurement
         );
 
-        ending_book.automata.add_finish_action(()=>cfg.finish_function(experiment_execution_forwarder.experiment_definition));
+        experiment_execution_forwarder.automata.add_finish_action(()=>cfg.finish_function(experiment_execution_forwarder.experiment_definition));
 
-        let training = new Training_Experiment_Execution_Forwarder(
-                                                     "Training",
-                                                                            cfg.pre_run_instructions,
-                                                                            this.clone(),
-                                                                            cfg.measurement
-                                                                        );
+        // let training = new Training_Experiment_Execution_Forwarder(
+        //                                              "Training",
+        //                                                                     cfg.pre_run_instructions,
+        //                                                                     this.clone(),
+        //                                                                     cfg.measurement
+        //                                                                 );
         let forwarder = undefined;
         // let output_writer = cfg.measurement.output_writer();
-        if (cfg.questionnaire!=undefined) {
-            let questionnaire_book = new Questionnaire("questionnaire", cfg.questionnaire, cfg.measurement);
-
-            // add questionnaire to experiment.
-            this.questionnaire_responses = cfg.questionnaire.filter((e: Input_Object)=> !(e instanceof Information)).map((e: Input_Object)=>e.variable);
-
-            questionnaire_book.add_activation_function(()=>{
-                output_writer.clear_stage();
-                output_writer.set_task();
-
-            });
-
+        // if (cfg.questionnaire!=undefined) {
+        //     let questionnaire_book = new Questionnaire("questionnaire", cfg.questionnaire, cfg.measurement);
+        //
+        //     // add questionnaire to experiment.
+        //     this.questionnaire_responses = cfg.questionnaire.filter((e: Input_Object)=> !(e instanceof Information)).map((e: Input_Object)=>e.variable);
+        //
+        //     questionnaire_book.add_activation_function(()=>{
+        //         output_writer.clear_stage();
+        //         output_writer.set_task();
+        //
+        //     });
+        //
+        //     forwarder = new Sequential_Forwarder_Forwarder(
+        //         [
+        //             introduction_book,
+        //             training,
+        //             questionnaire_book,
+        //             experiment_execution_forwarder,
+        //             ending_book
+        //         ]
+        //     );
+        // } else {
             forwarder = new Sequential_Forwarder_Forwarder(
                 [
-                    introduction_book,
-                    training,
-                    questionnaire_book,
+                    // introduction_book,
+                    // training,
                     experiment_execution_forwarder,
-                    ending_book
-                ]
-            );
-        } else {
-            forwarder = new Sequential_Forwarder_Forwarder(
-                [
-                    introduction_book,
-                    training,
-                    experiment_execution_forwarder,
-                    ending_book
+                    // ending_book
                 ]
             );
 
-        }
+        // }
         return forwarder;
 
     }
@@ -136,17 +135,16 @@ export function create_code_experiment_execution(cfg:
                                                     {
                                                         experiment_name     :string,
                                                         seed                :string,
-                                                        introduction_pages  :IO_Object[],
-                                                        questionnaire?: Input_Object[],
-                                                        pre_run_instructions: IO_Object,
-                                                        finish_pages        :IO_Object[],
+                                                        introduction_pages  :Output_Command[],
+                                                        // questionnaire?: Input_Object[],
+                                                        pre_run_instructions: Output_Command,
+                                                        finish_pages        :Output_Command[],
                                                         layout              :{
                                                                                 variable: string,
                                                                                 treatments: string[]
                                                                              }[],
                                                         repetitions         :number,
                                                         task_configuration  :(task:Task) =>void,
-                                                        output_object       :Automata_IO,
                                                         measurement         :Measurement_Type,
                                                         finish_function     :(experiment:Experiment_Definition)=>void
                                                     }
@@ -171,7 +169,7 @@ export function create_code_experiment_execution(cfg:
                                                                                     {
                                                                                             seed: cfg.seed,
                                                                                             introduction_texts: cfg.introduction_pages,
-                                                                                            questionnaire: cfg.questionnaire,
+                                                                                            // questionnaire: cfg.questionnaire,
                                                                                             pre_run_instructions: cfg.pre_run_instructions,
                                                                                             finish_texts: cfg.finish_pages,
                                                                                             measurement: cfg.measurement,

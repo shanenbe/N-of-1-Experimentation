@@ -1,7 +1,7 @@
 import {create_browser_text_experiment} from "../modules/Experimentation/functions/Browser_Server_Code_Experiment.js";
 import {new_random_integer, Random, SET_SEED} from "../modules/Experimentation/Experimentation.js";
 import {Code_Task} from "../modules/Experimentation/Task.js";
-import {information, alternatives, free_text} from "../modules/Books/IO_Object.js";
+import {information, alternatives, free_text} from "../modules/Books/Output_Command.js";
 
 // @ts-ignore
 

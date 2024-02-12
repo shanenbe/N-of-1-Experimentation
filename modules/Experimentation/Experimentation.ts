@@ -2,6 +2,7 @@ import dummy from "../../modules_hard_import/seedrandom/seedrandom.js";
 import {Task} from "./Task.js";
 import {Browser_Output_Writer} from "./Browser_Output_Writer.js";
 
+export type Output_Command=()=>void;
 export function init(){}
 export enum VARIABLE_TYPE { STRING = 1, NUMBER }
 
@@ -9,8 +10,8 @@ export function Reaction_Time(input_type: Experiment_Input_Type): Measurement_Ty
     return new Reaction_Time_Measurement(input_type);
 };
 
-export function Time_to_finish(input: (writer: Experiment_Output_Writer)=> Experiment_Input_Type): (writer: Experiment_Input_Type) => Measurement_Type {
-    return (writer: Experiment_Input_Type) => new Time_To_Finish_Measurement(writer);
+export function Time_to_finish(input: (writer: Experiment_Output_Writer)=> Experiment_Input_Type): (writer: Experiment_Output_Writer) => Measurement_Type {
+    return (writer: Experiment_Output_Writer) => new Time_To_Finish_Measurement(input(writer));
 }
 
 export function keys(key_list: string[], output_writer: Experiment_Output_Writer):Experiment_Input_Type {
@@ -24,15 +25,38 @@ export function text_input(output_writer: Experiment_Output_Writer):Experiment_I
 export abstract class Experiment_Output_Writer {
     abstract print_experiment_name();
 
-    abstract print_state(forwarder_name: string);
+    abstract print_string_to_state(forwarder_name: string);
 
     abstract clear_stage();
 
-    abstract print_string_on_stage(youCanGoOnByPressingEnter: string);
+    abstract print_string_on_stage(s: string);
+    abstract print_html_on_stage(s: string);
+    abstract print_html_on_error(s: string);
 
-    abstract print_error_on_stage(pleaseAnswerTheQuestion: string);
+    abstract print_error_string_on_stage(error_string: string);
 
-    abstract set_task();
+    string_page(s: string): Output_Command {
+        return ()=>this.print_string_on_stage(s);
+    }
+
+    stage_string_pages(pages: string[]):Output_Command[] {
+        let ret = [];
+        for(let a of pages) {
+            ret.push(this.string_page(a));
+        }
+        return ret;
+    }
+
+    abstract ask_for_input();
+
+    abstract print_string_to_page_number(s:string);
+
+    get_given_answer(input:string):string {
+        return input;
+    }
+
+    print_on_input_response(given_answer: string) {}
+    set_focus_on_input(){}
 }
 
 
@@ -54,25 +78,39 @@ export abstract class Measurement_Type {
 
     start_measurement(task: Task) {
         this.start_time = new Date().getTime().valueOf();
+        task.print_task();
     }
 
     stop_measurement(input: string, task: Task) {
         let end_time = new Date().getTime().valueOf();
-        task.given_answer= this.given_answer(input);
-        task.required_miliseconds = end_time - this.start_time;
+        task.given_answer =  this.input_type.get_given_answer(input);
+        task.required_milliseconds = end_time - this.start_time;
+        task.do_print_after_task_information();
     }
 
     incorrect_response(i: string, task: Task) {
-        
+        task.do_print_error_message(this.input_type.get_given_answer(i));
     }
 
     output_writer():Experiment_Output_Writer {
         return this.input_type.output_writer;
     }
+
+    get_given_answer(input:string) {
+        return this.input_type.get_given_answer(input);
+    }
 }
 
-export class Reaction_Time_Measurement extends Measurement_Type {}
-export class Time_To_Finish_Measurement extends Measurement_Type {}
+export class Reaction_Time_Measurement extends Measurement_Type {
+    constructor(input_type: Experiment_Input_Type) {
+        super(input_type);
+    }
+}
+export class Time_To_Finish_Measurement extends Measurement_Type {
+    constructor(input_type: Experiment_Input_Type) {
+        super(input_type);
+    }
+}
 
 export abstract class Experiment_Input_Type {
 
@@ -82,6 +120,15 @@ export abstract class Experiment_Input_Type {
 
     constructor(output_writer: Experiment_Output_Writer) {
         this.output_writer = output_writer;
+    }
+
+    print_input_request() {
+        this.output_writer.ask_for_input();
+    }
+
+    get_given_answer(input_string: string) {
+        let value = this.output_writer.get_given_answer(input_string);
+        return value;
     }
 }
 
@@ -105,6 +152,11 @@ export class Key_Pressing extends Experiment_Input_Type {
 }
 
 export class Free_Text extends Experiment_Input_Type {
+
+    constructor(output_writer: Experiment_Output_Writer) {
+        super(output_writer);
+    }
+
     accepted_responses() {
         return ["Enter"];
     }

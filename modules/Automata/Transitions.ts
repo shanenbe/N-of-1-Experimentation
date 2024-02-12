@@ -100,9 +100,9 @@ export function from(from: number)
     return {
             to: (to: number) => { return {
                 on: (key: string)=> { return {
-                        if: (check: ()=>boolean)=> { return {
+                        if: (check: (i:string)=>boolean)=> { return {
                             do:(action:(i:string)=>void) => {
-                                return Simple_Transition(from, (input: string)=> {return input==key && check()}, to, action)
+                                return Simple_Transition(from, (input: string)=> {return input==key && check(input)}, to, action)
                             }
                          }},
                         do:(action:(i:string)=>void) => {
@@ -110,10 +110,10 @@ export function from(from: number)
                         }
                     }},
                 on_any: (keys: string[])=> { return {
-                    if: (check: ()=>boolean)=> { return {
+                    if: (check: (i:string)=>boolean)=> { return {
                         do:(action:(i:string)=>void) => {
                             return Simple_Transition(from, (input: string)=> {
-                                return contains(keys,input) && check()}, to, action)
+                                return contains(keys,input) && check(input)}, to, action)
                         }
                     }},
                     do:(action:(i:string)=>void) => {
