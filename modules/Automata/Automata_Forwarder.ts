@@ -4,22 +4,18 @@ export class Automata_Forwarder {
 
     automata: Automata;
 
+    forwarder_name: string;
+
     constructor(forwarder_name: string) {
         this.forwarder_name = forwarder_name;
     }
 
-    forwarder_name: string;
 
     input(s: string) {
         this.automata.input(s);
     }
 
     set_active_function: ()=>void = ()=>{};
-
-    set_active() {
-        this.show_intro();
-        // this.set_active_function();
-    }
 
     add_activation_function(to_add: ()=>void) {
         // let old_activation_function = this.set_active_function;
@@ -29,5 +25,5 @@ export class Automata_Forwarder {
         // }
     }
 
-    show_intro() {}
+    set_active() {}
 }

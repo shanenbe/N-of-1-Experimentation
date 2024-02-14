@@ -35,7 +35,7 @@ export function guarantee_true(trueFalse: boolean) {
         throw "Something is wrong here";
 }
 
-export function string_to_html(s: string) {
+export function convert_string_to_html_string(s: string) {
     return s
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')

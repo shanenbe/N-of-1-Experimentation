@@ -1,4 +1,4 @@
-document.n_of_1.SET_SEED("42");
+Nof1.SET_SEED("42");
 
 let experiment_configuration_function = (writer) => { return {
 
@@ -20,7 +20,7 @@ let experiment_configuration_function = (writer) => { return {
     ],
     repetitions: 2,
 
-    measurement: document.n_of_1.Time_to_finish(document.n_of_1.text_input),
+    measurement: Nof1.Time_to_finish(Nof1.text_input),
 
     task_configuration:    (t) => {
         t.do_print_task = () => {
@@ -48,4 +48,4 @@ let experiment_configuration_function = (writer) => { return {
     }
 }};
 
-document.n_of_1.BROWSER_EXPERIMENT(experiment_configuration_function);
+Nof1.BROWSER_EXPERIMENT(experiment_configuration_function);

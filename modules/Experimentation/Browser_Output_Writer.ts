@@ -2,10 +2,10 @@ import {Experiment_Output_Writer, Measurement_Type, Output_Command} from "./Expe
 import {Task} from "./Task.js";
 import {key_event_string, save_file_in_html} from "../Utils.js";
 import {Code_Experiment_Definition, create_code_experiment_execution} from "./Code_Experiment_Definition.js";
-import {Startup} from "mathjax-full/js/components/startup";
 
 export class Browser_Output_Writer extends Experiment_Output_Writer {
-    print_experiment_name() {
+    print_experiment_name(s:string) {
+        this.get_html_element_by_id("STATE").innerHTML  = s;
     }
 
     clear_stage() {
@@ -88,20 +88,24 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
 
 
 export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) => {
-                                                                                    experiment_name     :string,
-                                                                                    seed                :string,
-                                                                                    introduction_pages  :Output_Command[],
-                                                                                    // questionnaire?      : Input_Object[],
-                                                                                    pre_run_instructions:Output_Command,
-                                                                                    finish_pages        :Output_Command[],
-                                                                                    layout              :{
-                                                                                                            variable: string,
-                                                                                                                treatments: string[]
-                                                                                                         }[],
-                                                                                    repetitions         :number,
-                                                                                    measurement         : (Experiment_Output_Writer)=>Measurement_Type,
-                                                                                    task_configuration  :(task:Task) =>void,
-                                                                              }
+                        experiment_name                 :string,
+                        seed                            :string,
+                        introduction_pages              :Output_Command[],
+                        // questionnaire?      : Input_Object[],
+                        pre_run_experiment_instructions :Output_Command,
+                        post_run_experiment_instructions:Output_Command,
+                        pre_run_training_instructions :Output_Command,
+                        post_run_training_instructions: Output_Command,
+
+                        finish_pages                    :Output_Command[],
+                        layout                          :{
+                                                            variable: string,
+                                                            treatments: string[]
+                                                        }[],
+                        repetitions         :number,
+                        measurement         : (Experiment_Output_Writer)=>Measurement_Type,
+                        task_configuration  :(task:Task) =>void,
+                  }
 ) {
 
     let browser_output = new Browser_Output_Writer();
@@ -114,7 +118,10 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
             seed: cfg.seed,
             introduction_pages: cfg.introduction_pages,
             // questionnaire: cfg.questionnaire,
-            pre_run_instructions: cfg.pre_run_instructions,
+            pre_run_training_output: cfg.pre_run_training_instructions,
+            post_run_training_output: cfg.post_run_training_instructions,
+            pre_run_experiment_output: cfg.pre_run_experiment_instructions,
+            post_run_experiment_output: cfg.post_run_experiment_instructions,
             finish_pages: cfg.finish_pages,
             layout: cfg.layout,
             repetitions: cfg.repetitions,

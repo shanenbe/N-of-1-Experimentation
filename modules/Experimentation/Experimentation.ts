@@ -1,6 +1,6 @@
 import dummy from "../../modules_hard_import/seedrandom/seedrandom.js";
 import {Task} from "./Task.js";
-import {Browser_Output_Writer} from "./Browser_Output_Writer.js";
+import {convert_string_to_html_string} from "../Utils.js";
 
 export type Output_Command=()=>void;
 export function init(){}
@@ -23,7 +23,7 @@ export function text_input(output_writer: Experiment_Output_Writer):Experiment_I
 }
 
 export abstract class Experiment_Output_Writer {
-    abstract print_experiment_name();
+    abstract print_experiment_name(s: string);
 
     abstract print_string_to_state(forwarder_name: string);
 
@@ -35,6 +35,9 @@ export abstract class Experiment_Output_Writer {
 
     abstract print_error_string_on_stage(error_string: string);
 
+    convert_string_to_html_string(s:string) {
+        return convert_string_to_html_string(s);
+    }
     string_page(s: string): Output_Command {
         return ()=>this.print_string_on_stage(s);
     }
@@ -207,4 +210,5 @@ export function random_array_element(array:any[]) {
     return array[new_random_integer(array.length)];
 }
 
+// This invocation just makes sure that RANDOM is loaded
 dummy();

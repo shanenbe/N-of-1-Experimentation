@@ -1,8 +1,7 @@
 import {from} from "../Automata/Transitions.js";
-import {guarantee_true} from "../Utils.js";
-import {create_automata} from "../Automata/Automata_Configurator.js";
+import {Automata_Configurator, create_automata} from "../Automata/Automata_Configurator.js";
 import {Automata_With_Output_Forwarder} from "./Automata_With_Output_Forwarder.js";
-import {Measurement_Type, Output_Command} from "../Experimentation/Experimentation";
+import {Measurement_Type, Output_Command} from "../Experimentation/Experimentation.js";
 
 export function init(){}
 
@@ -19,7 +18,7 @@ export class Book extends Automata_With_Output_Forwarder {
         text: Output_Command[],
         measurement: Measurement_Type,
     ) {
-        super(book_name, measurement, null);
+        super(book_name, measurement, text[0], text[text.length-1]);
 
         this.pages = text;
         this.current_page_number = 0;
@@ -109,6 +108,16 @@ export class Book extends Automata_With_Output_Forwarder {
     set_active() {
         super.set_active();
         this.print_current_page();
+    }
+
+    automata_configurator(): Automata_Configurator {
+        return undefined;
+    }
+
+    show_intro() {
+    }
+
+    show_outro() {
     }
 }
 

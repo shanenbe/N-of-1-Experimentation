@@ -17,7 +17,6 @@ export abstract class Experiment_Definition {
     repetitions: number = 1;
     task_creator: (Task: Task) => void;
     constructor(experiment_name: string,
-                seed: string,
                 variables: Variable[],
                 repetitions: number,
                 measurement:Measurement_Type,
@@ -29,7 +28,6 @@ export abstract class Experiment_Definition {
         this.repetitions = repetitions;
         this.measurement = measurement;
         this.task_creator = task_creator;
-        this.init_experiment(seed);
     }
 
     template: {  experiment_name: string,
@@ -39,8 +37,7 @@ export abstract class Experiment_Definition {
 
 
 
-    init_experiment(seed:string) {
-        SET_SEED(seed);
+    init_experiment() {
         this.createTasks();
         this.do_random_task_ordering();
     }

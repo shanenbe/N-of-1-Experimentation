@@ -96,6 +96,49 @@
 
     </style>
 
+    <script>
+        document.n_of_1 = {
+            clear_screen:  () => {
+                let element_id = [
+                    "STAGE",
+                    "STAGE_MSG",
+                    "STAGE_ERROR"
+                ];
+                for(let e of element_id) {
+                    let parent = document.getElementById(e);
+                    while (parent.firstChild) {
+                        parent.removeChild(parent.firstChild);
+                    }
+                }
+            },
+
+            print_string_on_stage:  (v) => {
+                document.getElementById("STAGE").innerHTML  = v;
+            },
+
+            print_error_text:  (t) => {
+                n_of_1_page.add_node_to_error(document.createTextNode(t));
+            },
+
+            add_node_to_stage:  (n) => {
+                document.getElementById("STAGE").appendChild(n);
+            },
+
+            add_node_to_error:  (n) => {
+                document.getElementById("STAGE_ERROR").appendChild(n);
+            },
+
+            create_input: () => {
+                let i = document.createElement("input");
+                i.setAttribute('type', 'text');
+                i.id = "INPUT";
+                document.n_of_1.add_node_to_stage(i);
+                i.focus();
+            }
+        };
+
+        let Nof1 = {};
+    </script>
 
 </head>
 <body>
@@ -113,47 +156,7 @@
 </div>
 <div class="bottommenu">[Impressum]</div>
 
-<script>
-    document.n_of_1 = {
-        clear_screen:  () => {
-            let element_id = [
-                "STAGE",
-                "STAGE_MSG",
-                "STAGE_ERROR"
-            ];
-            for(let e of element_id) {
-                let parent = document.getElementById(e);
-                while (parent.firstChild) {
-                    parent.removeChild(parent.firstChild);
-                }
-            }
-        },
 
-        print_string_on_stage:  (v) => {
-                document.getElementById("STAGE").innerHTML  = v;
-        },
-
-        print_error_text:  (t) => {
-            n_of_1_page.add_node_to_error(document.createTextNode(t));
-        },
-
-        add_node_to_stage:  (n) => {
-            document.getElementById("STAGE").appendChild(n);
-        },
-
-        add_node_to_error:  (n) => {
-            document.getElementById("STAGE_ERROR").appendChild(n);
-        },
-
-        create_input: () => {
-            let i = document.createElement("input");
-            i.setAttribute('type', 'text');
-            i.id = "INPUT";
-            document.n_of_1.add_node_to_stage(i);
-            i.focus();
-        }
-    };
-</script>
 
 <script src="./lib.js"></script>
 <script src="./code.js"></script>
