@@ -7,7 +7,6 @@ let SHOW_TASK = 1;
 let TASK_FINISHED = 2;
 let CURRENT_TRAINING_SESSION_FINISHED = 3;
 let EVERYTHING_DONE = 6;
-// let CURRENT_TRAINING_SESSION_FINISHED = 4;
 let ESCAPED = 5;
 
 
@@ -89,11 +88,5 @@ export class Training_Execution_Forwarder extends  Experiment_Execution_Forwarde
         experiment_transitions.splice(experiment_transitions.length-1);
         this_transitions.forEach((e)=>experiment_transitions.push(e));
         return experiment_transitions;
-    }
-
-    input(s: string) {
-        if(s=="X")
-            console.log("dummy");
-        this.automata.input(s);
     }
 }

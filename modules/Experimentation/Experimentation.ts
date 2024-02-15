@@ -35,7 +35,7 @@ export abstract class Experiment_Output_Writer {
 
     abstract print_error_string_on_stage(error_string: string);
 
-    convert_string_to_html_string(s:string) {
+    convert_string_to_html_string(s:string):string {
         return convert_string_to_html_string(s);
     }
     string_page(s: string): Output_Command {

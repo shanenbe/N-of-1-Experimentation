@@ -1,12 +1,12 @@
 import {Treatment} from "./Treatment.js";
 import {Task} from "./Task.js";
 import {Experiment_Definition} from "./Experiment_Definition.js";
-import {Book} from "../Books/Book.js";
-import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder.js";
+import {Book} from "../Automat_Forwarders/Book.js";
+import {Experiment_Execution_Forwarder} from "../Automat_Forwarders/Experiment_Execution_Forwarder.js";
 import {Sequential_Forwarder_Forwarder} from "../Books/Sequential_Forwarder_Forwarder.js";
 import {Variable} from "./Variable.js";
 // import {Information, Input_Object, Output_Command, text_line} from "../Books/Output_Command.js";
-import {Training_Execution_Forwarder} from "./Training_Execution_Forwarder.js";
+import {Training_Execution_Forwarder} from "../Automat_Forwarders/Training_Execution_Forwarder.js";
 // import {
 //     Automata_IO,
 //     AUTOMATA_OUTPUT_WRITER_ACTION,
@@ -36,7 +36,7 @@ export class Code_Experiment_Definition extends Experiment_Definition {
 
         let output_writer = cfg.measurement.output_writer();
 
-        // let introduction_book = new Book("introduction", cfg.introduction_texts, cfg.measurement);
+        let introduction_book = new Book("introduction", cfg.introduction_texts, cfg.measurement);
 
         // introduction_book.add_activation_function(()=> {
             // TODO: Clean screen
@@ -105,7 +105,7 @@ export class Code_Experiment_Definition extends Experiment_Definition {
         // } else {
             forwarder = new Sequential_Forwarder_Forwarder(
                 [
-                    // introduction_book,
+                    introduction_book,
                     training,
                     experiment_execution_forwarder,
                     // ending_book

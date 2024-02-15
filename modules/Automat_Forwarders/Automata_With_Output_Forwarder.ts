@@ -36,9 +36,13 @@ export abstract class Automata_With_Output_Forwarder extends Automata_Forwarder 
         //     () => this.output_writer().print_string_to_state(this.forwarder_name)
         //     // ()=> this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STATE, text_line(this.forwarder_name))
         // );
-        this.automata = new Automata(this.automata_configurator());
+        this.automata = this.create_automata();//new Automata(this.automata_configurator());
         this.automata.initialize();
 
+    }
+
+    create_automata() {
+        return new Automata(this.automata_configurator());
     }
 
     abstract automata_configurator(): Automata_Configurator;

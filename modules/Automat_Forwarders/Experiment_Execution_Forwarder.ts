@@ -1,9 +1,9 @@
-import {Task} from "./Task.js";
+import {Task} from "../Experimentation/Task.js";
 import {Automata_Configurator} from "../Automata/Automata_Configurator.js";
 import {from} from "../Automata/Transitions.js";
-import {Experiment_Definition} from "./Experiment_Definition.js";
-import { Automata_With_Output_Forwarder } from "../Books/Automata_With_Output_Forwarder.js";
-import {Measurement_Type, Output_Command} from "./Experimentation.js";
+import {Experiment_Definition} from "../Experimentation/Experiment_Definition.js";
+import { Automata_With_Output_Forwarder } from "./Automata_With_Output_Forwarder.js";
+import {Measurement_Type, Output_Command} from "../Experimentation/Experimentation.js";
 
 let SHOW_INTRO=0;
 let SHOW_TASK=1;

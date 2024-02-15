@@ -1,13 +1,12 @@
 import {
-    Experiment_Output_Writer, new_random_integer, Random, Reaction_Time,
+    Experiment_Output_Writer, new_random_integer, Reaction_Time,
     SET_SEED,
     text_input,
     Time_to_finish
-} from "../modules/Experimentation/Experimentation.js";
-import {Task} from "../modules/Experimentation/Task.js";
-import {BROWSER_EXPERIMENT} from "../modules/Experimentation/Browser_Output_Writer.js";
-import {Nouns} from "../modules/Words/Nouns";
-import {Verbs} from "../modules/Words/Verbs";
+} from "../../modules/Experimentation/Experimentation.js";
+import {BROWSER_EXPERIMENT} from "../../modules/Experimentation/Browser_Output_Writer.js";
+import {Nouns} from "../../modules/Words/Nouns.js";
+import {Verbs} from "../../modules/Words/Verbs.js";
 
 function set_nof1(map) {
     map['SET_SEED'] = SET_SEED;

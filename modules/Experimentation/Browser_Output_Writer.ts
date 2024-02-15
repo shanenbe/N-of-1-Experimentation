@@ -94,17 +94,17 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
                         // questionnaire?      : Input_Object[],
                         pre_run_experiment_instructions :Output_Command,
                         post_run_experiment_instructions:Output_Command,
-                        pre_run_training_instructions :Output_Command,
-                        post_run_training_instructions: Output_Command,
+                        pre_run_training_instructions   :Output_Command,
+                        post_run_training_instructions  : Output_Command,
 
                         finish_pages                    :Output_Command[],
                         layout                          :{
                                                             variable: string,
                                                             treatments: string[]
                                                         }[],
-                        repetitions         :number,
-                        measurement         : (Experiment_Output_Writer)=>Measurement_Type,
-                        task_configuration  :(task:Task) =>void,
+                        repetitions                     :number,
+                        measurement                     : (Experiment_Output_Writer)=>Measurement_Type,
+                        task_configuration              :(task:Task) =>void,
                   }
 ) {
 
