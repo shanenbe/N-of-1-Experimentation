@@ -1,6 +1,8 @@
 import {Automata_Configurator, create_automata} from "../Automata/Automata_Configurator.js";
 import {from} from "../Automata/Transitions.js";
-import {Experiment_Execution_Forwarder} from "./Experiment_Execution_Forwarder.js";
+import {Experimentation_Forwarder} from "./Experimentation_Forwarder.js";
+import {Measurement_Type, Output_Command} from "../Experimentation/Experimentation";
+import {Experiment_Definition} from "../Experimentation/Experiment_Definition";
 
 let SHOW_INTRO = 0;
 let SHOW_TASK = 1;
@@ -10,17 +12,40 @@ let EVERYTHING_DONE = 6;
 let ESCAPED = 5;
 
 
-export class Training_Execution_Forwarder extends  Experiment_Execution_Forwarder{
+export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
+
+
+    constructor(pre_run_instructions: Output_Command,
+                experiment_definition: Experiment_Definition,
+                measurement: Measurement_Type)
+    {
+        super(
+            "Training",
+            ()=> {
+                pre_run_instructions();
+                measurement.output_writer().print_html_on_stage("<hr>" +
+                    "Press [Enter] to start training.");
+            },
+            ()=> {
+                measurement.output_writer().print_html_on_stage(
+                    "You finished the training phase.<hr>" +
+                    "Please, press [Enter] to run again a training session.<br>" +
+                    "Please, press [E] (capital E!) to enter the experiment phase."
+                )},
+            experiment_definition,
+            measurement);
+    }
 
     print_cancel_text() {
         this.output_writer().clear_stage();
         this.output_writer().print_string_to_page_number("Cancelled");
-        let converted_string = this.output_writer().convert_string_to_html_string(
-            "You cancelled this training session.\n\n" +
-            "Press [E] (capital E!) if you want to start with the experiment.\n\n" +
-            "Press [Enter] if you want to start with another training session."
-        );
-        this.output_writer().print_string_on_stage(converted_string);
+
+        let navigation_string =
+            "You cancelled this training session.<hr>" +
+            "Press [Enter] if you want to start another training session.<br>" +
+            "Press [E] (capital E!) if you want to start with the experiment."
+
+        this.output_writer().print_html_on_stage(navigation_string);
     }
 
     automata_configurator() {
@@ -61,21 +86,17 @@ export class Training_Execution_Forwarder extends  Experiment_Execution_Forwarde
 
                     }),
 
-                from(ESCAPED).to(SHOW_TASK)
+                from(ESCAPED).to(SHOW_INTRO)
                     .on("Enter").do(() => {
-
-                    this.experiment_definition.init_experiment();
-                    this.set_experiment_index(0);
-                    this.measurement.start_measurement(this.current_task());
-
+                        this.experiment_definition.init_experiment();
+                        this.show_intro();
                 }),
 
 
-                from(CURRENT_TRAINING_SESSION_FINISHED).to(SHOW_TASK)
+                from(CURRENT_TRAINING_SESSION_FINISHED).to(SHOW_INTRO)
                     .on("Enter").do(() => {
                         this.experiment_definition.init_experiment();
-                        this.set_experiment_index(0);
-                        this.measurement.start_measurement(this.current_task());
+                        this.show_intro();
                     }
                 ),
 
@@ -89,4 +110,5 @@ export class Training_Execution_Forwarder extends  Experiment_Execution_Forwarde
         this_transitions.forEach((e)=>experiment_transitions.push(e));
         return experiment_transitions;
     }
+
 }

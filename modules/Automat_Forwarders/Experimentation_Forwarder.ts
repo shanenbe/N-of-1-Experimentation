@@ -11,7 +11,7 @@ let TASK_FINISHED=2;
 let SHOW_OUTRO = 3;
 let EVERYTHING_DONE = 4;
 
-export class Experiment_Execution_Forwarder extends  Automata_With_Output_Forwarder{
+export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
     current_task_index = -1;
     experiment_definition: Experiment_Definition;

@@ -38,14 +38,14 @@ export abstract class Experiment_Output_Writer {
     convert_string_to_html_string(s:string):string {
         return convert_string_to_html_string(s);
     }
-    string_page(s: string): Output_Command {
+    string_page_command(s: string): Output_Command {
         return ()=>this.print_string_on_stage(s);
     }
 
-    stage_string_pages(pages: string[]):Output_Command[] {
+    stage_string_pages_commands(pages: string[]):Output_Command[] {
         let ret = [];
         for(let a of pages) {
-            ret.push(this.string_page(a));
+            ret.push(this.string_page_command(a));
         }
         return ret;
     }
@@ -60,6 +60,8 @@ export abstract class Experiment_Output_Writer {
 
     print_on_input_response(given_answer: string) {}
     set_focus_on_input(){}
+
+    abstract clear_state();
 }
 
 

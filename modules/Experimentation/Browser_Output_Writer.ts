@@ -22,6 +22,19 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
         }
     }
 
+    clear_state() {
+        let element_id = [
+            "STATE",
+            "TASK"
+        ];
+        for(let e of element_id) {
+            let parent = document.getElementById(e);
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+            }
+        }
+    }
+
     print_error_string_on_stage(s: string) {
         let e = this.get_html_element_by_id("STAGE_ERROR");
         e.innerHTML  = s;
@@ -93,10 +106,7 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
                         introduction_pages              :Output_Command[],
                         // questionnaire?      : Input_Object[],
                         pre_run_experiment_instructions :Output_Command,
-                        post_run_experiment_instructions:Output_Command,
                         pre_run_training_instructions   :Output_Command,
-                        post_run_training_instructions  : Output_Command,
-
                         finish_pages                    :Output_Command[],
                         layout                          :{
                                                             variable: string,
@@ -119,9 +129,7 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
             introduction_pages: cfg.introduction_pages,
             // questionnaire: cfg.questionnaire,
             pre_run_training_output: cfg.pre_run_training_instructions,
-            post_run_training_output: cfg.post_run_training_instructions,
             pre_run_experiment_output: cfg.pre_run_experiment_instructions,
-            post_run_experiment_output: cfg.post_run_experiment_instructions,
             finish_pages: cfg.finish_pages,
             layout: cfg.layout,
             repetitions: cfg.repetitions,

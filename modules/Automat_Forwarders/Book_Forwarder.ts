@@ -9,15 +9,15 @@ let SHOW_PAGE=0;
 let FINISHED_BOOK=1;
 let EVERYTHING_DONE = 1;
 
-export class Book extends Automata_With_Output_Forwarder {
+export class Book_Forwarder extends Automata_With_Output_Forwarder {
 
     pages:Output_Command[];
     current_page_number:number = -1;
 
     set_page_index(index:number) {
         this.current_page_number = index;
-        this.output_writer().print_string_to_state(this.forwarder_name);
         this.empty_screen_and_show_instructions(this.pages[this.current_page_number]);
+        this.output_writer().print_string_to_state(this.forwarder_name);
         this.output_writer().print_string_to_page_number("Page " + (this.current_page_number + 1) + " / " + this.pages.length);
 
         let navigation_string ="<hr>";
@@ -155,6 +155,6 @@ export function create_book(
     text:Output_Command[],
     measurement: Measurement_Type
 ) {
-    return new Book(book_name, text, measurement);
+    return new Book_Forwarder(book_name, text, measurement);
 }
 
