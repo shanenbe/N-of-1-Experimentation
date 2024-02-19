@@ -21,7 +21,7 @@ export function create_catalan_graphs(number_of_nodes) {
     _catalan_graphs(number_of_nodes, nodes);
     return nodes;
 }
-function _catalan_graphs(number_of_nodes, results) {
+function _catalan_graphs(number_of_nodes, results): Catalan_Node[] {
     if (number_of_nodes==0) {
         results.push(null);
         return;

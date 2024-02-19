@@ -4,12 +4,13 @@ import {Task} from "./Task.js";
 import * as Experimentation from "./Experimentation.js";
 import {Measurement_Type, SET_SEED} from "./Experimentation.js";
 import {csv_encoding} from "../Utils.js";
+import {Questionnaire_Forwarder} from "../Automata_Forwarders/Questionnaire_Forwarder";
 export function init(){}
 export abstract class Experiment_Definition {
     experiment_name: string;
 
     variables: Variable[];
-    questionnaire_responses: Treatment[] = [];
+    questionnaires:Questionnaire_Forwarder[] = [];
     measurement:Measurement_Type;
 
 
@@ -81,24 +82,32 @@ export abstract class Experiment_Definition {
     generate_csv_data():string[] {
         let result:string[] = [];
         // let questionnaire_variables = this.questionnaire_responses = cfg.questionnaire.filter((e: Input_Object)=> !(e instanceof Information)).map((e: Input_Object)=>e.variable);
-        for(let variable of this.questionnaire_responses) {
-            result.push("\"" + variable.variable.name + "\"" + ";");
+        for(let questionnaire of this.questionnaires) {
+            for(let question of questionnaire.questions) {
+                result.push("\"" + question.variable_name + "\"" + ";");
+            }
         }
         for(let variable of this.variables) {
             result.push(variable.name + ";");
         }
-        result.push("expected_answer;given_answer;is_correct;time_in_milliseconds;\n");
+        result.push("number_of_given_answers;expected_answer;given_answer;is_correct;time_in_milliseconds;\n");
         for(let task of this.tasks) {
-            for(let variable of this.questionnaire_responses) {
-                result.push(csv_encoding(variable.value) + ";");
+            for(let questionnaire of this.questionnaires) {
+                for (let question of questionnaire.questions) {
+                    result.push("\"" + question.answer + "\"" + ";");
+                }
             }
             for(let treatment_combination of task.treatment_combination) {
                 result.push(treatment_combination.value + ";")
             }
+            result.push((task.invalid_answers.length + 1) + ";");
             result.push(task.expected_answer + ";");
             result.push(task.given_answer + ";");
             result.push("" + (task.given_answer==task.expected_answer) + ";");
             result.push(task.required_milliseconds + ";");
+
+            task.invalid_answers.forEach( (a) => result.push(a[0] + ";" + a[1]));
+
             result.push("\n");
         }
         return result;

@@ -105,7 +105,7 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
                         experiment_name                 :string,
                         seed                            :string,
                         introduction_pages              :Output_Command[],
-                        post_questionnaire?                  :Question[],
+                        post_questionnaire?             :Question[],
                         pre_run_experiment_instructions :Output_Command,
                         pre_run_training_instructions   :Output_Command,
                         finish_pages                    :Output_Command[],

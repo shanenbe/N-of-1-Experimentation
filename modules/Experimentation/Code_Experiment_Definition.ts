@@ -64,10 +64,17 @@ export class Code_Experiment_Definition extends Experiment_Definition {
         }
 
         let forwarders = [];
-        if (introduction_book != null) forwarders.push(introduction_book);
+        if (introduction_book != null) {
+            forwarders.push(introduction_book);
+        }
+
         forwarders.push(training);
         forwarders.push(experiment_execution_forwarder);
-        if (post_questionnaire != null) forwarders.push(post_questionnaire);
+
+        if (post_questionnaire != null) {
+            forwarders.push(post_questionnaire);
+            experiment_execution_forwarder.experiment_definition.questionnaires.push(post_questionnaire);
+        }
         forwarders.push(ending_book);
 
         let forwarder = new Sequential_Forwarder_Forwarder(forwarders);

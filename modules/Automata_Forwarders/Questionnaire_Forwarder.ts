@@ -20,6 +20,12 @@ export abstract class Question {
     }
 
     abstract input_html();
+
+    store_answer() {
+        let element = document.getElementById(this.variable_name);
+        // @ts-ignore
+        this.answer = element.value;
+    }
 }
 export class Alternatives extends Question {
     alternatives:string[];
@@ -37,6 +43,12 @@ export class Alternatives extends Question {
         );
         html_string += ("</select>");
         return html_string;
+    }
+
+    store_answer() {
+        let element = document.getElementById(this.variable_name);
+        // @ts-ignore
+        this.answer = this.alternatives[element.value];
     }
 
 }
@@ -90,6 +102,7 @@ export class Questionnaire_Forwarder extends Automata_With_Output_Forwarder {
                     true
                 )
                 .do((i:string) => {
+                    this.add_result_to_question();
                     console.log("dummy");
                 }),
         ];
@@ -118,4 +131,9 @@ export class Questionnaire_Forwarder extends Automata_With_Output_Forwarder {
         return html_string;
     }
 
+    add_result_to_question() {
+        for(let question of this.questions) {
+            question.store_answer();
+        }
+    }
 }
