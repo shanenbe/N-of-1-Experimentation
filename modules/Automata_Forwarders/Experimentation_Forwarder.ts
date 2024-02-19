@@ -13,9 +13,8 @@ let EVERYTHING_DONE = 4;
 
 export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
-    current_task_index = -1;
+    current_page_index = -1;
     experiment_definition: Experiment_Definition;
-
 
     show_intro() {
         this.empty_screen_and_show_instructions(this.pre_run_instructions);
@@ -37,7 +36,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
     }
 
     current_task():Task {
-        return this.experiment_definition.tasks[this.current_task_index] ;
+        return this.experiment_definition.tasks[this.current_page_index] ;
     };
 
     constructor(
@@ -79,7 +78,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
             from(SHOW_TASK).to(TASK_FINISHED)
                 .on_any(this.measurement.accepted_responses())
                 .if((i:string) =>   this.current_task().accepts_answer(i) &&
-                    this.current_task_index < this.experiment_definition.tasks.length-1)
+                    this.current_page_index < this.experiment_definition.tasks.length-1)
                 .do((i:string) => {
                     this.measurement.stop_measurement(i, this.current_task());
                 }),
@@ -95,7 +94,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
             // Between Tasks to next task
             from(TASK_FINISHED).to(SHOW_TASK)
                 .on("Enter")
-                .if((i:string) => this.current_task_index < this.experiment_definition.tasks.length-1)
+                .if((i:string) => this.current_page_index < this.experiment_definition.tasks.length-1)
                 .do((i:string) => {
                     this.inc_current_experiment();
                     this.measurement.start_measurement(this.current_task());
@@ -104,7 +103,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
             from(SHOW_TASK).to(SHOW_OUTRO) // State=3: Experiment done - just the message afterwards shown
                 .on_any(this.measurement.accepted_responses())
                 .if((i:string) => this.current_task().accepts_answer(i) &&
-                    this.current_task_index == this.experiment_definition.tasks.length-1)
+                    this.current_page_index == this.experiment_definition.tasks.length-1)
                 .do((i:string) => {
                     this.measurement.stop_measurement(i, this.current_task());
                     this.show_outro();
@@ -118,11 +117,11 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
 
     set_experiment_index(index:number) {
-        this.current_task_index = index;
-        this.output_writer().print_string_to_page_number("Task " + (this.current_task_index + 1) + " / " + this.experiment_definition.tasks.length);
+        this.current_page_index = index;
+        this.output_writer().print_string_to_page_number("Task " + (this.current_page_index + 1) + " / " + this.experiment_definition.tasks.length);
     }
     inc_current_experiment() {
-        this.set_experiment_index(++this.current_task_index);
+        this.set_experiment_index(++this.current_page_index);
     }
 
     init_experiment() {

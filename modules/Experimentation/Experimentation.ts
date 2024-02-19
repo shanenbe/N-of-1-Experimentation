@@ -62,6 +62,10 @@ export abstract class Experiment_Output_Writer {
     set_focus_on_input(){}
 
     abstract clear_state();
+    clear_all() {
+        this.clear_state();
+        this.clear_stage();
+    }
 }
 
 
@@ -94,6 +98,8 @@ export abstract class Measurement_Type {
     }
 
     incorrect_response(i: string, task: Task) {
+        let end_time = new Date().getTime().valueOf();
+        task.invalid_answers.push([i, end_time - this.start_time])
         task.do_print_error_message(this.input_type.get_given_answer(i));
     }
 

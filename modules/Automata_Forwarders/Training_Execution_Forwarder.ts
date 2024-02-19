@@ -76,7 +76,7 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
 
                 from(TASK_FINISHED).to(ESCAPED)
                     .on("Escape")
-                    .if(() => this.current_task_index < this.experiment_definition.tasks.length-1)
+                    .if(() => this.current_page_index < this.experiment_definition.tasks.length-1)
                     .do((i:string) => {
                         this.print_cancel_text();
                     }),

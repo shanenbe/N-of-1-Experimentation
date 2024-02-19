@@ -10,6 +10,7 @@ export class Task {
     required_milliseconds = null;
     task_number_in_execution: number = -1;
     experiment_definition: Experiment_Definition;
+    invalid_answers = [];
 
     constructor(tc: Treatment[], experiment_definition: Experiment_Definition, text: string) {
         this.treatment_combination = tc;

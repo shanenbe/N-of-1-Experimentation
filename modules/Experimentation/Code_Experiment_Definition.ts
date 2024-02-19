@@ -1,29 +1,30 @@
 import {Treatment} from "./Treatment.js";
 import {Task} from "./Task.js";
 import {Experiment_Definition} from "./Experiment_Definition.js";
-import {Book_Forwarder} from "../Automat_Forwarders/Book_Forwarder.js";
-import {Experimentation_Forwarder} from "../Automat_Forwarders/Experimentation_Forwarder.js";
+import {Book_Forwarder} from "../Automata_Forwarders/Book_Forwarder.js";
+import {Experimentation_Forwarder} from "../Automata_Forwarders/Experimentation_Forwarder.js";
 import {Sequential_Forwarder_Forwarder} from "../Books/Sequential_Forwarder_Forwarder.js";
 import {Variable} from "./Variable.js";
 // import {Information, Input_Object, Output_Command, text_line} from "../Books/Output_Command.js";
-import {Training_Execution_Forwarder} from "../Automat_Forwarders/Training_Execution_Forwarder.js";
+import {Training_Execution_Forwarder} from "../Automata_Forwarders/Training_Execution_Forwarder.js";
 // import {
 //     Automata_IO,
 //     AUTOMATA_OUTPUT_WRITER_ACTION,
 //     AUTOMATA_OUTPUT_WRITER_TAGS
 // } from "../Books/Automata_IO.js";
 import {Measurement_Type, new_random_integer, Output_Command, SET_SEED} from "./Experimentation.js";
-import {Experiment_Forwarder} from "../Automat_Forwarders/Experiment_Forwarder.js";
+import {Experiment_Forwarder} from "../Automata_Forwarders/Experiment_Forwarder.js";
+import {Question, Questionnaire_Forwarder} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
 
 export function init(){}
-// TODO: Both classes should be one
+// TODO: Both classes should be one!!!
 export class Code_Experiment_Definition extends Experiment_Definition {
 
 
     create_code_all_experiment_automatas(cfg: {
                                                 seed: string,
                                                 introduction_texts:Output_Command[],
-                                                // questionnaire?: Input_Object[],
+                                                post_questionnaire?: Question[],
                                                 pre_run_training_output: Output_Command,
                                                 pre_run_experiment_output: Output_Command,
                                                 finish_texts: Output_Command[],
@@ -57,40 +58,19 @@ export class Code_Experiment_Definition extends Experiment_Definition {
 
         training.experiment_definition.init_experiment();
 
-        let forwarder = undefined;
-        // let output_writer = cfg.measurement.output_writer();
-        // if (cfg.questionnaire!=undefined) {
-        //     let questionnaire_book = new Questionnaire("questionnaire", cfg.questionnaire, cfg.measurement);
-        //
-        //     // add questionnaire to experiment.
-        //     this.questionnaire_responses = cfg.questionnaire.filter((e: Input_Object)=> !(e instanceof Information)).map((e: Input_Object)=>e.variable);
-        //
-        //     questionnaire_book.add_activation_function(()=>{
-        //         output_writer.clear_stage();
-        //         output_writer.set_task();
-        //
-        //     });
-        //
-        //     forwarder = new Sequential_Forwarder_Forwarder(
-        //         [
-        //             introduction_book,
-        //             training,
-        //             questionnaire_book,
-        //             experiment_execution_forwarder,
-        //             ending_book
-        //         ]
-        //     );
-        // } else {
-            forwarder = new Sequential_Forwarder_Forwarder(
-                [
-                    introduction_book,
-                    training,
-                    experiment_execution_forwarder,
-                    ending_book
-                ]
-            );
+        let post_questionnaire = null;
+        if (cfg.post_questionnaire!=undefined) {
+            post_questionnaire = new Questionnaire_Forwarder(cfg.post_questionnaire, cfg.measurement);
+        }
 
-        // }
+        let forwarders = [];
+        if (introduction_book != null) forwarders.push(introduction_book);
+        forwarders.push(training);
+        forwarders.push(experiment_execution_forwarder);
+        if (post_questionnaire != null) forwarders.push(post_questionnaire);
+        forwarders.push(ending_book);
+
+        let forwarder = new Sequential_Forwarder_Forwarder(forwarders);
         return forwarder;
 
     }
@@ -125,7 +105,7 @@ export function create_code_experiment_execution(cfg:
                                                         experiment_name     :string,
                                                         seed                :string,
                                                         introduction_pages  :Output_Command[],
-                                                        // questionnaire?: Input_Object[],
+                                                        post_questionnaire?: Question[],
                                                         pre_run_training_output: Output_Command,
                                                         pre_run_experiment_output: Output_Command,
                                                         finish_pages        :Output_Command[],
@@ -158,7 +138,7 @@ export function create_code_experiment_execution(cfg:
                                                                                     {
                                                                                             seed: cfg.seed,
                                                                                             introduction_texts: cfg.introduction_pages,
-                                                                                            // questionnaire: cfg.questionnaire,
+                                                                                            post_questionnaire: cfg.post_questionnaire,
                                                                                             pre_run_training_output: cfg.pre_run_training_output,
                                                                                             // post_run_training_output: cfg.post_run_training_output,
                                                                                             pre_run_experiment_output: cfg.pre_run_experiment_output,

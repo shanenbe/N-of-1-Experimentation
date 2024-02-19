@@ -15,11 +15,6 @@ export abstract class Automata_With_Output_Forwarder extends Automata_Forwarder 
     post_run_instructions: Output_Command;
     measurement: Measurement_Type;
 
-    set_active() {
-        this.show_intro();
-    }
-
-    // accepted_experiment_responses:
     constructor(
                     forwarder_name: string,
                     measurement: Measurement_Type,
@@ -31,14 +26,13 @@ export abstract class Automata_With_Output_Forwarder extends Automata_Forwarder 
         this.pre_run_instructions = pre_run_instructions;
         this.post_run_instructions = post_run_instructions;
         this.measurement = measurement;
-        //
-        // this.add_activation_function(
-        //     () => this.output_writer().print_string_to_state(this.forwarder_name)
-        //     // ()=> this.output_writer.write(AUTOMATA_OUTPUT_WRITER_ACTION.OVERWRITE, AUTOMATA_OUTPUT_WRITER_TAGS.STATE, text_line(this.forwarder_name))
-        // );
         this.automata = this.create_automata();//new Automata(this.automata_configurator());
         this.automata.initialize();
 
+    }
+
+    set_active() {
+        this.show_intro();
     }
 
     create_automata() {
@@ -51,7 +45,11 @@ export abstract class Automata_With_Output_Forwarder extends Automata_Forwarder 
         return this.measurement.output_writer();
     }
 
-    abstract show_intro();
+    show_intro() {
+        this.output_writer().clear_all();
+        this.output_writer().print_string_to_state(this.forwarder_name);
+        this.pre_run_instructions();
+    }
 
     abstract show_outro();
 
