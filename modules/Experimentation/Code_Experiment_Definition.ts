@@ -2,16 +2,9 @@ import {Treatment} from "./Treatment.js";
 import {Task} from "./Task.js";
 import {Experiment_Definition} from "./Experiment_Definition.js";
 import {Book_Forwarder} from "../Automata_Forwarders/Book_Forwarder.js";
-import {Experimentation_Forwarder} from "../Automata_Forwarders/Experimentation_Forwarder.js";
 import {Sequential_Forwarder_Forwarder} from "../Books/Sequential_Forwarder_Forwarder.js";
 import {Variable} from "./Variable.js";
-// import {Information, Input_Object, Output_Command, text_line} from "../Books/Output_Command.js";
 import {Training_Execution_Forwarder} from "../Automata_Forwarders/Training_Execution_Forwarder.js";
-// import {
-//     Automata_IO,
-//     AUTOMATA_OUTPUT_WRITER_ACTION,
-//     AUTOMATA_OUTPUT_WRITER_TAGS
-// } from "../Books/Automata_IO.js";
 import {Measurement_Type, new_random_integer, Output_Command, SET_SEED} from "./Experimentation.js";
 import {Experiment_Forwarder} from "../Automata_Forwarders/Experiment_Forwarder.js";
 import {Question, Questionnaire_Forwarder} from "../Automata_Forwarders/Questionnaire_Forwarder.js";

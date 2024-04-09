@@ -1,25 +1,33 @@
 import dummy from "../../modules_hard_import/seedrandom/seedrandom.js";
 import {Task} from "./Task.js";
 import {convert_string_to_html_string} from "../Utils.js";
+import {Alternatives, Freetext} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
 
 export type Output_Command=()=>void;
 export function init(){}
 export enum VARIABLE_TYPE { STRING = 1, NUMBER }
 
-export function Reaction_Time(input_type: Experiment_Input_Type): Measurement_Type {
-    return new Reaction_Time_Measurement(input_type);
+export function Reaction_Time(input: (writer: Experiment_Output_Writer)=> Experiment_Input_Type): (writer: Experiment_Output_Writer) => Measurement_Type {
+    return (writer: Experiment_Output_Writer) => new Reaction_Time_Measurement(input(writer));
 };
 
-export function Time_to_finish(input: (writer: Experiment_Output_Writer)=> Experiment_Input_Type): (writer: Experiment_Output_Writer) => Measurement_Type {
+export function Time_to_finish(input: (Experiment_Output_Writer)=> Experiment_Input_Type): (Experiment_Output_Writer) => Measurement_Type {
     return (writer: Experiment_Output_Writer) => new Time_To_Finish_Measurement(input(writer));
 }
 
-export function keys(key_list: string[], output_writer: Experiment_Output_Writer):Experiment_Input_Type {
-    return new Key_Pressing(key_list, output_writer);
+export function keys(key_list: string[]) {
+    return (writer:Experiment_Output_Writer) => new Key_Pressing(key_list, writer);
 }
 
-export function text_input(output_writer: Experiment_Output_Writer):Experiment_Input_Type {
-    return new Free_Text(output_writer);
+export function text_input_experiment(output_writer: Experiment_Output_Writer):Experiment_Input_Type {
+    return new Free_Text_User_Input_Experiment(output_writer);
+}
+
+export function free_text(var_name: string, question:string) {
+    return new Freetext(var_name, question);
+}
+export function alternatives(var_name: string, question:string, alternatives: string[]) {
+    return new Alternatives(var_name, question, alternatives);
 }
 
 export abstract class Experiment_Output_Writer {
@@ -28,13 +36,13 @@ export abstract class Experiment_Output_Writer {
     abstract print_string_to_state(forwarder_name: string);
 
     abstract clear_stage();
+    abstract clear_error();
 
     abstract print_string_on_stage(s: string);
     abstract print_html_on_stage(s: string);
     abstract print_html_on_error(s: string);
 
     abstract print_error_string_on_stage(error_string: string);
-
     convert_string_to_html_string(s:string):string {
         return convert_string_to_html_string(s);
     }
@@ -99,7 +107,8 @@ export abstract class Measurement_Type {
 
     incorrect_response(i: string, task: Task) {
         let end_time = new Date().getTime().valueOf();
-        task.invalid_answers.push([i, end_time - this.start_time])
+        let given_answer = task.experiment_definition.measurement.get_given_answer(i);
+        task.invalid_answers.push([given_answer, end_time - this.start_time])
         task.do_print_error_message(this.input_type.get_given_answer(i));
     }
 
@@ -110,6 +119,10 @@ export abstract class Measurement_Type {
     get_given_answer(input:string) {
         return this.input_type.get_given_answer(input);
     }
+
+    demands_penalty():boolean {
+        return false;
+    }
 }
 
 export class Reaction_Time_Measurement extends Measurement_Type {
@@ -117,11 +130,21 @@ export class Reaction_Time_Measurement extends Measurement_Type {
         super(input_type);
     }
 }
+
+
 export class Time_To_Finish_Measurement extends Measurement_Type {
     constructor(input_type: Experiment_Input_Type) {
         super(input_type);
     }
 }
+
+export class Time_To_Finish_With_Time_Penalty_Measurement extends Time_To_Finish_Measurement {
+    constructor(input_type: Experiment_Input_Type) {
+        super(input_type);
+    }
+}
+
+
 
 export abstract class Experiment_Input_Type {
 
@@ -160,9 +183,17 @@ export class Key_Pressing extends Experiment_Input_Type {
         return key_pressed;
     }
 
+    print_input_request() {
+        // I am a key....no need for input fields
+    }
+
+    get_given_answer(input_string: string) {
+        return input_string;
+    }
+
 }
 
-export class Free_Text extends Experiment_Input_Type {
+export class Free_Text_User_Input_Experiment extends Experiment_Input_Type {
 
     constructor(output_writer: Experiment_Output_Writer) {
         super(output_writer);

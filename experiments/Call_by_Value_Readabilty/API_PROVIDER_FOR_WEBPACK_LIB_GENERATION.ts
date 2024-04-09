@@ -1,7 +1,8 @@
 import {
-    Experiment_Output_Writer, new_random_integer, Reaction_Time,
+    alternatives,
+    free_text, new_random_integer, Reaction_Time,
     SET_SEED,
-    text_input,
+    text_input_experiment,
     Time_to_finish
 } from "../../modules/Experimentation/Experimentation.js";
 import {BROWSER_EXPERIMENT} from "../../modules/Experimentation/Browser_Output_Writer.js";
@@ -12,10 +13,9 @@ import {array_of_rows_to_logical_result, Logical_Results} from "../../modules/Lo
 
 function set_nof1(map) {
     map['SET_SEED'] = SET_SEED;
-    map['text_input'] = text_input;
     map['new_random_integer'] = new_random_integer;
     map['BROWSER_EXPERIMENT'] = BROWSER_EXPERIMENT;
-    map['text_input'] = text_input;
+    map['text_input_experiment'] = text_input_experiment;
     map['new_random_integer'] = new_random_integer;
     map['Time_to_finish'] = Time_to_finish;
     map['Reaction_time'] = Reaction_Time;
@@ -24,6 +24,9 @@ function set_nof1(map) {
     map['create_catalan_graphs'] = create_catalan_graphs;
     map['Logical_Results'] = Logical_Results;
     map['array_of_rows_to_logical_result'] = array_of_rows_to_logical_result;
+    map['free_text'] = free_text;
+    map['alternatives'] = alternatives;
+
 } // @ts-ignore
 
 set_nof1(Nof1);

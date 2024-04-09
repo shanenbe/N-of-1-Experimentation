@@ -1,10 +1,9 @@
 import {Variable} from "./Variable.js";
 import {Treatment} from "./Treatment.js";
 import {Task} from "./Task.js";
-import * as Experimentation from "./Experimentation.js";
-import {Measurement_Type, SET_SEED} from "./Experimentation.js";
-import {csv_encoding} from "../Utils.js";
-import {Questionnaire_Forwarder} from "../Automata_Forwarders/Questionnaire_Forwarder";
+import {Measurement_Type, new_random_integer, SET_SEED} from "./Experimentation.js";
+
+import {Questionnaire_Forwarder} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
 export function init(){}
 export abstract class Experiment_Definition {
     experiment_name: string;
@@ -47,11 +46,17 @@ export abstract class Experiment_Definition {
         this.tasks = [];
         this.all_treatment_combinations_do(
             (treatment_combination: Treatment[]) => {
-                let task: Task = this.create_Task(treatment_combination);
+                let task: Task = this.create_Task(this.cloned_treatment_combinations(treatment_combination));
                 this.task_creator(task);
                 this.tasks.push(task);
             }
         );
+    }
+
+    cloned_treatment_combinations(treatment_combination: Treatment[]) {
+        let ret = [];
+        treatment_combination.forEach( t => ret.push(t.clone()));
+        return ret;
     }
 
     abstract create_Task(treatment_combination: Treatment[]): Task;
@@ -69,7 +74,7 @@ export abstract class Experiment_Definition {
         let old_tasks: Task[] = this.tasks.slice();
         let counter = 1;
         while(new_tasks.length < this.tasks.length) {
-            let element_no = Experimentation.new_random_integer(old_tasks.length);
+            let element_no = new_random_integer(old_tasks.length);
             new_tasks.push(old_tasks[element_no]);
             old_tasks[element_no].task_number_in_execution = counter;
             old_tasks.splice(element_no, 1);
@@ -106,7 +111,7 @@ export abstract class Experiment_Definition {
             result.push("" + (task.given_answer==task.expected_answer) + ";");
             result.push(task.required_milliseconds + ";");
 
-            task.invalid_answers.forEach( (a) => result.push(a[0] + ";" + a[1]));
+            task.invalid_answers.forEach( (a) => result.push(a[0] + ";" + a[1] + ";"));
 
             result.push("\n");
         }

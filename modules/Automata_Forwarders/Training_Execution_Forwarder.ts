@@ -1,8 +1,8 @@
 import {Automata_Configurator, create_automata} from "../Automata/Automata_Configurator.js";
 import {from} from "../Automata/Transitions.js";
 import {Experimentation_Forwarder} from "./Experimentation_Forwarder.js";
-import {Measurement_Type, Output_Command} from "../Experimentation/Experimentation";
-import {Experiment_Definition} from "../Experimentation/Experiment_Definition";
+import {Measurement_Type, Output_Command} from "../Experimentation/Experimentation.js";
+import {Experiment_Definition} from "../Experimentation/Experiment_Definition.js";
 
 let SHOW_INTRO = 0;
 let SHOW_TASK = 1;

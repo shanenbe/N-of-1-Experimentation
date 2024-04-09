@@ -125,34 +125,3 @@ export function from(from: number)
     }
 
 }
-
-/*
-export function from_any(from: number[])
-{
-    return {
-        to: (to: number) => { return {
-            on: (key: string)=> { return {
-                if: (check: ()=>boolean)=> { return {
-                    do:(action:(i:string)=>void) => {
-                        return Simple_Transition(from, (input: string)=> {return input==key && check()}, to, action)
-                    }
-                }},
-                do:(action:(i:string)=>void) => {
-                    return Simple_Transition(from, (input: string)=> {return input==key}, to, action)
-                }
-            }},
-            on_any: (keys: string[])=> { return {
-                if: (check: ()=>boolean)=> { return {
-                    do:(action:(i:string)=>void) => {
-                        return Simple_Transition(from, (input: string)=> {return contains(keys,input) && check()}, to, action)
-                    }
-                }},
-                do:(action:(i:string)=>void) => {
-                    return Simple_Transition(from, (input: string)=> {return contains(keys,input)}, to, action)
-                }
-            }}
-        }},
-
-    }
-
-}*/

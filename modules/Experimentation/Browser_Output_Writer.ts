@@ -9,6 +9,19 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
         this.get_html_element_by_id("STATE").innerHTML  = s;
     }
 
+    clear_error() {
+        let element_id = [
+            "STAGE_ERROR"
+        ];
+        for(let e of element_id) {
+            let parent = document.getElementById(e);
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+            }
+        }
+    }
+
+
     clear_stage() {
         let element_id = [
             "STAGE",
@@ -54,9 +67,12 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
     }
 
     ask_for_input() {
-        console.log("request input");
         // @ts-ignore
         let p = document.createElement("p") as HTMLParagraphElement;
+        let l = document.createElement("label");
+        l.setAttribute('type', 'text');
+        p.textContent = "Answer: "
+        p.appendChild(l);
         // @ts-ignore
         let i = document.createElement("input");
         i.setAttribute('type', 'text');
@@ -85,15 +101,23 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
 
     private create_html_element_from_string(s:string) {
         let parser = new DOMParser();
-        return parser.parseFromString(s, "text/html").body;
+        let elements = parser.parseFromString(s, "text/html").body;
+        return elements;
     }
 
     print_html_on_stage(s: string) {
-        this.get_html_element_by_id("STAGE")
-            .appendChild(this.create_html_element_from_string(s));
+        // for(let e of this.create_html_element_from_string(s)) {
+            this.get_html_element_by_id("STAGE")
+                .appendChild(this.create_html_element_from_string(s));
+        // }
     }
 
     print_html_on_error(s: string) {
+        // for(let e of this.create_html_element_from_string(s)) {
+        //     this.get_html_element_by_id("STAGE_ERROR")
+        //         .appendChild(e);
+        // }
+
         this.get_html_element_by_id("STAGE_ERROR")
             .appendChild(this.create_html_element_from_string(s));
     }
@@ -139,7 +163,7 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
             finish_function:  (exp: Code_Experiment_Definition) => {
                 // @ts-ignore
                 document.removeEventListener("keydown", key_forwarder);
-                save_file_in_html("experimentdata", exp.generate_csv_data());
+                save_file_in_html("experimentdata.csv", exp.generate_csv_data());
             }
         }
     );

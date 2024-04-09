@@ -5,11 +5,13 @@ import {Experiment_Definition} from "../Experimentation/Experiment_Definition.js
 import { Automata_With_Output_Forwarder } from "./Automata_With_Output_Forwarder.js";
 import {Measurement_Type, Output_Command} from "../Experimentation/Experimentation.js";
 
+
 let SHOW_INTRO=0;
 let SHOW_TASK=1;
-let TASK_FINISHED=2;
-let SHOW_OUTRO = 3;
-let EVERYTHING_DONE = 4;
+let SHOW_PENALTY = 2;
+let TASK_FINISHED=3;
+let SHOW_OUTRO = 4;
+let EVERYTHING_DONE = 5;
 
 export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
@@ -74,6 +76,14 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
                     this.measurement.start_measurement(this.current_task());
                 }),
 
+            from(SHOW_TASK).to(SHOW_OUTRO)
+                .on("?+Control")
+                .if((i:string) => true)
+                .do((i:string) => {
+                    this.measurement.stop_measurement(i, this.current_task());
+                    this.show_outro();
+                }),
+
             // STATE 1=Task is shown, 2=Input correct
             from(SHOW_TASK).to(TASK_FINISHED)
                 .on_any(this.measurement.accepted_responses())
@@ -86,7 +96,18 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
             // Task Shown - Incorrect input => Remain in Task
             from(SHOW_TASK).to(SHOW_TASK)
                 .on_any(this.measurement.accepted_responses())
-                .if((i:string) =>   !this.current_task().accepts_answer(i) )
+                .if((i:string) =>
+                    !this.current_task().accepts_answer(i)
+                )
+                .do((i:string) => {
+                    this.measurement.incorrect_response(i, this.current_task());
+                }),
+
+            from(SHOW_TASK).to(SHOW_PENALTY)
+                .on_any(this.measurement.accepted_responses())
+                .if((i:string) =>
+                    !this.current_task().accepts_answer(i) && this.measurement.demands_penalty()
+                )
                 .do((i:string) => {
                     this.measurement.incorrect_response(i, this.current_task());
                 }),
@@ -99,6 +120,8 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
                     this.inc_current_experiment();
                     this.measurement.start_measurement(this.current_task());
                 }),
+
+
 
             from(SHOW_TASK).to(SHOW_OUTRO) // State=3: Experiment done - just the message afterwards shown
                 .on_any(this.measurement.accepted_responses())

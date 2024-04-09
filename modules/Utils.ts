@@ -49,11 +49,12 @@ export function convert_string_to_html_string(s: string) {
 export function key_event_string(event):string {
     var postfix = "";
 
-    if(event.key!="Alt")
+    if(event.key=="Alt")
         if(event.ctrlKey) return "Alt+Ctrl";
 
-    if(event.key!="Control")
-        if(event.altKey) return "Ctrl+Alt";
+    if(event.key=="Control")
+        if(event.altKey)
+            return "Ctrl+Alt";
 
     postfix = postfix + (event.altKey?"+Alt":"");
     postfix = postfix + (event.ctrlKey?"+Control":"");

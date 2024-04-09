@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width">
     <title>Software-Science.org</title>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<!--    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
+    <script>
+        window.MathJax = {
+            loader: {load: ['[tex]/color']},
+            tex: {packages: {'[+]': ['color']}}
+        };
+    </script>
     <script id="MathJax-script"
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+
     </script>
 
     <style>
@@ -56,6 +63,17 @@
             right: 10px;
         }
 
+        body .navigation {
+            background-color: lightblue;
+            position: fixed;
+            padding-left:0;
+            padding-right: 0;
+            bottom: 0;
+            margin: 0;
+            left: 0;
+            right: 0;
+        }
+
         body .bottommenu {
             background-color: lightblue;
             position: fixed;
@@ -68,7 +86,12 @@
         }
 
         body .stage {
-            margin:10px;
+            /*margin:10px;*/
+            /*text-align: center;*/
+        }
+
+        body .stage .sourcecode {
+            font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
         }
 
         body .stage_error {
@@ -80,65 +103,8 @@
             margin:10px;
         }
 
-        .simple_text {
-
-        }
-
-        .simple_code {
-            font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
-
-        }
-
-        .MathJax_Display {
-            text-align: left !important;
-            display: inline !important;
-        }
-
     </style>
 
-    <script>
-        document.n_of_1 = {
-            clear_screen:  () => {
-                let element_id = [
-                    "STAGE",
-                    "STAGE_MSG",
-                    "STAGE_ERROR"
-                ];
-                for(let e of element_id) {
-                    let parent = document.getElementById(e);
-                    while (parent.firstChild) {
-                        parent.removeChild(parent.firstChild);
-                    }
-                }
-            },
-
-            print_string_on_stage:  (v) => {
-                document.getElementById("STAGE").innerHTML  = v;
-            },
-
-            print_error_text:  (t) => {
-                n_of_1_page.add_node_to_error(document.createTextNode(t));
-            },
-
-            add_node_to_stage:  (n) => {
-                document.getElementById("STAGE").appendChild(n);
-            },
-
-            add_node_to_error:  (n) => {
-                document.getElementById("STAGE_ERROR").appendChild(n);
-            },
-
-            create_input: () => {
-                let i = document.createElement("input");
-                i.setAttribute('type', 'text');
-                i.id = "INPUT";
-                document.n_of_1.add_node_to_stage(i);
-                i.focus();
-            }
-        };
-
-        let Nof1 = {};
-    </script>
 
 </head>
 <body>
@@ -150,19 +116,31 @@
     <div class = task id="TASK">Currently loading page</div>
 </div>
 <div ID="STAGE_CONTAINER">
-    <div class="stage" ID="STAGE"></div>
+    <div class="stage" ID="STAGE">
+        Please wait. Generating the experiment takes up to one minute.
+    </div>
     <div class="stage_error" ID="STAGE_ERROR"></div>
     <div class="stage_msg" ID="STAGE_MSG"></div>
 </div>
+<div class="navigation">Some information</div>
 <div class="bottommenu">[Impressum]</div>
 
+<script>
+    let Nof1 = {};
+    // window.MathJax = {
+    //     tex: {
+    //         inlineMath: [['$$', '$$']]
+    //     }
+    // };
+</script>
 
+<!--$$ \frac{1}{2} $$-->
+<!--\(\frac{1}{2}\)-->
 
-<script src="./lib.js"></script>
-<script src="./code.js"></script>
+<script type="module" src="./API_PROVIDER_FOR_WEBPACK_LIB_GENERATION.js"></script>
+<!--<script type="module" src="./GraphCreation.js"></script>-->
+<script type="module" src="./Call_by_value_readabilty.js"></script>
 
-
-<!--<p> When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]</p>-->
 
 </body>
 </html>
