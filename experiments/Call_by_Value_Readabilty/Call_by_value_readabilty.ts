@@ -1,6 +1,6 @@
 import {
     do_random_array_sort,
-    Experiment_Output_Writer, keys, random_array_element, Reaction_Time, SET_SEED,
+    Experiment_Output_Writer, keys, random_array_element, Reaction_Time, Reaction_Time_With_Penalty, SET_SEED,
     text_input_experiment,
     Time_to_finish
 } from "../../modules/Experimentation/Experimentation.js";
@@ -247,9 +247,9 @@ function common_root(from: BinaryTree, to: BinaryTree):BinaryTree {
             { variable: "Graph",  treatments: ["Dummy"]},
         ],
 
-        repetitions: CATALAN_GRAPHS.length,
+        repetitions: 1, //CATALAN_GRAPHS.length,
 
-        measurement: Reaction_Time(keys(["1", "2", "3", "4", "5", "6", "7", "0"])),
+        measurement: Time_to_finish(keys(["1", "2", "3", "4", "5", "6", "7", "0"])),
 
         task_configuration:    (t: Task) => {
 
@@ -279,8 +279,9 @@ function common_root(from: BinaryTree, to: BinaryTree):BinaryTree {
             };
 
             t.do_print_error_message = (given_answer: string) => {
+                writer.clear_stage();
                 writer.clear_error();
-                writer.print_html_on_error("<h1>Invalid answer: " + given_answer + "</h1>");
+                writer.print_html_on_error("<h1>Invalid answer: " + given_answer + " <br> press [Enter] after 5 seconds to continue </h1>");
             };
 
             t.do_print_after_task_information = () => {

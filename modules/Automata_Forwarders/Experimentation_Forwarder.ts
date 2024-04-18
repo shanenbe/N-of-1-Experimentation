@@ -97,7 +97,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
             from(SHOW_TASK).to(SHOW_TASK)
                 .on_any(this.measurement.accepted_responses())
                 .if((i:string) =>
-                    !this.current_task().accepts_answer(i)
+                    !this.current_task().accepts_answer(i) &&  !this.measurement.demands_penalty()
                 )
                 .do((i:string) => {
                     this.measurement.incorrect_response(i, this.current_task());
@@ -110,6 +110,14 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
                 )
                 .do((i:string) => {
                     this.measurement.incorrect_response(i, this.current_task());
+                }),
+
+            from(SHOW_PENALTY).to(SHOW_TASK)
+                .on("Enter")
+                .if((i:string) =>
+                    this.measurement.penalty_is_over())
+                .do((i:string) => {
+                    this.measurement.start_measurement(this.current_task());
                 }),
 
             // Between Tasks to next task
@@ -134,7 +142,9 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
             from(SHOW_OUTRO).to(EVERYTHING_DONE)
                 .on("Enter")
-                .do((i:string) => {})
+                .do((i:string) => {
+                    let a = 1;
+                })
         ];
     }
 

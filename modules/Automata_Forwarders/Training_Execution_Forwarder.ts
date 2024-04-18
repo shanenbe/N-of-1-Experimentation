@@ -6,10 +6,12 @@ import {Experiment_Definition} from "../Experimentation/Experiment_Definition.js
 
 let SHOW_INTRO = 0;
 let SHOW_TASK = 1;
-let TASK_FINISHED = 2;
-let CURRENT_TRAINING_SESSION_FINISHED = 3;
-let EVERYTHING_DONE = 6;
-let ESCAPED = 5;
+let SHOW_PENALTY = 2;
+let TASK_FINISHED = 3;
+let SHOW_OUTRO = 4;
+let EVERYTHING_DONE = 5;
+
+let ESCAPED = 6;
 
 
 export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
@@ -50,7 +52,7 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
 
     automata_configurator() {
         return new Automata_Configurator(
-            [SHOW_INTRO, SHOW_TASK, TASK_FINISHED, CURRENT_TRAINING_SESSION_FINISHED, CURRENT_TRAINING_SESSION_FINISHED, ESCAPED, EVERYTHING_DONE],
+            [SHOW_INTRO, SHOW_TASK, SHOW_PENALTY, TASK_FINISHED, SHOW_OUTRO, EVERYTHING_DONE, ESCAPED],
             SHOW_INTRO,
             () => {},
             this.transitions(),
@@ -83,7 +85,7 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
 
                 from(ESCAPED).to(EVERYTHING_DONE)
                     .on("E").do(() => {
-
+                        let dummy = 1;
                     }),
 
                 from(ESCAPED).to(SHOW_INTRO)
@@ -93,22 +95,30 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
                 }),
 
 
-                from(CURRENT_TRAINING_SESSION_FINISHED).to(SHOW_INTRO)
+                from(SHOW_OUTRO).to(SHOW_INTRO)
                     .on("Enter").do(() => {
                         this.experiment_definition.init_experiment();
                         this.show_intro();
                     }
                 ),
 
-                from(CURRENT_TRAINING_SESSION_FINISHED).to(EVERYTHING_DONE)
+                from(SHOW_OUTRO).to(EVERYTHING_DONE)
                     .on("E")
-                    .do((i:string) => {})
+                    .do((i:string) => {
+                        let dummy = 1;
+                    })
 
 
             ];
         experiment_transitions.splice(experiment_transitions.length-1);
         this_transitions.forEach((e)=>experiment_transitions.push(e));
         return experiment_transitions;
+    }
+
+    input(s: string) {
+        if (!["a", "b", "c"].includes(s) && this.automata.current_state != 0)
+            return super.input(s);
+        super.input(s);
     }
 
 }

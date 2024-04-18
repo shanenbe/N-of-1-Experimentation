@@ -56,6 +56,10 @@ export abstract class Automata_With_Output_Forwarder extends Automata_Forwarder 
     empty_screen_and_show_instructions(command:Output_Command) {
         this.output_writer().clear_state();
         this.output_writer().clear_stage();
-        command();
+
+        if(command==null || command == undefined)
+            console.log("something is strange");
+        else
+            command();
     }
 }
