@@ -2,7 +2,7 @@ import {
     do_random_array_sort,
     Experiment_Output_Writer, keys, random_array_element, Reaction_Time, Reaction_Time_With_Penalty, SET_SEED,
     text_input_experiment,
-    Time_to_finish
+    Time_to_finish, Time_to_finish_with_Penalty
 } from "../../modules/Experimentation/Experimentation.js";
 import {Task} from "../../modules/Experimentation/Task.js";
 import {BROWSER_EXPERIMENT} from "../../modules/Experimentation/Browser_Output_Writer.js";
@@ -249,7 +249,7 @@ function common_root(from: BinaryTree, to: BinaryTree):BinaryTree {
 
         repetitions: 1, //CATALAN_GRAPHS.length,
 
-        measurement: Time_to_finish(keys(["1", "2", "3", "4", "5", "6", "7", "0"])),
+        measurement: Time_to_finish_with_Penalty(keys(["1", "2", "3", "4", "5", "6", "7", "0"]), 5),
 
         task_configuration:    (t: Task) => {
 

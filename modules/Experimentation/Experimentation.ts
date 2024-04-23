@@ -19,7 +19,7 @@ export function Time_to_finish(input: (Experiment_Output_Writer)=> Experiment_In
     return (writer: Experiment_Output_Writer) => new Time_To_Finish_Measurement(input(writer));
 }
 
-export function Time_to_finish_with_Time_Penalty(input: (Experiment_Output_Writer)=> Experiment_Input_Type, penalty_seconds: number): (Experiment_Output_Writer) => Measurement_Type {
+export function Time_to_finish_with_Penalty(input: (Experiment_Output_Writer)=> Experiment_Input_Type, penalty_seconds: number): (Experiment_Output_Writer) => Measurement_Type {
     return (writer: Experiment_Output_Writer) => new Time_To_Finish_With_Time_Penalty_Measurement(input(writer), penalty_seconds);
 }
 
@@ -193,15 +193,41 @@ export class Time_To_Finish_Measurement extends Measurement_Type {
 }
 
 export class Time_To_Finish_With_Time_Penalty_Measurement extends Time_To_Finish_Measurement {
-    penalty_seconds=null;
-    penalty_started = false;
+
+    penalty_miliseconds: number;
+    penalty_started:boolean = false;
+    penalty_start_point = null;
 
     constructor(input_type: Experiment_Input_Type, penalty_seconds: number) {
         super(input_type);
+        this.penalty_miliseconds = penalty_seconds * 1000;
     }
 
     demands_penalty():boolean {
         return true;
+    }
+
+    incorrect_response(i: string, task: Task) {
+        super.incorrect_response(i, task);
+        this.penalty_started = true;
+        this.penalty_start_point = new Date().getTime().valueOf();
+
+        task.do_print_error_message(this.input_type.get_given_answer(i));
+    }
+
+    delete_penalty() {
+        this.penalty_started = false;
+        this.penalty_start_point = null;
+    }
+
+    penalty_is_over() {
+        let diff = (new Date().getTime().valueOf())-this.start_time;
+        return !this.penalty_started || diff >= this.penalty_miliseconds;
+    }
+
+    start_measurement(task: Task) {
+        super.start_measurement(task);
+        this.delete_penalty();
     }
 
 }

@@ -3,7 +3,7 @@ import {
     free_text, keys, new_random_integer, Reaction_Time, Reaction_Time_With_Penalty,
     SET_SEED,
     text_input_experiment,
-    Time_to_finish
+    Time_to_finish, Time_to_finish_with_Penalty
 } from "../modules/Experimentation/Experimentation.js";
 import {BROWSER_EXPERIMENT} from "../modules/Experimentation/Browser_Output_Writer.js";
 import {Nouns} from "../modules/Words/Nouns.js";
@@ -18,6 +18,7 @@ function set_nof1(map) {
     map['text_input_experiment'] = text_input_experiment;
     map['new_random_integer'] = new_random_integer;
     map['Time_to_finish'] = Time_to_finish;
+    map['Time_to_finish_with_penality'] = Time_to_finish_with_Penalty;
     map['Reaction_time'] = Reaction_Time;
     map['Reaction_time_with_penalty'] = Reaction_Time_With_Penalty;
     map['keys'] = keys;
