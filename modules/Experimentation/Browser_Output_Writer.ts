@@ -130,8 +130,11 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
                         seed                            :string,
                         introduction_pages              :Output_Command[],
                         post_questionnaire?             :Question[],
-                        pre_run_experiment_instructions :Output_Command,
                         pre_run_training_instructions   :Output_Command,
+                        training_configuration?         : {
+
+                                                          },
+                        pre_run_experiment_instructions :Output_Command,
                         finish_pages                    :Output_Command[],
                         layout                          :{
                                                             variable: string,

@@ -17,7 +17,7 @@ import {Treatment} from "../../modules/Experimentation/Treatment.js";
 let SEED = "666";
 SET_SEED(SEED);
 
-let NUMBER_OF_INNER_NODES_IN_CATALAN_GRAPHS = 7;
+let NUMBER_OF_INNER_NODES_IN_CATALAN_GRAPHS = 9;
 let CATALAN_GRAPHS = create_catalan_graphs(NUMBER_OF_INNER_NODES_IN_CATALAN_GRAPHS);
 let RANDOM_CATALAN_GRAPHS = do_random_array_sort(CATALAN_GRAPHS);
 let TEST_GRAPHS = [];

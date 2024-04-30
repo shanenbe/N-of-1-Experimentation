@@ -48,7 +48,7 @@ Nof1.SET_SEED(SEED);
 
         repetitions: 1,
 
-        measurement: Nof1.Time_to_finish(Nof1.text_input_experiment),
+        measurement: Nof1.Time_to_finish_with_penality(Nof1.text_input_experiment, 3),
 
         task_configuration:    (t) => {
 
@@ -66,7 +66,7 @@ Nof1.SET_SEED(SEED);
             t.do_print_error_message = (given_answer) => {
                 writer.clear_stage();
                 writer.clear_error();
-                writer.print_html_on_error("<h1>Invalid answer: " + given_answer + "");
+                writer.print_html_on_error("<h1>Invalid answer: " + given_answer + " You can press [Enter] after 3 seconds and redo the task.");
             };
 
             t.do_print_after_task_information = () => {
