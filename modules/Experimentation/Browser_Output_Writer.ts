@@ -76,6 +76,7 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
         // @ts-ignore
         let i = document.createElement("input");
         i.setAttribute('type', 'text');
+        i.setAttribute('class', 'input');
         p.appendChild(i);
         i.id = "INPUT";
         this.get_html_element_by_id("STAGE").appendChild(p);

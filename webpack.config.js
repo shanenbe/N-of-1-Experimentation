@@ -6,7 +6,7 @@ module.exports = {
     output: {
         // path:'./',
         path: path.resolve(__dirname, './'),
-        filename: './___BUILD_LIB_FILE_TestExperiment/lib.js',
+        filename: './___BUILD_LIB_FILE_TestExperiment/nof1experimentation.js',
     },
     resolve: {
         fallback: { "crypto": false }
