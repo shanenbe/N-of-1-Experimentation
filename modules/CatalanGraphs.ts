@@ -25,7 +25,7 @@ export class BinaryTree {
         if(this.parent==null)
             return false;
 
-        return this.parent.left == this;
+        return this.parent.right == this;
     }
 
     number_of_nodes() {
@@ -75,13 +75,17 @@ export class BinaryTree {
     push_leaves() {
         if(this.left!=null)
             this.left.push_leaves();
-        else
+        else {
             this.left = new BinaryTree(null, null);
+            this.left.parent = this;
+        }
 
         if(this.right!=null)
             this.right.push_leaves();
-        else
+        else {
             this.right = new BinaryTree(null, null);
+            this.right.parent = this;
+        }
     }
 
     as_in_order_array():BinaryTree[] {
