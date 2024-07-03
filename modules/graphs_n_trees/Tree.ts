@@ -190,6 +190,21 @@ function test_distance_SH01(debug) {
     let tree =  null;
 
     tree = t([
+        t([t(), t(), t()]),
+        t([t(), t([source, target]), t()])
+    ]);
+    distance = tree.distance_SH01(source, target);
+    is_true(distance == 1, "distance = 1", debug);
+
+
+    tree = t([
+        t([t(), t([source, target]), t()]),
+        t([t(), t(), t()])
+    ]);
+    distance = tree.distance_SH01(source, target);
+    is_true(distance == 1, "distance = 1", debug);
+
+    tree = t([
         t([t(), t([source]), t()]),
         t([t(), t(), target, t()])
     ]);
