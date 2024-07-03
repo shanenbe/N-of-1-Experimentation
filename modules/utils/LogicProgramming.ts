@@ -1,5 +1,5 @@
 import {is_true} from './Testing.js';
-import {random_array_element} from "./Experimentation/Experimentation.js";
+import {random_array_element} from "../Experimentation/Experimentation.js";
 
 export class Binding {
     number_of_variables: number;

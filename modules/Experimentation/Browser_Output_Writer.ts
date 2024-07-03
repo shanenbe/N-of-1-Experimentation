@@ -1,6 +1,6 @@
 import {Experiment_Output_Writer, Measurement_Type, Output_Command} from "./Experimentation.js";
 import {Task} from "./Task.js";
-import {key_event_string, save_file_in_html} from "../Utils.js";
+import {key_event_string, save_file_in_html} from "../utils/Utils.js";
 import {Code_Experiment_Definition, create_code_experiment_execution} from "./Code_Experiment_Definition.js";
 import {Question} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
 

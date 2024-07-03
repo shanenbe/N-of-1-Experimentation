@@ -1,5 +1,5 @@
-import {Experiment_Definition} from "./Experimentation/Experiment_Definition.js";
-import {Task} from "./Experimentation/Task.js";
+import {Experiment_Definition} from "../Experimentation/Experiment_Definition.js";
+import {Task} from "../Experimentation/Task.js";
 import {do_tests} from "./Utils_Test.js";
 export function init(){}
 

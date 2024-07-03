@@ -1,6 +1,6 @@
 import dummy from "../../modules_hard_import/seedrandom/seedrandom.js";
 import {Task} from "./Task.js";
-import {convert_string_to_html_string} from "../Utils.js";
+import {convert_string_to_html_string} from "../utils/Utils.js";
 import {Alternatives, Freetext} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
 
 export type Output_Command=()=>void;

@@ -2,6 +2,8 @@
   "name": "Experimentation",
   "version": "1.0.0",
   "main": "start_html.js",
+  "type": "module",
+
 
   "scripts": {
     "build TestExperiment": "webpack --config webpack.config.js",

@@ -1,4 +1,4 @@
-export function is_true(exp, aString, debug=false) {
+export function is_true(exp, aString="", debug=false) {
     if (!exp) {
         console.error(aString);
         throw "Wrong: " + aString;

@@ -1,5 +1,5 @@
 import {Transition, Transition_Acceptor_Function} from "./Transitions.js";
-import {contains} from "../Utils.js";
+import {contains} from "../utils/Utils.js";
 import {Automata_Configurator} from "./Automata_Configurator.js";
 export function init(){}
 
