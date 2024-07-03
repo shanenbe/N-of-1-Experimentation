@@ -42,6 +42,9 @@ class Tree {
         if(source_child===null || target_child===null)
             throw "should not be";
 
+        if(source_child===target_child)
+            return source_child.distance_SH01(source, target);
+
         let inner_nodes = this.children.slice(this.children.indexOf(source_child)+1, this.children.indexOf(target_child)-1);
 
         for(let n of inner_nodes) {
