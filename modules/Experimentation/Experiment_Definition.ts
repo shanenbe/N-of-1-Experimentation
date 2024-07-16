@@ -37,17 +37,18 @@ export abstract class Experiment_Definition {
 
 
 
-    init_experiment() {
-        this.createTasks();
+    init_experiment(is_training) {
+        this.createTasks(is_training);
         this.do_random_task_ordering();
     }
 
-    createTasks() {
+    createTasks(is_training) {
         this.tasks = [];
         this.all_treatment_combinations_do(
             (treatment_combination: Treatment[]) => {
                 let task: Task = this.create_Task(this.cloned_treatment_combinations(treatment_combination));
                 this.task_creator(task);
+                task.is_training = is_training;
                 this.tasks.push(task);
             }
         );

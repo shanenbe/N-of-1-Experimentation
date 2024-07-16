@@ -153,11 +153,12 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
         this.current_page_index = index;
         this.output_writer().print_string_to_page_number("Task " + (this.current_page_index + 1) + " / " + this.experiment_definition.tasks.length);
     }
+
     inc_current_experiment() {
         this.set_experiment_index(++this.current_page_index);
     }
 
-    init_experiment() {
-        this.experiment_definition.init_experiment();
+    init_experiment(is_training) {
+        this.experiment_definition.init_experiment(is_training);
     }
 }

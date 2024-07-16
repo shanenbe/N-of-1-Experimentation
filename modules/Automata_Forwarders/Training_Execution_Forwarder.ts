@@ -90,14 +90,14 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
 
                 from(ESCAPED).to(SHOW_INTRO)
                     .on("Enter").do(() => {
-                        this.experiment_definition.init_experiment();
+                        this.experiment_definition.init_experiment(true);
                         this.show_intro();
                 }),
 
 
                 from(SHOW_OUTRO).to(SHOW_INTRO)
                     .on("Enter").do(() => {
-                        this.experiment_definition.init_experiment();
+                        this.experiment_definition.init_experiment(true);
                         this.show_intro();
                     }
                 ),

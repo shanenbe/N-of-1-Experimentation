@@ -40,16 +40,16 @@ export class Code_Experiment_Definition extends Experiment_Definition {
         );
 
         SET_SEED(cfg.seed);
-        experiment_execution_forwarder.init_experiment();
+        experiment_execution_forwarder.init_experiment(false);
         let cloned_experiment_definition = this.clone();
 
-        let training = new Training_Execution_Forwarder(
+        let training_forwarder = new Training_Execution_Forwarder(
                                                             cfg.pre_run_training_output,
                                                             cloned_experiment_definition,
                                                             cfg.measurement
                                                        );
 
-        training.experiment_definition.init_experiment();
+        training_forwarder.experiment_definition.init_experiment(true);
 
         let post_questionnaire = null;
         if (cfg.post_questionnaire!=undefined) {
@@ -61,7 +61,7 @@ export class Code_Experiment_Definition extends Experiment_Definition {
             forwarders.push(introduction_book);
         }
 
-        forwarders.push(training);
+        forwarders.push(training_forwarder);
         forwarders.push(experiment_execution_forwarder);
 
         if (post_questionnaire != null) {
