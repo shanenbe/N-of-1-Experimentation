@@ -1,9 +1,9 @@
 let SEED = "666";
 Nof1.SET_SEED(SEED);
-let graphs = Nof1.create_catalan_graphs(10);
-for(let g of graphs) {
-    console.log(g.source_string());
-}
+// let graphs = Nof1.create_catalan_graphs(10);
+// for(let g of graphs) {
+//     console.log(g.source_string());
+// }
 
 
 
