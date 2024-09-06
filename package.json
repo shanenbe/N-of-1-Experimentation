@@ -4,9 +4,8 @@
   "main": "start_html.js",
   "type": "module",
 
-
   "scripts": {
-    "build TestExperiment": "webpack --config webpack.config.js",
+    "build TestExperiment": "webpack --config webpack.config.cjs",
     "build Questionnaire": "webpack --config ./experiments/Questionnaire/webpack.config.js",
     "start": "node server.ts"
   },

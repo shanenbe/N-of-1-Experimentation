@@ -27,7 +27,6 @@ function test_integer_partition_function() {
     let partition = [];
     partition = integer_partition_function(5);
     partition = integer_partition_function(0);
-    console.log("dummy");
 }
 
 
