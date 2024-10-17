@@ -1,9 +1,9 @@
-import {Treatment} from "./Treatment.js";
 import {Experiment_Definition} from "./Experiment_Definition.js";
-export function init(){}
+import {Treatment_Combination} from "./treatments/Treatment_Combination.js";
+
 export class Task {
 
-    treatment_combination: Treatment[];
+    treatment_combination: Treatment_Combination;
     expected_answer: string = "";
     given_answer: string = "";
     required_milliseconds = null;
@@ -12,7 +12,7 @@ export class Task {
     invalid_answers = [];
     is_training:boolean = false;
 
-    constructor(tc: Treatment[], experiment_definition: Experiment_Definition, text: string) {
+    constructor(tc: Treatment_Combination, experiment_definition: Experiment_Definition, text: string) {
         this.treatment_combination = tc;
         this.experiment_definition = experiment_definition;
         // this.code_string(text);
@@ -67,5 +67,14 @@ export class Task {
 
     private print_input_request() {
         this.experiment_definition.measurement.input_type.print_input_request();
+    }
+
+    treatment_value(treatment_name: string) {
+
+        for(let treatment of this.treatment_combination.treatment_combination)
+            if(treatment.variable.name===treatment_name)
+                return treatment.value;
+
+        throw "Unknown treatment: " + treatment_name;
     }
 }

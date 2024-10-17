@@ -12,6 +12,10 @@ function all_array_combinations_internal(arr: any[], combination, f) {
         }
 }
 
-export function all_array_combinations(arr: any[], f) {
+/**
+ *  @param arr: An array of arrays
+ *  executes for all combinations or arrays the function f
+ */
+export function all_array_combinations<T>(arr: T[][], f:((T)=>any)) {
     all_array_combinations_internal(arr, [], f);
 }

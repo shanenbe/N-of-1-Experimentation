@@ -31,6 +31,10 @@ export function text_input_experiment(output_writer: Experiment_Output_Writer):E
     return new Free_Text_User_Input_Experiment(output_writer);
 }
 
+export function text_input_experiment_with_pre_post_label(pre, post) {
+    return (output_writer: Experiment_Output_Writer) => new Free_Text_User_Input_Experiment_With_PrePost(output_writer, pre, post);
+}
+
 export function free_text(var_name: string, question:string) {
     return new Freetext(var_name, question);
 }
@@ -291,9 +295,30 @@ export class Free_Text_User_Input_Experiment extends Experiment_Input_Type {
         return ["Enter"];
     }
 
-    given_answer(key_pressed: string) {
+    given_answer(key_pressed: string) {}
 
+    print_input_request() {
+        this.output_writer.ask_for_input();
     }
+
+}
+
+export class Free_Text_User_Input_Experiment_With_PrePost extends Experiment_Input_Type {
+
+    constructor(output_writer: Experiment_Output_Writer, pre: string, post:string) {
+        super(output_writer);
+    }
+
+    accepted_responses() {
+        return ["Enter"];
+    }
+
+    given_answer(key_pressed: string) {}
+
+    print_input_request() {
+        this.output_writer.ask_for_input();
+    }
+
 }
 
 class _Random {
@@ -320,7 +345,7 @@ export function SET_SEED(seed: string) {
     Random.set_seed(seed);
 }
 
-export function new_random_integer(upper_limit: number): number {
+export function random_integer_up_to_excluding(upper_limit: number): number {
     return Random.new_random_integer(upper_limit);
 }
 
@@ -328,13 +353,13 @@ export function do_random_array_sort(array:any[]) {
     let copy = [...array];
     let result = [];
     while(copy.length > 0) {
-        result.push(copy.splice(new_random_integer(copy.length), 1)[0]);
+        result.push(copy.splice(random_integer_up_to_excluding(copy.length), 1)[0]);
     }
     return result;
 }
 
 export function random_array_element(array:any[]) {
-    return array[new_random_integer(array.length)];
+    return array[random_integer_up_to_excluding(array.length)];
 }
 
 // This invocation just makes sure that RANDOM is loaded

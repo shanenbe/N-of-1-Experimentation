@@ -3,6 +3,7 @@ import {from} from "../Automata/Transitions.js";
 import {Experimentation_Forwarder} from "./Experimentation_Forwarder.js";
 import {Measurement_Type, Output_Command} from "../Experimentation/Experimentation.js";
 import {Experiment_Definition} from "../Experimentation/Experiment_Definition.js";
+import {Training_Configuration} from "../Experimentation/Training_Configuration.js";
 
 let SHOW_INTRO = 0;
 let SHOW_TASK = 1;
@@ -16,8 +17,10 @@ let ESCAPED = 6;
 
 export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
 
+    training_configuration: Training_Configuration;
 
     constructor(pre_run_instructions: Output_Command,
+                training_configuration: Training_Configuration,
                 experiment_definition: Experiment_Definition,
                 measurement: Measurement_Type)
     {
@@ -31,11 +34,13 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
             ()=> {
                 measurement.output_writer().print_html_on_stage(
                     "You finished the training phase.<hr>" +
-                    "Please, press [Enter] to run again a training session.<br>" +
+                    (training_configuration.can_be_repeated?"Please, press [Enter] to run again a training session.<br>":"") +
                     "Please, press [E] (capital E!) to enter the experiment phase."
                 )},
             experiment_definition,
             measurement);
+
+        this.training_configuration = training_configuration;
     }
 
     print_cancel_text() {
@@ -65,20 +70,21 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
         let this_transitions = [
                 from(SHOW_INTRO).to(ESCAPED)
                     .on("Escape")
-                    .if(() => true)
+                    .if(() => this.training_configuration.can_be_cancelled)
                     .do((i:string) => {
                         this.print_cancel_text();
                     }),
 
                 from(SHOW_TASK).to(ESCAPED)
                     .on("Escape")
+                    .if(() => this.training_configuration.can_be_cancelled)
                     .do((i:string) => {
                         this.print_cancel_text();
                     }),
 
                 from(TASK_FINISHED).to(ESCAPED)
                     .on("Escape")
-                    .if(() => this.current_page_index < this.experiment_definition.tasks.length-1)
+                    .if(() => this.current_page_index < this.experiment_definition.tasks.length-1 && this.training_configuration.can_be_cancelled)
                     .do((i:string) => {
                         this.print_cancel_text();
                     }),
@@ -96,7 +102,9 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
 
 
                 from(SHOW_OUTRO).to(SHOW_INTRO)
-                    .on("Enter").do(() => {
+                    .on("Enter")
+                    .if(()=> this.training_configuration.can_be_repeated)
+                    .do(() => {
                         this.experiment_definition.init_experiment(true);
                         this.show_intro();
                     }
@@ -119,6 +127,10 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
         if (!["a", "b", "c"].includes(s) && this.automata.current_state != 0)
             return super.input(s);
         super.input(s);
+    }
+
+    init_experiment() {
+        this.training_configuration.init_experiment(this.experiment_definition);
     }
 
 }

@@ -164,7 +164,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
         this.set_experiment_index(++this.current_page_index);
     }
 
-    init_experiment(is_training) {
-        this.experiment_definition.init_experiment(is_training);
+    init_experiment() {
+        this.experiment_definition.init_experiment(false);
     }
 }

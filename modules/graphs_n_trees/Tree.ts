@@ -1,8 +1,9 @@
 import {integer_partition_function} from "../numeric/integer_partition.js";
 import {all_array_combinations} from "../utils/arrays/all_array_combinations.js";
 import {is_true} from "../utils/Testing.js";
+import {repeat} from "../utils/loops/loop.js";
 
-class Tree {
+export class Tree {
 
     content;
     children:Tree[] = [];
@@ -18,6 +19,20 @@ class Tree {
             child_clones.push(child.clone());
         }
         return new Tree(this.content, child_clones);
+    }
+
+    preorder(f):void {
+        f(this);
+        for (let t of this.children) {
+            t.preorder(f);
+        }
+    }
+
+    postorder(f):void {
+        for (let t of this.children) {
+            t.postorder(f);
+        }
+        f(this);
     }
 
     distance_SH01(source, target):number {
@@ -152,6 +167,18 @@ class Tree {
         return false;
     }
 
+}
+
+export function generate_flat_trees(number_of_children) {
+
+    let ret = new Tree(null, []);
+    repeat(
+            number_of_children - 1,
+                        (counter) => {
+                                        ret.children.push(new Tree(null, []))
+            });
+
+    return  [ret];
 }
 
 export function generate_trees(number_of_nodes) {

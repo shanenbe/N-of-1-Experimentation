@@ -1,7 +1,7 @@
 // import * as Utils from "../Utils.js";
 // import {AUTOMATA_OUTPUT_OBJECT_FORMAT} from "./Automata_IO.js";
 // import {Treatment} from "../Experimentation/Treatment.js";
-// import {Variable} from "../Experimentation/Variable.js";
+// import {Independent_Variable} from "../Experimentation/Independent_Variable.js";
 //
 
 //
@@ -63,7 +63,7 @@
 //
 //     constructor(variable_name: string, to_write: { text: string; format: AUTOMATA_OUTPUT_OBJECT_FORMAT }[], answer_required: boolean) {
 //         super(to_write);
-//         this.variable = new Treatment(new Variable(variable_name, [variable_name]), null);
+//         this.variable = new Treatment(new Independent_Variable(variable_name, [variable_name]), null);
 //         // this.variable_name = variable_name;
 //         this.answer_required = answer_required;
 //     }

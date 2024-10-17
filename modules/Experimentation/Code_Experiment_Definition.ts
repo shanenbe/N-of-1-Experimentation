@@ -1,13 +1,11 @@
-import {Treatment} from "./Treatment.js";
-import {Task} from "./Task.js";
 import {Experiment_Definition} from "./Experiment_Definition.js";
 import {Book_Forwarder} from "../Automata_Forwarders/Book_Forwarder.js";
 import {Sequential_Forwarder_Forwarder} from "../Books/Sequential_Forwarder_Forwarder.js";
-import {Variable} from "./Variable.js";
 import {Training_Execution_Forwarder} from "../Automata_Forwarders/Training_Execution_Forwarder.js";
-import {Measurement_Type, new_random_integer, Output_Command, SET_SEED} from "./Experimentation.js";
+import {Measurement_Type, random_integer_up_to_excluding, Output_Command, SET_SEED} from "./Experimentation.js";
 import {Experiment_Forwarder} from "../Automata_Forwarders/Experiment_Forwarder.js";
 import {Question, Questionnaire_Forwarder} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
+import {Training_Configuration} from "./Training_Configuration.js";
 
 export function init(){}
 // TODO: Both classes should be one!!!
@@ -19,6 +17,7 @@ export class Code_Experiment_Definition extends Experiment_Definition {
                                                 introduction_texts:Output_Command[],
                                                 post_questionnaire?: Question[],
                                                 pre_run_training_output: Output_Command,
+                                                training_configuration: Training_Configuration,
                                                 pre_run_experiment_output: Output_Command,
                                                 finish_texts: Output_Command[],
                                                 measurement: Measurement_Type,
@@ -40,16 +39,20 @@ export class Code_Experiment_Definition extends Experiment_Definition {
         );
 
         SET_SEED(cfg.seed);
-        experiment_execution_forwarder.init_experiment(false);
+
+        experiment_execution_forwarder.init_experiment();
+
+
         let cloned_experiment_definition = this.clone();
 
         let training_forwarder = new Training_Execution_Forwarder(
-                                                            cfg.pre_run_training_output,
-                                                            cloned_experiment_definition,
-                                                            cfg.measurement
-                                                       );
+                                                                    cfg.pre_run_training_output,
+                                                                    cfg.training_configuration,
+                                                                    cloned_experiment_definition,
+                                                                    cfg.measurement
+                                                                 );
 
-        training_forwarder.experiment_definition.init_experiment(true);
+        training_forwarder.init_experiment();
 
         let post_questionnaire = null;
         if (cfg.post_questionnaire!=undefined) {
@@ -80,6 +83,8 @@ export class Code_Experiment_Definition extends Experiment_Definition {
 
         let clone = new Code_Experiment_Definition  (
                                                         this.template.experiment_name,
+                                                        this.is_training,
+                                                        this.treatments_combinator.clone(),
                                                         this.template.variables,
                                                         this.template.repetitions,
                                                         this.measurement,
@@ -90,64 +95,4 @@ export class Code_Experiment_Definition extends Experiment_Definition {
 
     }
 
-    create_Task(
-        treatment_combination: Treatment[]
-    )
-        : Task
-    {
-        return new Task(treatment_combination, this, "");
-    }
-
-}
-
-export function create_code_experiment_execution(cfg:
-                                                    {
-                                                        experiment_name     :string,
-                                                        seed                :string,
-                                                        introduction_pages  :Output_Command[],
-                                                        post_questionnaire?: Question[],
-                                                        pre_run_training_output: Output_Command,
-                                                        pre_run_experiment_output: Output_Command,
-                                                        finish_pages        :Output_Command[],
-                                                        layout              :{
-                                                                                variable: string,
-                                                                                treatments: string[]
-                                                                             }[],
-                                                        repetitions         :number,
-                                                        task_configuration  :(task:Task) =>void,
-                                                        measurement         :Measurement_Type,
-                                                        finish_function     :(experiment:Experiment_Definition)=>void
-                                                    }
-                                                 )
-:Sequential_Forwarder_Forwarder
-{
-    let variables: Variable[] = [];
-    for(let aVar of cfg.layout) {
-        variables.push(new Variable(aVar.variable, aVar.treatments))
-    }
-
-    let experiment_definition = new Code_Experiment_Definition(
-                                                                    cfg.experiment_name,
-                                                                    variables,
-                                                                    cfg.repetitions,
-                                                                    cfg.measurement,
-                                                                    cfg.task_configuration,
-                                                              );
-
-    let experiment_execution = experiment_definition.create_code_all_experiment_automatas(
-                                                                                    {
-                                                                                            seed: cfg.seed,
-                                                                                            introduction_texts: cfg.introduction_pages,
-                                                                                            post_questionnaire: cfg.post_questionnaire,
-                                                                                            pre_run_training_output: cfg.pre_run_training_output,
-                                                                                            // post_run_training_output: cfg.post_run_training_output,
-                                                                                            pre_run_experiment_output: cfg.pre_run_experiment_output,
-                                                                                            // post_run_experiment_output: cfg.post_run_experiment_output,
-                                                                                            finish_texts: cfg.finish_pages,
-                                                                                            measurement: cfg.measurement,
-                                                                                            finish_function: cfg.finish_function
-                                                                                        }
-                                                                                     );
-
-    return experiment_execution;
 }

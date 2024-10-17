@@ -1,88 +1,56 @@
-import {Variable} from "./Variable.js";
-import {Treatment} from "./Treatment.js";
+import {Independent_Variable} from "./treatments/Independent_Variable.js";
 import {Task} from "./Task.js";
-import {Measurement_Type, new_random_integer, SET_SEED} from "./Experimentation.js";
-
+import {Measurement_Type} from "./Experimentation.js";
 import {Questionnaire_Forwarder} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
-export function init(){}
-export abstract class Experiment_Definition {
-    experiment_name: string;
+import {Treatments_Combinator} from "./treatments/Treatments_Combinator.js";
+import {Independent_Variables} from "./treatments/Independent_Variables.js";
 
-    variables: Variable[];
+export function init(){}
+
+export abstract class Experiment_Definition {
+
+    experiment_name: string;
+    is_training: boolean;
+
+    variables: Independent_Variables;
     questionnaires:Questionnaire_Forwarder[] = [];
     measurement:Measurement_Type;
-
+    treatments_combinator: Treatments_Combinator;
 
     tasks: Task[] = [];
-    repetitions: number = 1;
-    task_creator: (Task: Task) => void;
+
+    experiment_definition_task_creator: (Task: Task) => void;
+
     constructor(experiment_name: string,
-                variables: Variable[],
+                is_training: boolean,
+                treatments_combinator: Treatments_Combinator,
+                variables: Independent_Variables,
                 repetitions: number,
                 measurement:Measurement_Type,
                 task_creator: (task: Task) => void)
     {
-        this.template = {experiment_name: experiment_name, variables: variables, repetitions: repetitions, task_creator: task_creator};
         this.experiment_name = experiment_name;
+        this.is_training = is_training;
+        this.template = {experiment_name: experiment_name, variables: variables, repetitions: repetitions, task_creator: task_creator};
+        this.treatments_combinator = treatments_combinator;
         this.variables = variables;
-        this.repetitions = repetitions;
         this.measurement = measurement;
-        this.task_creator = task_creator;
+        this.experiment_definition_task_creator = task_creator;
     }
 
     template: {  experiment_name: string,
-                 variables:  Variable[],
+                 variables:  Independent_Variables,
                  repetitions: number,
                  task_creator: (task: Task) => void };
 
 
 
     init_experiment(is_training) {
-        this.createTasks(is_training);
-        this.do_random_task_ordering();
+        this.tasks = this.treatments_combinator.create_tasks(this);
     }
 
-    createTasks(is_training) {
-        this.tasks = [];
-        this.all_treatment_combinations_do(
-            (treatment_combination: Treatment[]) => {
-                let task: Task = this.create_Task(this.cloned_treatment_combinations(treatment_combination));
-                this.task_creator(task);
-                task.is_training = is_training;
-                this.tasks.push(task);
-            }
-        );
-    }
-
-    cloned_treatment_combinations(treatment_combination: Treatment[]) {
-        let ret = [];
-        treatment_combination.forEach( t => ret.push(t.clone()));
-        return ret;
-    }
-
-    abstract create_Task(treatment_combination: Treatment[]): Task;
-
-    all_treatment_combinations_do(
-        f: (treatments: Treatment[]) => void
-    ) {
-        for (let repetition = 1; repetition <= this.repetitions; repetition++) {
-            this.variables[0].all_treatment_combinations_do([], this.variables.slice(1), f)
-        }
-    }
-
-    private do_random_task_ordering() {
-        let new_tasks: Task[] = [];
-        let old_tasks: Task[] = this.tasks.slice();
-        let counter = 1;
-        while(new_tasks.length < this.tasks.length) {
-            let element_no = new_random_integer(old_tasks.length);
-            new_tasks.push(old_tasks[element_no]);
-            old_tasks[element_no].task_number_in_execution = counter;
-            old_tasks.splice(element_no, 1);
-            counter++;
-        }
-        this.tasks = new_tasks;
-
+    all_independent_variables():Independent_Variable[] {
+        return this.variables.independent_variables;
     }
 
     generate_csv_data():string[] {
@@ -93,9 +61,7 @@ export abstract class Experiment_Definition {
                 result.push("\"" + question.variable_name + "\"" + ";");
             }
         }
-        for(let variable of this.variables) {
-            result.push(variable.name + ";");
-        }
+        this.variables.print_to_array(result);
         result.push("number_of_given_answers;expected_answer;given_answer;is_correct;time_in_milliseconds;\n");
         for(let task of this.tasks) {
             for(let questionnaire of this.questionnaires) {
@@ -103,7 +69,7 @@ export abstract class Experiment_Definition {
                     result.push("\"" + question.answer + "\"" + ";");
                 }
             }
-            for(let treatment_combination of task.treatment_combination) {
+            for(let treatment_combination of task.treatment_combination.treatment_combination) {
                 result.push(treatment_combination.value + ";")
             }
             result.push((task.invalid_answers.length + 1) + ";");

@@ -8,11 +8,14 @@
 //    "outDir": "build",
     "allowJs": true,
     "sourceMap": true,
+    "declaration": true,
 
     "noImplicitAny": false,
 //    "isolatedModules": true,
     "rootDirs": ["./", "./modules", "./experiments"],
-
+//    "paths": {
+//      "experimentation_core/*": ["./modules/*"]
+//    }
   },
 
   "include": ["*.ts", "./modules/*.ts", "./modules/Words/*.ts", "./modules/**/*.ts", "./experiments/**/*.ts"],

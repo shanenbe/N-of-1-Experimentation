@@ -1,10 +1,11 @@
 import {
     alternatives,
-    free_text, keys, new_random_integer, Reaction_Time, Reaction_Time_With_Penalty,
+    free_text, keys, random_integer_up_to_excluding, Reaction_Time, Reaction_Time_With_Penalty,
     SET_SEED,
     text_input_experiment,
     Time_to_finish, Time_to_finish_with_Penalty
-} from "../modules/Experimentation/Experimentation.js";
+} from "../modules/Experimentation/Experimentation";
+
 import {BROWSER_EXPERIMENT} from "../modules/Experimentation/Browser_Output_Writer.js";
 import {Nouns} from "../modules/Words/Nouns.js";
 import {Verbs} from "../modules/Words/Verbs.js";
@@ -13,10 +14,10 @@ import {array_of_rows_to_logical_result, Logical_Results} from "../modules/utils
 
 function set_nof1(map) {
     map['SET_SEED'] = SET_SEED;
-    map['new_random_integer'] = new_random_integer;
+    map['new_random_integer'] = random_integer_up_to_excluding;
     map['BROWSER_EXPERIMENT'] = BROWSER_EXPERIMENT;
     map['text_input_experiment'] = text_input_experiment;
-    map['new_random_integer'] = new_random_integer;
+    map['new_random_integer'] = random_integer_up_to_excluding;
     map['Time_to_finish'] = Time_to_finish;
     map['Time_to_finish_with_penality'] = Time_to_finish_with_Penalty;
     map['Reaction_time'] = Reaction_Time;
@@ -32,5 +33,6 @@ function set_nof1(map) {
 
 } // @ts-ignore
 
-set_nof1(Nof1);
+// @ts-ignore
+set_nof1(Nof1); // Note: the webpage needs to introduce the global variable Nof1
 

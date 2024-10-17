@@ -1,8 +1,9 @@
 import {Experiment_Output_Writer, Measurement_Type, Output_Command} from "./Experimentation.js";
 import {Task} from "./Task.js";
 import {key_event_string, save_file_in_html} from "../utils/Utils.js";
-import {Code_Experiment_Definition, create_code_experiment_execution} from "./Code_Experiment_Definition.js";
+import {Code_Experiment_Definition} from "./Code_Experiment_Definition.js";
 import {Question} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
+import {create_code_experiment_execution} from "./functions/create_code_experiment_execution.js";
 
 export class Browser_Output_Writer extends Experiment_Output_Writer {
     print_experiment_name(s:string) {
@@ -133,7 +134,9 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
                         post_questionnaire?             :Question[],
                         pre_run_training_instructions   :Output_Command,
                         training_configuration?         : {
-
+                                                                fixed_treatments: string[][],
+                                                                can_be_cancelled: boolean,
+                                                                can_be_repeated: boolean
                                                           },
                         pre_run_experiment_instructions :Output_Command,
                         finish_pages                    :Output_Command[],
@@ -158,6 +161,8 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
             introduction_pages: cfg.introduction_pages,
             post_questionnaire: cfg.post_questionnaire,
             pre_run_training_output: cfg.pre_run_training_instructions,
+            training_configuration: cfg.training_configuration,
+
             pre_run_experiment_output: cfg.pre_run_experiment_instructions,
             finish_pages: cfg.finish_pages,
             layout: cfg.layout,
