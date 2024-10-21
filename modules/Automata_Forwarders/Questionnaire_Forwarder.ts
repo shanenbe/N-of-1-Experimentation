@@ -37,6 +37,7 @@ export class Alternatives extends Question {
 
     input_html() {
         let html_string = "<select id=\"" + this.variable_name + "\">";
+        html_string +="<option disabled selected value> -- select an option -- </option>";
         let index = 0;
         this.alternatives.forEach((a) =>
             html_string += "<option value=" + index++ + ">" + a + "</option>"
@@ -51,6 +52,22 @@ export class Alternatives extends Question {
         this.answer = this.alternatives[element.value];
     }
 
+}
+
+export class Information extends Question {
+    html_string() {
+        let html_string = "<p>We have one question to you.</p>";
+        return html_string;
+    }
+
+    input_html() {
+        let html_string = "<input type=\"text\" id=\"" + this.variable_name + "\">";
+        return html_string;
+    }
+
+    constructor(question_text: string) {
+        super(null, question_text);
+    }
 }
 
 export class Freetext extends Question {

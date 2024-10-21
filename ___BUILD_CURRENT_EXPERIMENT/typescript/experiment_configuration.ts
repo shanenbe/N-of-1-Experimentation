@@ -1,6 +1,7 @@
 import {BROWSER_EXPERIMENT} from "../../modules/Experimentation/Browser_Output_Writer.js";
 import {
-    Experiment_Output_Writer, random_array_element,
+    alternatives,
+    Experiment_Output_Writer, free_text, information, random_array_element,
     SET_SEED,
     text_input_experiment,
     Time_to_finish
@@ -12,24 +13,24 @@ import {call_string} from "./code/Parser.js";
 import {as_constructor_call} from "./code/convert_tree_to_constructor_call.js";
 import {Constructor_Call} from "./code/Constructor_Call.js";
 
-let SEED = "666";
+let SEED = "42";
 
 SET_SEED(SEED);
 
 let TREES = {
-    3: generate_flat_trees(2),
-    5: generate_flat_trees(4),
-    7: generate_flat_trees(6)
+    1: generate_trees(2),
+    3: generate_trees(4),
+    5: generate_trees(6)
 };
 
 let experiment_configuration_function = (writer: Experiment_Output_Writer) => { return {
 
-    experiment_name: "TestExperiment",
+    experiment_name: "TypeSystems-ConstructorCalls-Hierarchical",
     seed: SEED,
 
     introduction_pages: writer.stage_string_pages_commands([
         writer.convert_string_to_html_string(
-            "Please, just do this experiment only, when you have enough time (about 25 minutes), are concentrated enough, and motivated enough.\n\nPlease, open the browser in fullscreen mode (probably by pressing [F11]). You should have a screen with a resolution of 1920x1080 or more."
+            "Please, just do this experiment only, when you have enough time (about 15 minutes), are concentrated enough, and motivated enough.\n\nPlease, open the browser in fullscreen mode (probably by pressing [F11]). You should have a screen with a resolution of 1920x1080 or more."
         ),
             "In this experiment, you will be asked to enter the constructor call to a class <span class='sourcecode'>Target</span>. A valid constructor call requires in the underlying language the correct number of parameters as well.<br><br>" +
             "The languages does <b>not</b> have a keyword such as <span class='sourcecode'>new</span>. Instead, you call a constructor like a function call, where the class name is the function name.<br/><br/> " +
@@ -67,38 +68,87 @@ let experiment_configuration_function = (writer: Experiment_Output_Writer) => { 
 
     pre_run_experiment_instructions: writer.string_page_command(
         writer.convert_string_to_html_string(
-            "You entered the experiment phase.\n\n"
+            "You entered the experiment phase. Now, it should take probably 8-12 minutes until the end of the experiment."
         )),
+
+    post_questionnaire           :   [
+        alternatives("Age","What's your age??",
+            ["younger than 18", "between 18 and (excluding) 25", "between 25 and (excluding) 30", "between 30 and (excluding) 35", "between 35 and (excluding) 40", "40 or older"]),
+
+        alternatives("Status","What is your current working status?",
+            ["Undergraduate student (BSc not yet finished)", "Graduate student (at least BSc finished)", "PhD student", "Professional software developer", "Teacher", "Other"]),
+
+        alternatives("Studies","In case you study, what's your subject?",
+            ["I do not study", "Computer science", "computer science related (such as information systems, aka WiInf)", "something else in natural sciences", "something else"]),
+
+        alternatives("LOCExperience","What describes your programming background best?",
+            ["I never program", "I rarely program", "I write some LOC from time to time", "I frequently write code", "I write code almost every day"]),
+
+        alternatives("YearsOfExperience", "How many years of experience do you have in software industry?",
+            ["none", "less than or equal 1 year", "more than 1 year, but less than or equal 3 years", "more than 3 years, but less than or equal 5 year", "more than 5 years"]),
+
+        alternatives("impression", "What statement describes " +
+            "                       best your impression \n\ of the experiment?", [
+                                                                                "I do not think that there was a difference between static and dynamic types",
+                                                                                "Dynamic types made it slightly easier for me",
+                                                                                "Dynamic types made it much easier for me",
+                                                                                "Static types made it slightly easier for me",
+                                                                                "Static types made it much easier for me",
+                                                                              ]),
+
+        alternatives("preference", "What kinds of language do you prefer?", [
+                                                                                "Slightly rather dynamically typed languages",
+                                                                                "Slightly statically typed languages",
+                                                                                "Definitively dynamically typed languages",
+                                                                                "Definitively statically typed languages",
+                                                                                "I don't think typing matters much"
+        ]),
+        alternatives("possibleEffect", "Do you think participating in the experiment changed your perspective on type systems?", [
+            "Rather no",
+            "Rather yes",
+            "Definitively no",
+            "Definitively es",
+            "I don't know"
+        ]),
+
+    ],
 
     finish_pages: [
         writer.string_page_command(
-            writer.convert_string_to_html_string(
-                "Almost done. Next, the experiment data will be downloaded (after pressing [Enter]). Please, send the " +
-                "downloaded file to the experimenter (stefan.hanenberg@uni-due.de). By sending that mail, you agree that your (ananomy\n\n" +
-                "After sending your email, you can close this window.\n\n" +
-                "Many thanks for participation."
-            )
+            "<p>Almost done. Next, the experiment data will be downloaded (after pressing [Enter]).<br><br>" +
+            "Please, send the " +
+            "downloaded file to the experimenter: " + "<a href='mailto:stefan.hanenberg@uni-due.de'>stefan.hanenberg@uni-due.de</a></p>" +
+            "<p>By sending that mail, you agree that " +
+            "your (anonymized) data will be used for scientific analyses where your data (together with others in an " +
+            "anonymized way) will be published.<br><br>I.e., you agree with the information sheet, see " +
+            "<a href='https://github.com/shanenbe/Experiments/blob/main/2024_TypeSystems_ConstructorCall_Flat/Agreement.pdf' target='_blank'>here</a>. " +
+            "Note, that it it no longer necessary to send a signed version of the agreement to the experimenter.<br><br>" +
+            "After sending your email, you can close this window.</p>" +
+            "<p>Many thanks for your participation.<br>" +
+            "-Stefan Hanenberg</p>"
         )
     ],
 
     layout: [
         { variable: "Notation",  treatments: ["types", "no_types"]},
-        { variable: "Number_of_terms",  treatments: ["3", "5", "7"]},
+        { variable: "Number_of_parameters",  treatments: ["1", "3", "5"]},
     ],
 
-    repetitions: 2, //CATALAN_GRAPHS.length,
+    repetitions: 2,
 
     measurement: Time_to_finish(text_input_experiment),
 
     training_configuration: {
-        fixed_treatments: [["types", "7"], ["no_types", "5"]],
+        fixed_treatments:               [
+                                            ["types", "5"], ["no_types", "5"]
+                                        ],
         can_be_cancelled: false,
         can_be_repeated: false
     },
 
     task_configuration:    (t:Task) => {
 
-        let this_tree = random_array_element(TREES[t.treatment_value("Number_of_terms")]).clone();
+        let this_tree = random_array_element(TREES[t.treatment_value("Number_of_parameters")]).clone();
         let this_classes = generate_classes_from_tree(this_tree, 14);
 
         let html_string = this_classes.html_table_string(5, t.treatment_value("Notation")==="types");

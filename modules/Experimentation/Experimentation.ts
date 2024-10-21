@@ -1,7 +1,7 @@
 import dummy from "../../modules_hard_import/seedrandom/seedrandom.js";
 import {Task} from "./Task.js";
 import {convert_string_to_html_string} from "../utils/Utils.js";
-import {Alternatives, Freetext} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
+import {Alternatives, Freetext, Information} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
 
 export type Output_Command=()=>void;
 export function init(){}
@@ -33,6 +33,10 @@ export function text_input_experiment(output_writer: Experiment_Output_Writer):E
 
 export function text_input_experiment_with_pre_post_label(pre, post) {
     return (output_writer: Experiment_Output_Writer) => new Free_Text_User_Input_Experiment_With_PrePost(output_writer, pre, post);
+}
+
+export function information(question:string) {
+    return new Information(question);
 }
 
 export function free_text(var_name: string, question:string) {

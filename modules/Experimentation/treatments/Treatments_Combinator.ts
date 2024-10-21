@@ -38,8 +38,7 @@ export class Treatments_Combinator {
             task.is_training = experiment_definition.is_training;
             tasks.push(task);
         }
-        do_random_array_sort(tasks);
-        return tasks;
+        return do_random_array_sort(tasks);
     }
 
     get_variable_named(var_name:string):Independent_Variable {

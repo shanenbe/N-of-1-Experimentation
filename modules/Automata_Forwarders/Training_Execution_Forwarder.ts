@@ -35,7 +35,7 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
                 measurement.output_writer().print_html_on_stage(
                     "You finished the training phase.<hr>" +
                     (training_configuration.can_be_repeated?"Please, press [Enter] to run again a training session.<br>":"") +
-                    "Please, press [E] (capital E!) to enter the experiment phase."
+                    "Please, press [E] (capital E, i.e., [shift] + [e]) to enter the experiment phase."
                 )},
             experiment_definition,
             measurement);

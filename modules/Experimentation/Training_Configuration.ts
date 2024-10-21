@@ -8,8 +8,8 @@ import {Treatment_Combination} from "./treatments/Treatment_Combination.js";
 export class Training_Configuration {
 
     fixed_treatments: any[];
-    can_be_cancelled: boolean;
-    can_be_repeated:boolean;
+    can_be_cancelled: boolean = true;
+    can_be_repeated:boolean = true;
 
     constructor(
                     training_configuration: {
@@ -18,10 +18,12 @@ export class Training_Configuration {
                                                 can_be_repeated: boolean
                                             }
                                                                                 ){
-                                                                                    this.fixed_treatments = training_configuration.fixed_treatments;
+                                                                                    if(training_configuration === undefined) return;
+                                                                                    if(training_configuration.fixed_treatments!=undefined)
+                                                                                        this.fixed_treatments = training_configuration.fixed_treatments;
+
                                                                                     this.can_be_cancelled = training_configuration.can_be_cancelled;
                                                                                     this.can_be_repeated = training_configuration.can_be_repeated;
-
                                                                                 }
 
 
@@ -47,6 +49,8 @@ export class Training_Configuration {
                                                                                     experiment_definition.experiment_definition_task_creator(task);
                                                                                     experiment_definition.tasks.push(task);
                                                                                 }
+                                                                            } else {
+                                                                                experiment_definition.init_experiment(true);
                                                                             }
                                                                         }
 
