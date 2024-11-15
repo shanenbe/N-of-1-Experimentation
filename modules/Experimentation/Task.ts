@@ -77,4 +77,15 @@ export class Task {
 
         throw "Unknown treatment: " + treatment_name;
     }
+
+    set_computed_variable_value(variable_name: string, value: string) {
+
+        for(let treatment of this.treatment_combination.treatment_combination)
+            if(treatment.variable.name===variable_name) {
+                treatment.value = value;
+                return;
+            }
+
+        throw "Unknown treatment: " + variable_name;
+    }
 }
