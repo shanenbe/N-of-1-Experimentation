@@ -130,7 +130,7 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
 export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) => {
                         experiment_name                 :string,
                         seed                            :string,
-                        introduction_pages              :Output_Command[],
+                        introduction_pages              :(()=>void)[],
                         post_questionnaire?             :Question[],
                         pre_run_training_instructions   :Output_Command,
                         training_configuration?         : {
