@@ -14,8 +14,8 @@ The template of an N-of-1 experiment consists of three files that can be downloa
 [https://github.com/shanenbe/N-of-1-Experimentation/tree/main/___BUILD_LIB_FILE_TestExperiment](https://github.com/shanenbe/N-of-1-Experimentation/tree/main/___BUILD_LIB_FILE_TestExperiment)
 - index.html: the starting page for the experiment. This html-file loads the following two files.
 - lib.js: the library (the present repo packed via webpack). You will probably not want to take a look into it (because it is generated).
-- experiment.js: the code of the experiment you want to run (the downloaded file contains just a mock).
+- experiment_configuration.js: the code of the experiment you want to run (the downloaded file contains just a mock).
 
-For running an experiment, you need to edit experiment.js and then run the html-page.
+For running an experiment, you need to edit experiment_configuration.js and then run the html-page.
 
 Probably the easiest way to get into the code is to take a look into __Examples. 
