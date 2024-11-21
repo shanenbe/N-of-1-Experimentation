@@ -8,8 +8,8 @@ module.exports = {
     output: {
         // path:'./',
         path: path.resolve(__dirname, './'),
-        filename: './___BUILD_CURRENT_EXPERIMENT/experiment.js',
-        // filename: './___BUILD_LIB_FILE_TestExperiment/experiment.js',
+        filename: './___BUILD_CURRENT_EXPERIMENT/experiment_configuration.js',
+        // filename: './___BUILD_LIB_FILE_TestExperiment/experiment_configuration.js',
     },
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ],

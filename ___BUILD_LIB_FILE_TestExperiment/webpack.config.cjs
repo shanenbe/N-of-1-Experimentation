@@ -8,7 +8,7 @@ module.exports = {
         // path:'./',
         path: path.resolve(__dirname, './'),
         filename: './nof1experimentation.js',
-        // filename: './___BUILD_LIB_FILE_TestExperiment/experiment.js',
+        // filename: './___BUILD_LIB_FILE_TestExperiment/experiment_configuration.js',
     },
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ],
