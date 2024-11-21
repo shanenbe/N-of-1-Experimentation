@@ -129,7 +129,7 @@ function get_software_science_request(
     let last_element = ()=>path_elements[path_elements.length - 1];
 
     if(path_elements.length > 4) {
-        if (last_element() == "experiment.js") {
+        if (last_element() == "experiment_configuration.js") {
             experiment_name = path_elements[path_elements.length - 2];
             return new Code_Request(experiment_name);
         } else {
