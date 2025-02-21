@@ -1,4 +1,4 @@
-import {Experiment_Output_Writer, Measurement_Type, Output_Command} from "./Experimentation.js";
+import {Experiment_Output_Writer, Measurement_Type, Output_Command, SET_SEED} from "./Experimentation.js";
 import {Task} from "./Task.js";
 import {key_event_string, save_file_in_html} from "../utils/Utils.js";
 import {Code_Experiment_Definition} from "./Code_Experiment_Definition.js";
@@ -149,9 +149,9 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
                         task_configuration              :(task:Task) =>void,
                   }
 ) {
-
     let browser_output = new Browser_Output_Writer();
     let cfg = creator(browser_output);
+    SET_SEED(cfg.seed);
     let this_measurement:Measurement_Type = cfg.measurement(browser_output);
 
     let experiment_automata = create_code_experiment_execution(

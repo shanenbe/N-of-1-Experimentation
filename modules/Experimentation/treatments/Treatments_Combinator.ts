@@ -34,7 +34,12 @@ export class Treatments_Combinator {
         let tasks = [];
         for (let treatment_combination of this.create_treatment_combinations()) {
             let task: Task = new Task(treatment_combination.clone(), experiment_definition, "");
-            experiment_definition.experiment_definition_task_creator(task);
+            try {
+                experiment_definition.experiment_definition_task_creator(task);
+            } catch (ex) {
+                console.log("halt");
+                experiment_definition.experiment_definition_task_creator(task)
+            }
             task.is_training = experiment_definition.is_training;
             tasks.push(task);
         }

@@ -72,7 +72,6 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
             from(SHOW_INTRO).to(SHOW_TASK)
                 .on("Enter")
                 .do((i:string) => {
-                    console.log("Dummy Exp: Enter On Exp")
                     this.set_experiment_index(0);
                     this.measurement.start_measurement(this.current_task());
                 }),
@@ -80,7 +79,6 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
             from(SHOW_INTRO).to(SHOW_OUTRO) // State=3: Experiment done - just the message afterwards shown
                 .on("Delete")
                 .do((i:string) => {
-                    console.log("Dummy Exp: Delete On Exp")
                     this.show_outro();
                 }),
 

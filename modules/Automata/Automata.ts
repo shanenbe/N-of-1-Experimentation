@@ -32,7 +32,7 @@ export class Automata {
     end_states: number[];
     init_function: ()=>void;
 
-    on_finish_function: (number) => void;
+    // on_finish_function: (number) => void;
 
     input(
             input:string

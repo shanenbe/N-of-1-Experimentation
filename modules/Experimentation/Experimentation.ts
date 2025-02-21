@@ -27,6 +27,10 @@ export function keys(key_list: string[]) {
     return (writer:Experiment_Output_Writer) => new Key_Pressing(key_list, writer);
 }
 
+export function keys_0_to_9() {
+    return (writer:Experiment_Output_Writer) => new Key_Pressing(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], writer);
+}
+
 export function text_input_experiment(output_writer: Experiment_Output_Writer):Experiment_Input_Type {
     return new Free_Text_User_Input_Experiment(output_writer);
 }
@@ -364,6 +368,18 @@ export function do_random_array_sort(array:any[]) {
 
 export function random_array_element(array:any[]) {
     return array[random_integer_up_to_excluding(array.length)];
+}
+
+export function  random_lower_case_letter() {
+    return String.fromCharCode(97 + random_integer_up_to_excluding(26));
+}
+
+export function  random_lower_case_letter_except(letters:string[]) {
+    while(true) {
+        let ret = String.fromCharCode(97 + random_integer_up_to_excluding(26));
+        if(!letters.includes(ret))
+            return String.fromCharCode(97 + random_integer_up_to_excluding(26));
+    }
 }
 
 // This invocation just makes sure that RANDOM is loaded

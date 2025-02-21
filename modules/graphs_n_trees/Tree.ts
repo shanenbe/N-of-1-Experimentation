@@ -1,7 +1,8 @@
 import {integer_partition_function} from "../numeric/integer_partition.js";
 import {all_array_combinations} from "../utils/arrays/all_array_combinations.js";
 import {is_true} from "../utils/Testing.js";
-import {repeat} from "../utils/loops/loop.js";
+import {iterate, repeat} from "../utils/loops/loop.js";
+import {all_true_false_combinations} from "../numeric/combinatoric.js";
 
 export class Tree {
 
@@ -16,15 +17,16 @@ export class Tree {
     clone() {
         let child_clones = [];
         for (let child of this.children) {
-            child_clones.push(child.clone());
+            child_clones.push((child!==null)?child.clone():null);
         }
         return new Tree(this.content, child_clones);
     }
 
     preorder(f):void {
         f(this);
-        for (let t of this.children) {
-            t.preorder(f);
+        for (let child of this.children) {
+            if(child !== null)
+                child.preorder(f);
         }
     }
 
@@ -179,6 +181,61 @@ export function generate_flat_trees(number_of_children) {
             });
 
     return  [ret];
+}
+
+export function generate_binary_trees(number_of_nodes:number): Tree[] {
+    let all_bin_trees_of_length = [];
+    all_bin_trees_of_length.push([null]);                   // 0
+    all_bin_trees_of_length.push([new Tree(null, [])]); // 1
+
+    for(let new_all_bin_trees_position = 2; new_all_bin_trees_position <= number_of_nodes; new_all_bin_trees_position++) {
+        let new_trees = [];
+        for(let left_right_counter=0; left_right_counter<all_bin_trees_of_length.length; left_right_counter++) {
+            let left_children = all_bin_trees_of_length[left_right_counter];
+            let right_children = all_bin_trees_of_length[all_bin_trees_of_length.length - left_right_counter - 1];
+
+            all_array_combinations([left_children, right_children], combination=> {
+                let new_tree = new Tree(null, [combination[0], combination[1]]);
+                new_trees.push(new_tree);
+            });
+        }
+        all_bin_trees_of_length.push(new_trees);
+    }
+
+    return all_bin_trees_of_length[number_of_nodes];
+}
+
+export function all_true_false_binary_trees(number_of_tree_nodes:number) {
+    let all_binary_trees                                = generate_binary_trees(
+        number_of_tree_nodes
+    );
+
+    let number_of_true_false_combinations               = Math.pow(
+        2,
+        number_of_tree_nodes
+    ) - 1;
+
+    let all_true_false_combinations_array:boolean[][]    = all_true_false_combinations(
+        number_of_true_false_combinations
+    );
+
+    let all_true_false_trees                = [];
+
+
+    iterate(all_binary_trees)
+        .do((tree:Tree) => {
+            for(let true_false_combination of all_true_false_combinations_array) {
+                let cloned_tree = tree.clone();
+                let binary_array_position = 0;
+                cloned_tree.preorder((root:Tree) => {
+                    root.content = true_false_combination[binary_array_position++];
+                    let this_strange_tree = cloned_tree;
+                });
+                all_true_false_trees.push(cloned_tree);
+            }
+        });
+
+    return all_true_false_trees;
 }
 
 export function generate_trees(number_of_nodes) {
