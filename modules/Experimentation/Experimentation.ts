@@ -378,7 +378,7 @@ export function  random_lower_case_letter_except(letters:string[]) {
     while(true) {
         let ret = String.fromCharCode(97 + random_integer_up_to_excluding(26));
         if(!letters.includes(ret))
-            return String.fromCharCode(97 + random_integer_up_to_excluding(26));
+            return ret;
     }
 }
 

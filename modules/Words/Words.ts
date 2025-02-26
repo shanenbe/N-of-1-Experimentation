@@ -87,13 +87,13 @@ export abstract class Words {
 
     }
 
-    replace_letters_starting_at(word:string, num_letters, first_change_position:number):string[] {
+    replace_letters_starting_at(word:string, num_letters_to_replace, first_change_position:number):string[] {
         let start_word = word.slice(0, first_change_position);
-        start_word = start_word + random_lower_case_letter_except([start_word[first_change_position]]);
+        start_word = start_word + random_lower_case_letter_except([word[first_change_position]]);
         let rest_word = word.slice(first_change_position+1, word.length);
 
-        let rest_words = this.replace_letters(rest_word, num_letters-1);
-        let ret = rest_words.map(w => start_word + w);
+        let rest_words = this.replace_letters(rest_word, num_letters_to_replace-1);
+        let ret = rest_words.map(w => start_word + w );
         return ret;
     }
 

@@ -18,6 +18,18 @@ export class Automata {
 
 
         for(let t of config.transitions) {
+            if(this.transitions == null) {
+                console.log("Something is wrong here");
+            }
+
+            if(this.transitions == undefined || t.from==undefined) {
+                console.log("Something is wrong here");
+            }
+
+            if(this.transitions[t.from] ==undefined) {
+                console.log("Something is wrong here");
+            }
+
             this.transitions[t.from].push(t);
         }
         this.init_function = config.init_function;
