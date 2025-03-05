@@ -1,36 +1,24 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-    entry: './___BUILD_CURRENT_EXPERIMENT/typescript/exp_trial02.ts',
-    // entry: './___BUILD_LIB_FILE_TestExperiment/API_PROVIDER_FOR_WEBPACK_LIB_GENERATION.ts',
+    entry: './src/index.ts',
     devtool: "inline-source-map",
+    mode: 'production',
     output: {
-        // path:'./',
-        path: path.resolve(__dirname, './'),
-        filename: './___BUILD_CURRENT_EXPERIMENT/experiment_configuration.js',
-        // filename: './___BUILD_LIB_FILE_TestExperiment/experiment_configuration.js',
+        path: path.resolve(__dirname, './lib'),
+        filename: './nof1experimentation.js',
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ],
+        extensions: ['.ts', '.tsx', '.js'],
         fallback: { "crypto": false },
     },
-
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                use: 'ts-loader'
+                test: /\.ts$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
             },
         ],
     },
-
-    // plugins: [
-    //     new HtmlWebpackPlugin({
-    //         title: 'TestExperiment',
-    //         filename: 'Experiments.html',
-    //         inject: true
-    //     })
-    // ]
-
 };
