@@ -9,6 +9,7 @@ import {Training_Configuration} from "./Training_Configuration.js";
 
 export function init(){}
 // TODO: Both classes should be one!!!
+// ASAP!!!!
 export class Code_Experiment_Definition extends Experiment_Definition {
 
 

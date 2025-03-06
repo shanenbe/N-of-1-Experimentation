@@ -349,6 +349,7 @@ class _Random {
 }
 
 export const Random = new _Random();
+
 export function SET_SEED(seed: string) {
     Random.set_seed(seed);
 }
@@ -368,6 +369,11 @@ export function do_random_array_sort<T>(array:T[]):T[] {
 
 export function random_array_element<T>(array:T[]):T {
     return array[random_integer_up_to_excluding(array.length)];
+}
+
+export function random_array_element_without<T>(array:T[], exceptions):T {
+        let copy = array.filter( e => !exceptions.includes(e) );
+        return random_array_element(copy);
 }
 
 export function random_array_elements_without_repetitions<T>(array:T[], number_of_elements_to_chose: number):T[] {
