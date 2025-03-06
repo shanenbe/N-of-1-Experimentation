@@ -39,6 +39,8 @@ export class Iterator<T> {
 
 }
 
+
+
 export function repeat(n:number, f:((c:number)=>void)) {
     for(let c=0; c < n; c++) {
         f(c);
@@ -47,9 +49,14 @@ export function repeat(n:number, f:((c:number)=>void)) {
     // return new Repeat(0)
 }
 
-export function repeat_n_times(n:number) {
+export function repeat_n_times(n:number):Repeat {
     return new Repeat(n);
 }
+
+export function repeat_(n:number) {
+    return new Repeat(n);
+}
+
 
 export class Repeat {
     counter:number;
@@ -66,4 +73,18 @@ export class Repeat {
         }
         return arr;
     }
+
+    _times(f) {
+        for(let c = 1; c <= this.counter;c++) {
+            f();
+        }
+    }
+
+    times(f) {
+        for(let c = 1; c <= this.counter;c++) {
+            f(c);
+        }
+    }
+
+
 }
