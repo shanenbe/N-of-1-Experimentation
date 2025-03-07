@@ -367,6 +367,13 @@ export function do_random_array_sort<T>(array:T[]):T[] {
     return result;
 }
 
+export function random_array_element_and_remove<T>(array:T[]):T {
+    let position = random_integer_up_to_excluding(array.length);
+    let ret = array[position];
+    array.splice(position, 1);
+    return ret;
+}
+
 export function random_array_element<T>(array:T[]):T {
     return array[random_integer_up_to_excluding(array.length)];
 }
