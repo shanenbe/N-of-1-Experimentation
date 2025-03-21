@@ -1,7 +1,7 @@
-import seedrandom from "seedrandom/seedrandom.min.js";
 import {Task} from "./Task";
 import {convert_string_to_html_string} from "../utils/Utils";
 import {Alternatives, Freetext, Information} from "../Automata_Forwarders/Questionnaire_Forwarder";
+import * as seedrandom from "seedrandom";
 
 export type Output_Command=()=>void;
 export function init(){}
