@@ -1,12 +1,6 @@
 import { convert_string_to_html_string } from "../utils/Utils";
 import { Alternatives, Freetext, Information } from "../Automata_Forwarders/Questionnaire_Forwarder";
-import * as seedrandom from "seedrandom";
-export function init() { }
-export var VARIABLE_TYPE;
-(function (VARIABLE_TYPE) {
-    VARIABLE_TYPE[VARIABLE_TYPE["STRING"] = 1] = "STRING";
-    VARIABLE_TYPE[VARIABLE_TYPE["NUMBER"] = 2] = "NUMBER";
-})(VARIABLE_TYPE || (VARIABLE_TYPE = {}));
+import seedrandom from "seedrandom";
 export function Reaction_Time(input) {
     return (writer) => new Reaction_Time_Measurement(input(writer));
 }

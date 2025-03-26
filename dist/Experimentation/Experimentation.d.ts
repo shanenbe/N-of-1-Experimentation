@@ -1,11 +1,6 @@
 import { Task } from "./Task";
 import { Alternatives, Freetext, Information } from "../Automata_Forwarders/Questionnaire_Forwarder";
 export type Output_Command = () => void;
-export declare function init(): void;
-export declare enum VARIABLE_TYPE {
-    STRING = 1,
-    NUMBER = 2
-}
 export declare function Reaction_Time(input: (writer: Experiment_Output_Writer) => Experiment_Input_Type): (writer: Experiment_Output_Writer) => Measurement_Type;
 export declare function Reaction_Time_With_Penalty(input: (writer: Experiment_Output_Writer) => Experiment_Input_Type, penalty_seconds: number): (writer: Experiment_Output_Writer) => Measurement_Type;
 export declare function Time_to_finish(input: (Experiment_Output_Writer: any) => Experiment_Input_Type): (Experiment_Output_Writer: any) => Measurement_Type;
