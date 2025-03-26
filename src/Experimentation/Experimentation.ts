@@ -1,11 +1,9 @@
 import {Task} from "./Task";
 import {convert_string_to_html_string} from "../utils/Utils";
 import {Alternatives, Freetext, Information} from "../Automata_Forwarders/Questionnaire_Forwarder";
-import * as seedrandom from "seedrandom";
+import seedrandom from "seedrandom";
 
 export type Output_Command=()=>void;
-export function init(){}
-export enum VARIABLE_TYPE { STRING = 1, NUMBER }
 
 export function Reaction_Time(input: (writer: Experiment_Output_Writer)=> Experiment_Input_Type): (writer: Experiment_Output_Writer) => Measurement_Type {
     return (writer: Experiment_Output_Writer) => new Reaction_Time_Measurement(input(writer));
