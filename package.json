@@ -13,7 +13,8 @@
   },
   "files": [
     "/dist",
-    "/lib"
+    "/lib",
+    "/src"
   ],
   "dependencies": {
     "seedrandom": "^3.0.5"
