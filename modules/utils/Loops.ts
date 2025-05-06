@@ -9,7 +9,7 @@ export function for_all<T>(collection: T[], f: Function_P1<T>) {
 
 export function for_all_but_first<T>(collection: T[], f: Function_P1<T>) {
     for(let i=1; i < collection.length; i++) {
-        f(collection[i]);
+        f(collection[i]); // dummy
     }
 }
 
