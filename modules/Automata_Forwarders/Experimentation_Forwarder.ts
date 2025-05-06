@@ -155,6 +155,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
                 .on("Enter")
                 .if((i:string) => this.current_page_index < this.experiment_definition.tasks.length-1 && !this.next_task().has_pre_task_description)
                 .do((i:string) => {
+                    this.inc_current_experiment();
                     this.measurement.start_measurement(this.current_task());
                 }),
 

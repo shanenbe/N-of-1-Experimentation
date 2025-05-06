@@ -1,9 +1,15 @@
 import { Function_P1, Function_P2 } from "./Utils.js";
 export function init(){}
 
-export function for_all<T, S extends T>(collection: T[], f: Function_P1<S>) {
+export function for_all<T>(collection: T[], f: Function_P1<T>) {
     for(let i=0; i < collection.length; i++) {
-        f.apply(collection[i]);
+        f(collection[i]);
+    }
+}
+
+export function for_all_but_first<T>(collection: T[], f: Function_P1<T>) {
+    for(let i=1; i < collection.length; i++) {
+        f(collection[i]);
     }
 }
 
