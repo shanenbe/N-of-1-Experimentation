@@ -5,14 +5,16 @@ import {Measurement_Type, Output_Command} from "../Experimentation/Experimentati
 import {Experiment_Definition} from "../Experimentation/Experiment_Definition.js";
 import {Training_Configuration} from "../Experimentation/Training_Configuration.js";
 
-let SHOW_INTRO = 0;
-let SHOW_TASK = 1;
-let SHOW_PENALTY = 2;
-let TASK_FINISHED = 3;
-let SHOW_OUTRO = 4;
-let EVERYTHING_DONE = 5;
+let SHOW_INTRO=0;
+let SHOW_PRE_TASK_INFO = 1;
+let SHOW_TASK=2;
+let SHOW_PENALTY = 3;
+let TASK_FINISHED=4;
+let SHOW_OUTRO = 5;
+let EVERYTHING_DONE = 6;
 
-let ESCAPED = 6;
+let ESCAPED = 7;
+
 
 
 export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
@@ -57,7 +59,7 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
 
     automata_configurator() {
         return new Automata_Configurator(
-            [SHOW_INTRO, SHOW_TASK, SHOW_PENALTY, TASK_FINISHED, SHOW_OUTRO, EVERYTHING_DONE, ESCAPED],
+            [SHOW_INTRO, SHOW_PRE_TASK_INFO, SHOW_TASK, SHOW_PENALTY, TASK_FINISHED, SHOW_OUTRO, EVERYTHING_DONE, ESCAPED],
             SHOW_INTRO,
             () => {},
             this.transitions(),

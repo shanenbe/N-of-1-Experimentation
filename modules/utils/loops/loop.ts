@@ -66,18 +66,4 @@ export class Repeat {
         }
         return arr;
     }
-
-    do_(f) {
-        for(let c = 1; c <= this.counter;c++) {
-            f(c);
-        }
-    }
-
-    do_without_index(f) {
-        let arr = [];
-        for(let c = 1; c <= this.counter;c++) {
-            arr.push(f());
-        }
-        return arr;
-    }
 }

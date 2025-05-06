@@ -134,7 +134,7 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
                         post_questionnaire?             :Question[],
                         pre_run_training_instructions   :Output_Command,
                         training_configuration?         : {
-                                                                fixed_treatments: string[][],
+                                                                fixed_treatments?: string[][],
                                                                 can_be_cancelled: boolean,
                                                                 can_be_repeated: boolean
                                                           },
@@ -148,6 +148,7 @@ export function BROWSER_EXPERIMENT(creator: (writer:Experiment_Output_Writer) =>
                         measurement                     : (Experiment_Output_Writer)=>Measurement_Type,
                         task_configuration              :(task:Task) =>void,
                   }
+
 ) {
     let browser_output = new Browser_Output_Writer();
     let cfg = creator(browser_output);

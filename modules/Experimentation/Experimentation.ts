@@ -349,6 +349,7 @@ class _Random {
 }
 
 export const Random = new _Random();
+
 export function SET_SEED(seed: string) {
     Random.set_seed(seed);
 }
@@ -357,7 +358,7 @@ export function random_integer_up_to_excluding(upper_limit: number): number {
     return Random.new_random_integer(upper_limit);
 }
 
-export function do_random_array_sort(array:any[]) {
+export function do_random_array_sort<T>(array:T[]):T[] {
     let copy = [...array];
     let result = [];
     while(copy.length > 0) {
@@ -366,21 +367,47 @@ export function do_random_array_sort(array:any[]) {
     return result;
 }
 
-export function random_array_element(array:any[]) {
+export function random_array_element_and_remove<T>(array:T[]):T {
+    let position = random_integer_up_to_excluding(array.length);
+    let ret = array[position];
+    array.splice(position, 1);
+    return ret;
+}
+
+export function random_array_element<T>(array:T[]):T {
     return array[random_integer_up_to_excluding(array.length)];
+}
+
+export function random_array_element_without<T>(array:T[], exceptions):T {
+        let copy = array.filter( e => !exceptions.includes(e) );
+        return random_array_element(copy);
+}
+
+export function random_array_elements_without_repetitions<T>(array:T[], number_of_elements_to_chose: number):T[] {
+    let randomly_sorted_array = do_random_array_sort(array);
+    return randomly_sorted_array.slice(0, number_of_elements_to_chose);
 }
 
 export function  random_lower_case_letter() {
     return String.fromCharCode(97 + random_integer_up_to_excluding(26));
 }
 
-export function  random_lower_case_letter_except(letters:string[]) {
+export function  random_lower_case_letter_except(letters:string[]):string {
     while(true) {
         let ret = String.fromCharCode(97 + random_integer_up_to_excluding(26));
         if(!letters.includes(ret))
             return ret;
     }
 }
+
+export function  random_upper_case_letter_except(letters:string[]):string {
+    while(true) {
+        let ret = String.fromCharCode(97 + random_integer_up_to_excluding(26)).toUpperCase();
+        if(!letters.includes(ret))
+            return ret;
+    }
+}
+
 
 // This invocation just makes sure that RANDOM is loaded
 dummy();

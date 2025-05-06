@@ -247,6 +247,7 @@ mixkey(math.random(), pool);
 if ((typeof module) == 'object' && module.exports) {
   module.exports = seedrandom;
   // When in node.js, try using crypto package for autoseeding.
+  math['seed' + rngname] = seedrandom;
   try {
     nodecrypto = require('crypto');
   } catch (ex) {}
@@ -268,9 +269,12 @@ if ((typeof module) == 'object' && module.exports) {
   Math    // math: package containing random, pow, and seedrandom
 );
 
-export default function dummy(){
-  //
-  // for(let i = 0; i < 10; i++)
-  // let c = crypto;
-  // console.log("do things");
+export function INIT_RANDOM(){
+  console.log("DONE");
 }
+
+export default function dummy() {
+  console.log("DONE");
+}
+
+console.log("RANDOM_INIT");

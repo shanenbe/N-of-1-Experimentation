@@ -29,8 +29,11 @@ export class Automata {
             if(this.transitions[t.from] ==undefined) {
                 console.log("Something is wrong here");
             }
-
-            this.transitions[t.from].push(t);
+try {
+    this.transitions[t.from].push(t);
+}catch (e) {
+    console.log("weird")
+            }
         }
         this.init_function = config.init_function;
         this.end_states = config.end_states;

@@ -238,7 +238,7 @@ export function all_true_false_binary_trees(number_of_tree_nodes:number) {
     return all_true_false_trees;
 }
 
-export function generate_trees(number_of_nodes) {
+export function generate_trees(number_of_nodes):Tree[] {
     if (number_of_nodes == 1) {
         return [new Tree(null, [])];
     }
