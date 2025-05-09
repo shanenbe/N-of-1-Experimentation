@@ -86,5 +86,12 @@ export class Repeat {
         }
     }
 
+    _do(f) {
+        for(let c = 1; c <= this.counter;c++) {
+            f(c);
+        }
+
+    }
+
 
 }
