@@ -91,6 +91,12 @@ export abstract class Words {
         return random_array_element(this.words.filter(f));
     }
 
+    pull_random_word_with_filter(f) {
+        let ret = random_array_element(this.words.filter(f));
+        this.words.splice(this.words.indexOf(ret), 0);
+        return ret;
+    }
+
     get_random_word_of_length(length:number) {
         let w = this.words.filter(e => e.length == length);
         let ret = random_array_element(w);

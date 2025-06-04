@@ -26,3 +26,4 @@ export function for_all_combinations_2<S, T>(c1: S[], c2: T[], f: Function_P2<S,
         }
     }
 }
+
