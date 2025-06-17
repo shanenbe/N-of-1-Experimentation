@@ -18,6 +18,33 @@ export function random_integer_partition(n:number, number_of_partitions):number[
     return partitions;
 }
 
+export function random_integer_partition_with_exclusion_criterion  (
+                      n:number,
+                      number_of_partitions,
+                      exclusion_criterion: (n)=>boolean
+                )                                                  :number[]
+{
+    let partitions:number[];
+
+    do {
+        partitions = random_integer_partition(
+                                                n,
+                                                number_of_partitions
+                                             );
+    } while (is_invalid(partitions, exclusion_criterion))
+
+    return partitions; /* ============ */
+
+
+
+    function is_invalid(partitions: number[], criterion): boolean {
+        for (let partition of partitions) {
+            if (criterion(partition)) return true;
+        }
+        return false;
+    }
+}
+
 export function integer_partition_function(n:number):number[][] {
     let ret = [];
     if (n==0) return [];

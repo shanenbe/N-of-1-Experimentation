@@ -15,6 +15,19 @@ export  function  iterate_both<T1, T2>(a1:T1[], a2:T2[], f:(first:T1, second:T2)
     }
 }
 
+export function iterate_matrix<T1>(matrix: T1[][], f) {
+    iterate(matrix).do_with_counter(
+        (row, row_no) => {
+                            iterate(matrix[row_no]).do_with_counter(
+                                (element, column_no) => {
+                                    f(element, row_no, column_no);
+                                }
+                            )
+        }
+    );
+
+}
+
 export  function  iterate<ElementType>(array:ElementType[]) {
     return new Iterator(array);
 }

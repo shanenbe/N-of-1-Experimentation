@@ -5,11 +5,11 @@ import {
 } from "../Experimentation/Experimentation.js";
 import {
     integer_partitions_of_fix_length,
-    integer_partitions_of_fix_length_with_constraint
+    integer_partitions_of_fix_length_with_constraint, random_integer_partition_with_exclusion_criterion
 } from "../numeric/integer_partition.js";
 import {all_array_combinations} from "../utils/arrays/all_array_combinations.js";
 
-import {repeat_n_times} from "../utils/loops/loop.js";
+import {iterate, repeat_n_times} from "../utils/loops/loop.js";
 import {for_all_but_first} from "../utils/Loops.js";
 
 export type StringList_Formatter = (list: string[]) => string;
@@ -64,10 +64,6 @@ export abstract class Words {
         return String(aString).charAt(0).toLowerCase() + String(aString).slice(1);
     }
 
-    generated_composite_identifier_from_number_of_words(number_of_words: number, style:StringList_Formatter) {
-        // let list = this.
-    }
-
     generate_composite_identifier_of_length(length:number) {
 
         if(length <= 5) {
@@ -109,15 +105,13 @@ export abstract class Words {
 
         let ret = [];
 
-        let all_partitions = integer_partitions_of_fix_length_with_constraint(line_length, list_length, (length)=>length >= min_word_length && length <= max_word_length);
+        let all_partitions = random_integer_partition_with_exclusion_criterion(line_length, list_length, (n)=> n < min_word_length || n > max_word_length);
 
-        let random_partition = random_array_element(all_partitions);
-        for(let number of random_partition) {
+        for(let number of all_partitions) {
             ret.push(this.get_random_word_of_length(number));
         }
 
         return ret;
-
     }
 
     generate_formatted_composite_identifier_from_number_of_words(number_of_words:number, formatter: StringList_Formatter):string {
