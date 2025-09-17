@@ -1,7 +1,7 @@
 import {Automata_With_Output_Forwarder} from "./Automata_With_Output_Forwarder.js";
 import {Automata_Configurator} from "../Automata/Automata_Configurator.js";
 import {from} from "../Automata/Transitions.js";
-import {Experiment_Output_Writer, Measurement_Type, Output_Command} from "../Experimentation/Experimentation.js";
+import {Measurement_Type} from "../Experimentation/Experimentation.js";
 
 let SHOW_INTRO=0;
 let SHOW_QUESTION=1;

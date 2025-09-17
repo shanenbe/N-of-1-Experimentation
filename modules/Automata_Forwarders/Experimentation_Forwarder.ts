@@ -7,11 +7,12 @@ import {Measurement_Type, Output_Command} from "../Experimentation/Experimentati
 
 
 let SHOW_INTRO=0;
-let SHOW_TASK=1;
-let SHOW_PENALTY = 2;
-let TASK_FINISHED=3;
-let SHOW_OUTRO = 4;
-let EVERYTHING_DONE = 5;
+let SHOW_PRE_TASK_INFO = 1;
+let SHOW_TASK=2;
+let SHOW_PENALTY = 3;
+let TASK_FINISHED=4;
+let SHOW_OUTRO = 5;
+let EVERYTHING_DONE = 6;
 
 export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
@@ -29,7 +30,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
     automata_configurator()  {
         return new Automata_Configurator(
-            [SHOW_INTRO, SHOW_TASK, TASK_FINISHED, SHOW_OUTRO, EVERYTHING_DONE],
+            [SHOW_INTRO, SHOW_PRE_TASK_INFO, SHOW_TASK, TASK_FINISHED, SHOW_OUTRO, EVERYTHING_DONE],
             SHOW_INTRO,
             ()=>{},
             this.transitions(),
@@ -59,7 +60,7 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
     automata_configuration() {
         return new Automata_Configurator(
-            [SHOW_INTRO, SHOW_TASK, TASK_FINISHED, SHOW_OUTRO, EVERYTHING_DONE],
+            [SHOW_INTRO, SHOW_PRE_TASK_INFO, SHOW_TASK, TASK_FINISHED, SHOW_OUTRO, EVERYTHING_DONE],
             SHOW_INTRO,
             () => {},
             this.transitions(),
@@ -71,17 +72,40 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
         return [
             from(SHOW_INTRO).to(SHOW_TASK)
                 .on("Enter")
+                .if((i:string) => !this.first_task().has_pre_task_description)
                 .do((i:string) => {
-                    console.log("Dummy Exp: Enter On Exp")
                     this.set_experiment_index(0);
                     this.measurement.start_measurement(this.current_task());
+                }),
+
+            from(SHOW_INTRO).to(SHOW_PRE_TASK_INFO)
+                .on("Enter")
+                .if((i:string) => this.first_task().has_pre_task_description)
+                .do((i:string) => {
+                    this.set_experiment_index(0);
+                    this.show_pre_task_info();
                 }),
 
             from(SHOW_INTRO).to(SHOW_OUTRO) // State=3: Experiment done - just the message afterwards shown
                 .on("Delete")
                 .do((i:string) => {
-                    console.log("Dummy Exp: Delete On Exp")
                     this.show_outro();
+                }),
+
+            from(SHOW_PRE_TASK_INFO).to(SHOW_TASK)
+                .on("Enter")
+                .do((i:string) => {
+                    this.measurement.start_measurement(this.current_task());
+                }),
+
+            // Task Shown - Incorrect input => Remain in Task
+            from(SHOW_TASK).to(SHOW_TASK)
+                .on_any(this.measurement.accepted_responses())
+                .if((i:string) =>
+                    !this.current_task().accepts_answer(i) &&  !this.measurement.demands_penalty()
+                )
+                .do((i:string) => {
+                    this.measurement.incorrect_response(i, this.current_task());
                 }),
 
             from(SHOW_TASK).to(SHOW_OUTRO)
@@ -99,16 +123,6 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
                     this.current_page_index < this.experiment_definition.tasks.length-1)
                 .do((i:string) => {
                     this.measurement.stop_measurement(i, this.current_task());
-                }),
-
-            // Task Shown - Incorrect input => Remain in Task
-            from(SHOW_TASK).to(SHOW_TASK)
-                .on_any(this.measurement.accepted_responses())
-                .if((i:string) =>
-                    !this.current_task().accepts_answer(i) &&  !this.measurement.demands_penalty()
-                )
-                .do((i:string) => {
-                    this.measurement.incorrect_response(i, this.current_task());
                 }),
 
             from(SHOW_TASK).to(SHOW_PENALTY)
@@ -129,9 +143,17 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
                 }),
 
             // Between Tasks to next task
+            from(TASK_FINISHED).to(SHOW_PRE_TASK_INFO)
+                .on("Enter")
+                .if((i:string) => this.current_page_index < this.experiment_definition.tasks.length-1 && this.next_task().has_pre_task_description)
+                .do((i:string) => {
+                    this.inc_current_experiment();
+                    this.show_pre_task_info();
+                }),
+
             from(TASK_FINISHED).to(SHOW_TASK)
                 .on("Enter")
-                .if((i:string) => this.current_page_index < this.experiment_definition.tasks.length-1)
+                .if((i:string) => this.current_page_index < this.experiment_definition.tasks.length-1 && !this.next_task().has_pre_task_description)
                 .do((i:string) => {
                     this.inc_current_experiment();
                     this.measurement.start_measurement(this.current_task());
@@ -166,5 +188,19 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
     init_experiment() {
         this.experiment_definition.init_experiment(false);
+    }
+
+    private show_pre_task_info() {
+        this.output_writer().clear_stage();
+        this.output_writer().clear_error();
+        this.current_task().print_pre_task_info();
+    }
+
+    private next_task():Task {
+        return this.experiment_definition.tasks[this.current_page_index + 1] ;
+    }
+
+    private first_task():Task {
+        return this.experiment_definition.tasks[0] ;
     }
 }

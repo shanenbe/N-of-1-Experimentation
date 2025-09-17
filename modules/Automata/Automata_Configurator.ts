@@ -1,6 +1,8 @@
 import {Transition} from "./Transitions.js";
 import {Automata} from "./Automata.js";
+
 export function init(){}
+
 export class Automata_Configurator {
     states: number[];
     start: number;

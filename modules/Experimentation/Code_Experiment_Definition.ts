@@ -9,6 +9,7 @@ import {Training_Configuration} from "./Training_Configuration.js";
 
 export function init(){}
 // TODO: Both classes should be one!!!
+// ASAP!!!!
 export class Code_Experiment_Definition extends Experiment_Definition {
 
 
@@ -38,8 +39,6 @@ export class Code_Experiment_Definition extends Experiment_Definition {
             cfg.measurement
         );
 
-        SET_SEED(cfg.seed);
-
         experiment_execution_forwarder.init_experiment();
 
 
@@ -64,7 +63,9 @@ export class Code_Experiment_Definition extends Experiment_Definition {
             forwarders.push(introduction_book);
         }
 
-        forwarders.push(training_forwarder);
+        if(training_forwarder.experiment_definition.tasks.length!=0)
+            forwarders.push(training_forwarder);
+
         forwarders.push(experiment_execution_forwarder);
 
         if (post_questionnaire != null) {

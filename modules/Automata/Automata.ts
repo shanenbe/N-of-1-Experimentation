@@ -18,7 +18,22 @@ export class Automata {
 
 
         for(let t of config.transitions) {
-            this.transitions[t.from].push(t);
+            if(this.transitions == null) {
+                console.log("Something is wrong here");
+            }
+
+            if(this.transitions == undefined || t.from==undefined) {
+                console.log("Something is wrong here");
+            }
+
+            if(this.transitions[t.from] ==undefined) {
+                console.log("Something is wrong here");
+            }
+try {
+    this.transitions[t.from].push(t);
+}catch (e) {
+    console.log("weird")
+            }
         }
         this.init_function = config.init_function;
         this.end_states = config.end_states;
@@ -32,7 +47,7 @@ export class Automata {
     end_states: number[];
     init_function: ()=>void;
 
-    on_finish_function: (number) => void;
+    // on_finish_function: (number) => void;
 
     input(
             input:string

@@ -4,6 +4,7 @@
   "main": "start_html.js",
   "type": "module",
   "scripts": {
+    "build SQL": "webpack --config ./",
     "build Current": "webpack --config ./___BUILD_CURRENT_EXPERIMENT/webpack.config.cjs",
     "build LibFile": "webpack --config ./___BUILD_LIB_FILE_TestExperiment/webpack.config.cjs",
     "build Questionnaire": "webpack --config ./experiments/Questionnaire/webpack.config.js",

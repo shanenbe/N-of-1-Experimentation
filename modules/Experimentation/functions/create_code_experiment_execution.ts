@@ -3,7 +3,6 @@ import {Question} from "../../Automata_Forwarders/Questionnaire_Forwarder.js";
 import {Task} from "../Task.js";
 import {Experiment_Definition} from "../Experiment_Definition.js";
 import {Sequential_Forwarder_Forwarder} from "../../Books/Sequential_Forwarder_Forwarder.js";
-import {Independent_Variable} from "../treatments/Independent_Variable.js";
 import {Treatments_Combinator} from "../treatments/Treatments_Combinator.js";
 import {Code_Experiment_Definition} from "../Code_Experiment_Definition.js";
 import {Training_Configuration} from "../Training_Configuration.js";

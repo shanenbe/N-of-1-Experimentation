@@ -96,7 +96,7 @@ export function pass(f:()=>void):(at:number, input:string, next: number)=>void {
 
 export function from(from: number)
 {
-    // from(0).key("ArrowRight").check(()=>current_page<texts.length-1)).next_state(0).action(()=>{current_page++; print_page(texts[current_page]);})
+
     return {
             to: (to: number) => { return {
                 on: (key: string)=> { return {

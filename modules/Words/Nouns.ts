@@ -1,5 +1,7 @@
-export class Nouns {
-    words = [
+import {Words} from "./Words.js";
+
+export class Nouns extends Words {
+    static static_words = [
         "account",              "achiever",             "acoustics",            "act",                  "action",
         "activity",             "actor",                "addition",             "adjustment",           "advertisement",
         "advice",               "aftermath",            "afternoon",            "afterthought",         "agreement",
@@ -177,4 +179,14 @@ export class Nouns {
         "yam",                  "yard",                 "yarn",                 "year",                 "yoke",
         "zebra",                "zephyr",               "zinc",                 "zipper",               "zoo"
     ];
+
+    constructor() {
+        super();
+        this.words = Nouns.static_words.slice();
+    }
+
 }
+
+let n = new Nouns();
+let ws = n.replace_letters("lo", 2);
+console.log(ws);

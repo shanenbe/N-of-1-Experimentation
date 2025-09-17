@@ -1,7 +1,7 @@
 import {Experiment_Definition} from "./Experiment_Definition.js";
 import {Independent_Variable} from "./treatments/Independent_Variable.js";
 import {Treatment} from "./treatments/Treatment.js";
-import {loop_both, loop_with_counter} from "../utils/loops/loop.js";
+import {iterate_both, iterate_with_counter} from "../utils/loops/loop.js";
 import {Task} from "./Task.js";
 import {Treatment_Combination} from "./treatments/Treatment_Combination.js";
 
@@ -37,7 +37,7 @@ export class Training_Configuration {
 
                                                                                     let treatment_combination = new Treatment_Combination([]);
 
-                                                                                    loop_both(
+                                                                                    iterate_both(
                                                                                                 experiment_definition.all_independent_variables(),
                                                                                                 a_treatment_combination,
                                                                                                 (variable:Independent_Variable, value:string)=> {

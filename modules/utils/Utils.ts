@@ -10,6 +10,14 @@ export type Function_P2_R<T, U, R> = (p1: T, p2: U) => R;
 export type Function_P3<T, U, V> = (p1: T, p2: U, p3: V) => void;
 export type Function_P3_R<T, U, V, R> = (p1: T, p2: U, p3: V) => R;
 
+export class RefObject<T> {
+    value: T;
+
+    constructor(value: T) {
+        this.value = value;
+    }
+}
+
 export function contains(collection:any[], element:any): boolean {
     return collection.indexOf(element) != -1;
 }
