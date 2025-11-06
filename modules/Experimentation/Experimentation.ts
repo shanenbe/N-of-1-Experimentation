@@ -409,5 +409,46 @@ export function  random_upper_case_letter_except(letters:string[]):string {
 }
 
 
+export function Standard_Post_Questionnaire() {
+    return [
+        alternatives(
+            "Age",
+            "What's your age??",
+            [
+                "younger than 18", "between 18 and (excluding) 25", "between 25 and (excluding) 30",
+                "between 30 and (excluding) 35", "between 35 and (excluding) 40", "40 or older"
+            ]
+        ),
+
+        alternatives(
+            "Status",
+            "What is your current working status?",
+            [
+                "Undergraduate student (BSc not yet finished)", "Graduate student (at least BSc finished)", "PhD student",
+                "Professional software developer", "Teacher", "Other"
+            ]
+        ),
+
+        alternatives(
+            "Studies",
+            "In case you study, what's your subject?",
+            [
+                "I do not study", "Computer science", "computer science related (such as information systems, aka WiInf)",
+                "something else in natural sciences", "something else"
+            ]
+        ),
+
+        alternatives(
+            "YearsOfExperience",
+            "How many years of experience do you have in software industry?",
+            [
+                "none", "less than or equal 1 year", "more than 1 year, but less than or equal 3 years",
+                "more than 3 years, but less than or equal 5 year", "more than 5 years"
+            ]
+        )
+    ];
+}
+
+
 // This invocation just makes sure that RANDOM is loaded
 dummy();

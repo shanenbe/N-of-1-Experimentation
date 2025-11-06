@@ -65,7 +65,7 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
     }
 
     print_string_on_stage(s: string) {
-        this.print_html_on_stage("<p>" + s + "</p>")
+        this.print_html_on_stage(s);
     }
 
     ask_for_input() {
@@ -102,27 +102,24 @@ export class Browser_Output_Writer extends Experiment_Output_Writer {
         (this.get_html_element_by_id("INPUT") as HTMLInputElement).value = given_answer;
     }
 
-    private create_html_element_from_string(s:string) {
+    private create_html_element_from_string(s:string): HTMLCollection {
         let parser = new DOMParser();
         let elements = parser.parseFromString(s, "text/html").body;
-        return elements;
+        return elements.children;
     }
 
     print_html_on_stage(s: string) {
-        // for(let e of this.create_html_element_from_string(s)) {
-            this.get_html_element_by_id("STAGE")
-                .appendChild(this.create_html_element_from_string(s));
-        // }
+        let html_collection = this.create_html_element_from_string(s);
+        for(let i = 0; html_collection.length > 0; i++) {
+            this.get_html_element_by_id("STAGE").appendChild(html_collection.item(0));
+        }
     }
 
     print_html_on_error(s: string) {
-        // for(let e of this.create_html_element_from_string(s)) {
-        //     this.get_html_element_by_id("STAGE_ERROR")
-        //         .appendChild(e);
-        // }
-
-        this.get_html_element_by_id("STAGE_ERROR")
-            .appendChild(this.create_html_element_from_string(s));
+        let html_collection = this.create_html_element_from_string(s);
+        for(let i = 0; html_collection.length > 0; i++) {
+            this.get_html_element_by_id("STAGE_ERROR").appendChild(html_collection.item(0));
+        }
     }
 
 }

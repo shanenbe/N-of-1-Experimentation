@@ -31,13 +31,13 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
             ()=> {
                 pre_run_instructions();
                 measurement.output_writer().print_html_on_stage("<hr>" +
-                    "Press [Enter] to start training.");
+                    "<p>Press [Enter] to start training.</p>");
             },
             ()=> {
                 measurement.output_writer().print_html_on_stage(
-                    "You finished the training phase.<hr>" +
+                    "<p>You finished the training phase.</p><hr><p>" +
                     (training_configuration.can_be_repeated?"Please, press [Enter] to run again a training session.<br>":"") +
-                    "Please, press [E] (capital E, i.e., [shift] + [e]) to enter the experiment phase."
+                    "Please, press [E] (capital E, i.e., [shift] + [e]) to enter the experiment phase.</p>"
                 )},
             experiment_definition,
             measurement);
@@ -50,9 +50,9 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
         this.output_writer().print_string_to_page_number("Cancelled");
 
         let navigation_string =
-            "You cancelled this training session.<hr>" +
-            "Press [Enter] if you want to start another training session.<br>" +
-            "Press [E] (capital E!) if you want to start with the experiment."
+            "<p>You cancelled this training session.</p><hr>" +
+            "<p>Press [Enter] if you want to start another training session.</p>" +
+            "<p>Press [E] (capital E!) if you want to start with the experiment.</p>"
 
         this.output_writer().print_html_on_stage(navigation_string);
     }
@@ -132,6 +132,7 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
     }
 
     init_experiment() {
+        this.experiment_definition.is_training = true;
         this.training_configuration.init_experiment(this.experiment_definition);
     }
 
