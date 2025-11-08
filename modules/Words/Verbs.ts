@@ -1,4 +1,6 @@
-export class Verbs {
+import {Words} from "./Words.js";
+
+export class Verbs extends Words {
     words = [
         "drip",                 "touch",                "trouble",              "start",                "communicate",
         "jog",                  "order",                "strip",                "coach",                "relax",

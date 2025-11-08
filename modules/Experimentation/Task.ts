@@ -12,6 +12,7 @@ export class Task {
     invalid_answers = [];
     is_training:boolean = false;
     has_pre_task_description: boolean = false;
+    has_post_task_question: boolean = false;
 
     constructor(tc: Treatment_Combination, experiment_definition: Experiment_Definition, text: string) {
         this.treatment_combination = tc;
@@ -20,6 +21,10 @@ export class Task {
     }
 
     do_print_task: ()=>void = () => {
+        throw new Error("Method not implemented.");
+    }
+
+    do_print_post_task: ()=>void = () => {
         throw new Error("Method not implemented.");
     }
 
