@@ -6,6 +6,7 @@ let experiment_configuration_function = (writer) => { return {
     experiment_name: "TestExperiment",
     seed: SEED,
 
+
     introduction_pages: writer.stage_string_pages_commands([
         writer.convert_string_to_html_string(
             "Please, just do this experiment only, when you have enough time, are concentrated enough, and motivated enough.\n\nPlease, open the browser in fullscreen mode (probably by pressing [F11])."),
