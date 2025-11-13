@@ -14,6 +14,8 @@ let TASK_FINISHED=4;
 let SHOW_OUTRO = 5;
 let EVERYTHING_DONE = 6;
 
+let POST_TASK_QUESTION = 7;
+
 export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
 
     current_page_index = -1;
@@ -141,6 +143,15 @@ export class Experimentation_Forwarder extends  Automata_With_Output_Forwarder{
                 .do((i:string) => {
                     this.measurement.start_measurement(this.current_task());
                 }),
+
+            // Between Tasks to next task
+            // from(TASK_FINISHED).to(SHOW_PRE_TASK_INFO)
+            //     .on("Enter")
+            //     .if((i:string) => this.current_page_index < this.experiment_definition.tasks.length-1 && this.next_task().has_pre_task_description)
+            //     .do((i:string) => {
+            //         this.inc_current_experiment();
+            //         this.show_pre_task_info();
+            //     }),
 
             // Between Tasks to next task
             from(TASK_FINISHED).to(SHOW_PRE_TASK_INFO)

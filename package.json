@@ -6,7 +6,7 @@
   "scripts": {
     "build SQL": "webpack --config ./",
     "build Current": "webpack --config ./___BUILD_CURRENT_EXPERIMENT/webpack.config.cjs",
-    "build LibFile": "webpack --config ./___BUILD_LIB_FILE_TestExperiment/webpack.config.cjs",
+    "build LibFile": "webpack --config ___BUILD_LIB_FILE_TestExperiment/generate_js_lib.cjs",
     "build Questionnaire": "webpack --config ./experiments/Questionnaire/webpack.config.js",
     "start": "node server.ts"
   },
