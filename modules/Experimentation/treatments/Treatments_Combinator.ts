@@ -41,7 +41,10 @@ export class Treatments_Combinator {
                 experiment_definition.experiment_definition_task_creator(task)
             }
             task.is_training = experiment_definition.is_training;
-            tasks.push(task);
+
+            if(task.drop != false) {
+                tasks.push(task);
+            }
         }
         return do_random_array_sort(tasks);
     }

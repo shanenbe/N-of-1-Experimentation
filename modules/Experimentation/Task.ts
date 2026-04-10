@@ -13,6 +13,7 @@ export class Task {
     is_training:boolean = false;
     has_pre_task_description: boolean = false;
     has_post_task_question: boolean = false;
+    drop = false;
 
     constructor(tc: Treatment_Combination, experiment_definition: Experiment_Definition, text: string) {
         this.treatment_combination = tc;
