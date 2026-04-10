@@ -42,7 +42,7 @@ export class Treatments_Combinator {
             }
             task.is_training = experiment_definition.is_training;
 
-            if(task.drop != false) {
+            if(task.drop != true) {
                 tasks.push(task);
             }
         }
