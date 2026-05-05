@@ -93,6 +93,22 @@ export class Task {
         throw "Unknown treatment: " + treatment_name;
     }
 
+    treatment_index_value(variable): number {
+
+        for(let treatment of this.treatment_combination.treatment_combination) {
+            let counter = 0;
+            if (treatment.variable.name === variable) {
+                for(let t of treatment.variable.treatments) {
+                    if(t.value == treatment.value)
+                        return counter;
+                    else counter++;
+                }
+            }
+        }
+
+        throw "unknown variable";
+    }
+
     set_computed_variable_value(variable_name: string, value: string) {
 
         for(let treatment of this.treatment_combination.treatment_combination)

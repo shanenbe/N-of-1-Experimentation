@@ -84,6 +84,15 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
                         this.print_cancel_text();
                     }),
 
+
+
+                from(SHOW_PRE_TASK_INFO).to(ESCAPED)
+                    .on("Escape")
+                    .if(() => this.training_configuration.can_be_cancelled)
+                    .do((i:string) => {
+                        this.print_cancel_text();
+                    }),
+
                 from(TASK_FINISHED).to(ESCAPED)
                     .on("Escape")
                     .if(() => this.current_page_index < this.experiment_definition.tasks.length-1 && this.training_configuration.can_be_cancelled)
