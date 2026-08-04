@@ -185,6 +185,7 @@ export class Nouns extends Words {
         this.words = Nouns.static_words.slice();
     }
 
+
 }
 
 let n = new Nouns();

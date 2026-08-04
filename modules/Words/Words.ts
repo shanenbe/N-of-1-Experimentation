@@ -114,6 +114,14 @@ export abstract class Words {
         return ret;
     }
 
+    generate_random_word_of_length(this_word_length: number): string {
+        let word = this.get_random_word();
+        while(word.length < this_word_length) {
+            word = word + this.get_random_word()
+        }
+        return word.slice(0, this_word_length);
+    }
+
     generate_formatted_composite_identifier_from_number_of_words(number_of_words:number, formatter: StringList_Formatter):string {
         let words:string[] = repeat_n_times(number_of_words).and_collect(  e => this.get_random_word() );
         let result = formatter(words);
