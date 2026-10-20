@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "ES2020",
+    "moduleResolution": "bundler",
+
+    "target": "ES2020",
+
+    "allowJs": true,
+    "sourceMap": true,
+    "lib": ["es2016", "DOM", "DOM.Iterable"],
+
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules", "./modules_hard_import/seedrandom"],
+  "esModuleInterop": true
+}
