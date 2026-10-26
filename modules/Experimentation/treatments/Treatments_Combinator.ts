@@ -2,8 +2,8 @@ import type {Independent_Variable} from "./Independent_Variable.js";
 import {Treatment_Combination} from "./Treatment_Combination.js";
 import {Task} from "../Task.js";
 import {Experiment_Definition} from "../Experiment_Definition.js";
-import {do_random_array_sort} from "../Experimentation.js";
 import {Independent_Variables} from "./Independent_Variables.js";
+import {do_random_array_sort_on_clone} from "../Experimentation.js";
 
 /**
  * All experiment definitions contain the treatment combinations (including repetitions)
@@ -46,7 +46,7 @@ export class Treatments_Combinator {
                 tasks.push(task);
             }
         }
-        return do_random_array_sort(tasks);
+        return do_random_array_sort_on_clone(tasks);
     }
 
     get_variable_named(var_name:string):Independent_Variable {

@@ -107,7 +107,7 @@ export class Training_Execution_Forwarder extends  Experimentation_Forwarder{
                     .on("Enter")
                     .if(()=> this.training_configuration.can_be_repeated)
                     .do(() => {
-                        this.experiment_definition.init_experiment(true);
+                        this.init_experiment();
                         this.show_intro();
                     }
                 ),

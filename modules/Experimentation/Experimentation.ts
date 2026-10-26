@@ -358,7 +358,17 @@ export function random_integer_up_to_excluding(upper_limit: number): number {
     return Random.new_random_integer(upper_limit);
 }
 
-export function do_random_array_sort<T>(array:T[]):T[] {
+export function do_random_array_sort_on_this<T>(array:T[]):void {
+    let copy = [...array];
+    let result = [];
+    while(copy.length > 0) {
+        result.push(copy.splice(random_integer_up_to_excluding(copy.length), 1)[0]);
+    }
+    array.length = 0;
+    array.push(...result);
+}
+
+export function do_random_array_sort_on_clone<T>(array:T[]):T[] {
     let copy = [...array];
     let result = [];
     while(copy.length > 0) {
@@ -384,7 +394,7 @@ export function random_array_element_without<T>(array:T[], exceptions):T {
 }
 
 export function random_array_elements_without_repetitions<T>(array:T[], number_of_elements_to_chose: number):T[] {
-    let randomly_sorted_array = do_random_array_sort(array);
+    let randomly_sorted_array = do_random_array_sort_on_clone(array);
     return randomly_sorted_array.slice(0, number_of_elements_to_chose);
 }
 

@@ -54,12 +54,13 @@ export class Iterator<T> {
 
 
 
-export function repeat(n:number, f:((c:number)=>void)) {
+export function repeat<T> (n:number, f:((c:number)=>T)): T[] {
+    let results : T[]   = [];
     for(let c=0; c < n; c++) {
-        f(c);
+        results.push(f(c));
     }
 
-    // return new Repeat(0)
+    return results;
 }
 
 export function repeat_n_times(n:number):Repeat {

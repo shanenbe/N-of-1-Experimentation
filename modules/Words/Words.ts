@@ -183,4 +183,33 @@ export abstract class Words {
 
     }
 
+    static digit_as_word(integer: number) {
+        switch (integer) {
+            case  0:  return "zero"
+            case  1:  return "one"
+            case  2:  return "two"
+            case  3:  return "three"
+            case  4:  return "four"
+            case  5:  return "five"
+            case  6:  return "six"
+            case  7:  return "seven"
+            case  8:  return "eight"
+            case  9:  return "nine"
+            case 10:  return "ten"
+        }
+        throw "Invalid digit";
+    }
+
+    static random_letter_combination(length: number) {
+        let ret = [];
+        for (let i = 0; i < length; i++) {
+            let is_uppercase = random_integer_up_to_excluding(2)==0;
+            if (is_uppercase) {
+                ret.push(String.fromCharCode(65 + Math.floor(Math.random() * 26)));
+            } else {
+                ret.push(String.fromCharCode(97 + Math.floor(Math.random() * 26)));
+            }
+        }
+        return ret.join("");
+    }
 }

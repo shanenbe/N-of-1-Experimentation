@@ -4,6 +4,7 @@ import {Measurement_Type} from "./Experimentation.js";
 import {Questionnaire_Forwarder} from "../Automata_Forwarders/Questionnaire_Forwarder.js";
 import {Treatments_Combinator} from "./treatments/Treatments_Combinator.js";
 import {Independent_Variables} from "./treatments/Independent_Variables.js";
+import {for_all} from "../utils/Loops.js";
 
 export function init(){}
 
@@ -47,6 +48,14 @@ export abstract class Experiment_Definition {
 
     init_experiment(is_training) {
         this.tasks = this.treatments_combinator.create_tasks(this);
+
+        // for incomplete designs
+        let to_drop = this.tasks.filter( t => t.drop);
+
+        for_all(to_drop, (task: Task) => {
+            this.tasks.splice(this.tasks.indexOf(task), 1)});
+
+        console.log("Dropped some tasks");
     }
 
     all_independent_variables():Independent_Variable[] {
