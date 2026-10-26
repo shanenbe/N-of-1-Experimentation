@@ -1,6 +1,4 @@
 import {Words} from "./Words.js";
-import {do_random_array_sort} from "../Experimentation/Experimentation";
-import {all_array_combinations} from "../utils/arrays/all_array_combinations.js";
 
 export class Nouns extends Words {
     static static_words = [
