@@ -51,7 +51,7 @@ export class Code_Experiment_Definition extends Experiment_Definition {
                                                                     cfg.measurement
                                                                  );
 
-        training_forwarder.init_experiment();
+        training_forwarder.init_experiment(); // done
 
         let post_questionnaire = null;
         if (cfg.post_questionnaire!=undefined) {
