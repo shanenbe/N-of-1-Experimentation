@@ -74,3 +74,30 @@ export function all_different_x_tupel<T>(tupel_length: number, arr: T[]):T[][] {
     }
     return result;
 }
+
+/**
+ * Examples:
+ *   all_x_tupel(2, [1, 2, 3]) = [[1], [1,2]], [1,3], [2,3]]
+
+ Sorry to say this.....but this was GPT generated....
+
+ */
+export function all_different_x_tupel_sets<T>(tupel_length: number, arr: T[]):T[][] {
+    const result = [];
+
+    function backtrack(start, path) {
+        if (path.length === tupel_length) {
+            result.push([...path]);
+            return;
+        }
+
+        for (let i = start; i < arr.length; i++) {
+            path.push(arr[i]);
+            backtrack(i + 1, path);
+            path.pop();
+        }
+    }
+
+    backtrack(0, []);
+    return result;
+}

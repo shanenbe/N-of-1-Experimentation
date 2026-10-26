@@ -354,6 +354,13 @@ export function SET_SEED(seed: string) {
     Random.set_seed(seed);
 }
 
+export function random_bool(): boolean {
+    return random_integer_up_to(1) == 0;
+}
+export function random_integer_up_to(upper_limit: number): number {
+    return random_integer_up_to_excluding(upper_limit + 1);
+}
+
 export function random_integer_up_to_excluding(upper_limit: number): number {
     return Random.new_random_integer(upper_limit);
 }
