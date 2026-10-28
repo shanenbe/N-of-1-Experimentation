@@ -33,15 +33,15 @@ export class Book_Forwarder extends Automata_With_Output_Forwarder {
         this.output_writer().print_string_to_state(this.forwarder_name);
         this.output_writer().print_string_to_page_number("Page " + (this.current_page_number + 1) + " / " + this.pages.length);
 
-        let navigation_string ="<hr>";
+        let navigation_string ="<hr><p>";
         if(index>0)
-            navigation_string += "<p>[&#8592] = previous page</p>";
+            navigation_string += "[&#8592] = previous page<br>";
         if(index<this.pages.length-1)
-            navigation_string += (navigation_string!="<hr>"?"<br>":"") + "<p>[&#8594] = next page</p>";
+            navigation_string += "[&#8594] = next page<br>";
 
         if(index==this.pages.length-1)
-            navigation_string += (navigation_string!="<hr>"?"<br>":"") + "<p>[Enter] = Finish</p>";
-
+            navigation_string += "[Enter] = Finish<br>";
+        navigation_string += "</p>";
         this.output_writer().print_html_on_stage(navigation_string);
     }
 
